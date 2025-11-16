@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Curious Kids – Question Wall</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --card-bg:#ffffff;--bg:#f7fbff;--text:#1f2933;--muted:#6b7280;
+      --shadow-soft:0 10px 25px rgba(15,23,42,0.08);
+      --radius-lg:18px;
+      --font-main:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:var(--font-main);
+      background:radial-gradient(circle at top,#e0f2ff 0,#f7fbff 45%,#ffffff 100%);
+      color:var(--text);min-height:100vh;
+    }
+    a{text-decoration:none;color:inherit;}
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(247,251,255,0.96);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(148,163,184,0.2);
+    }
+    .nav-inner{
+      max-width:1100px;margin:0 auto;padding:.6rem 1rem;
+      display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    }
+    .brand{display:flex;align-items:center;gap:0.5rem;}
+    .brand-logo{
+      width:34px;height:34px;border-radius:50%;
+      background:conic-gradient(from 180deg,#ff8a3d,#ffd74d,#4d8fff,#ff8a3d);
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;font-weight:800;font-size:1.1rem;
+      cursor:pointer; /* admin unlock */
+      box-shadow:0 4px 12px rgba(15,23,42,0.15);
+    }
+    .brand-text{display:flex;flex-direction:column;line-height:1.1;}
+    .brand-text span:first-child{font-weight:800;font-size:1rem;letter-spacing:.03em;}
+    .brand-text span:last-child{font-size:.75rem;color:var(--muted);}
+    nav ul{list-style:none;display:flex;gap:.75rem;font-size:.9rem;}
+    nav a{
+      padding:.35rem .8rem;border-radius:999px;
+      color:#475569;font-weight:500;
+      transition:background .15s,color .15s,transform .1s;
+    }
+    nav a:hover{background:rgba(77,143,255,.12);color:#1d4ed8;transform:translateY(-1px);}
+    .nav-cta{background:#1d4ed8;color:#fff;box-shadow:0 3px 10px rgba(37,99,235,.4);}
+    main{max-width:1100px;margin:0 auto;padding:1.5rem 1rem 2.5rem;}
+    .section-header{margin-bottom:.9rem;}
+    .section-header h1{font-size:1.5rem;margin-bottom:.25rem;}
+    .section-header p{font-size:.9rem;color:var(--muted);}
+    .card{
+      background:var(--card-bg);border-radius:var(--radius-lg);
+      padding:1.1rem 1rem;box-shadow:var(--shadow-soft);
+      border:1px solid rgba(148,163,184,0.18);
+    }
+    .admin-controls{
+      display:none;
+      margin-bottom:.7rem;
+      font-size:.8rem;
+      padding:.5rem .6rem;
+      border-radius:999px;
+      background:#fef3c7;
+      border:1px solid #facc15;
+      color:#854d0e;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:.5rem;
+    }
+    .admin-controls button{
+      border:none;border-radius:999px;
+      padding:.25rem .7rem;font-size:.75rem;
+      cursor:pointer;
+      background:#dc2626;color:#fff;
+    }
+    .admin-controls button:hover{background:#b91c1c;}
+
+    .question-card{
+      background:#fff;border-radius:var(--radius-lg);
+      border:1px solid rgba(148,163,184,.25);
+      padding:.8rem .85rem .75rem;margin-bottom:.7rem;
+      box-shadow:0 4px 12px rgba(15,23,42,.04);
+      font-size:.85rem;
+    }
+    .question-category{
+      font-size:.7rem;padding:.15rem .5rem;border-radius:999px;
+      background:rgba(59,130,246,.08);color:#1d4ed8;font-weight:600;
+    }
+    .question-meta{font-size:.7rem;color:var(--muted);}
+    .question-text{margin:.2rem 0 .3rem;}
+    .question-nickname{font-size:.74rem;color:#6b7280;}
+    .question-status{
+      display:inline-flex;align-items:center;gap:.25rem;
+      margin-top:.2rem;font-size:.7rem;
+      padding:.15rem .45rem;border-radius:999px;
+      background:rgba(234,179,8,.08);color:#854d0e;
+    }
+    .question-status::before{content:"•";}
+    .empty-state{
+      font-size:.85rem;color:var(--muted);
+      background:#eff6ff;border-radius:var(--radius-lg);
+      padding:.9rem .8rem;border:1px dashed rgba(129,140,248,.7);
+    }
+    footer{
+      margin-top:2.8rem;padding:1.2rem 1rem 1.8rem;
+      font-size:.75rem;color:var(--muted);
+      border-top:1px solid rgba(148,163,184,0.25);text-align:center;
+    }
+    @media(max-width:800px){nav ul{display:none;}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-logo" onclick="handleAdminLogoClick()">CK</div>
+      <div class="brand-text">
+        <span>Curious Kids Q&A</span>
+        <span>Ask big questions. Get gentle answers.</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ask.html">Ask a Question</a></li>
+        <li><a href="questions.html">Question Wall</a></li>
+        <li><a href="store.html">Store</a></li>
+        <li><a href="parents.html">For Parents</a></li>
+        <li><a href="legal.html">Legal</a></li>
+        <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="section-header">
+    <h1>Question Wall</h1>
+    <p>
+      This wall shows only <strong>public questions</strong> asked from this browser.
+      Private and adult consultation questions are kept hidden and never displayed here.
+    </p>
+  </section>
+
+  <!-- Admin-only bar (hidden until secret unlock) -->
+  <div id="adminControls" class="admin-controls">
+    <span>⚙ Admin: public questions on this device.</span>
+    <button type="button" onclick="clearPublicQuestions()">🧹 Clear Public Questions</button>
+  </div>
+
+  <section class="card">
+    <div id="questionsList" aria-live="polite"></div>
+  </section>
+</main>
+
+
+
+<script>
+  const STORAGE_KEY = "curiousKidsQuestions";
+  const ADMIN_CODE = "CKAdmin2025"; // change if you like
+
+  function escapeHtml(str){
+    if(!str) return "";
+    return String(str).replace(/[&<>"']/g,ch =>
+      ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]||ch)
+    );
+  }
+  function loadQuestions(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return [];
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed)?parsed:[];
+    }catch{return [];}
+  }
+  function saveQuestions(list){
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(list));}catch{}
+  }
+
+  function renderQuestions(){
+    const container=document.getElementById("questionsList");
+    if(!container) return;
+    const all = loadQuestions();
+    // ✅ ONLY non-private questions here
+    const publicQs = all.filter(q => !q.isPrivate);
+
+    if(!publicQs.length){
+      container.innerHTML =
+        '<p class="empty-state">No public questions on this device yet. Be the first to ask on the Ask page!</p>';
+      return;
+    }
+
+    container.innerHTML = publicQs.slice().reverse().map(q=>{
+      const nickname = q.nickname ? "From: "+escapeHtml(q.nickname) : "";
+      const meta = escapeHtml(q.who || "Kid") + " • " +
+                   escapeHtml(q.ageRange || "Age not said");
+      return `
+      <article class="question-card">
+        <header style="display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;">
+          <span class="question-category">${escapeHtml(q.category || "Question")}</span>
+          <span class="question-meta">${meta}</span>
+        </header>
+        <p class="question-text">${escapeHtml(q.questionText)}</p>
+        ${nickname ? `<p class="question-nickname">${nickname}</p>` : ""}
+        <span class="question-status">Waiting for answer</span>
+      </article>`;
+    }).join("");
+  }
+
+  // 🧹 Admin-only: Clear ONLY public questions (keep private/consultation)
+  function clearPublicQuestions(){
+    if(!confirm("Clear all PUBLIC questions on this device? Private questions will be kept.")) return;
+    const all = loadQuestions();
+    const keep = all.filter(q => q.isPrivate); // keep only private
+    saveQuestions(keep);
+    renderQuestions();
+  }
+
+  // 🔐 Hidden admin unlock via triple-click on CK logo
+  let adminClickCount = 0;
+  let adminClickTimer = null;
+  function handleAdminLogoClick(){
+    adminClickCount++;
+    if(adminClickTimer) clearTimeout(adminClickTimer);
+    adminClickTimer = setTimeout(()=>{adminClickCount=0;},800);
+
+    if(adminClickCount >= 3){
+      adminClickCount = 0;
+      const code = prompt("Admin login: enter secret code");
+      if(code === ADMIN_CODE){
+        const bar = document.getElementById("adminControls");
+        if(bar) bar.style.display = "flex";
+        alert("Admin tools unlocked on this page.");
+      }else if(code !== null){
+        alert("Wrong code.");
+      }
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded",()=>{
+    const y=document.getElementById("year");
+    if(y) y.textContent=new Date().getFullYear();
+    renderQuestions();
+  });
+</script>
+<footer>
+  <p>
+    © <span id="year"></span> Curious Kids Q&amp;A.
+    All rights reserved.
+  </p>
+  <p style="margin-top:0.25rem;">
+    <a href="legal.html#terms">Terms of Service</a> ·
+    <a href="legal.html#privacy">Privacy Policy</a> ·
+    <a href="legal.html#cookies">Cookies</a>
+  </p>
+</footer>
+<script>
+  (function () {
+    const ADMIN_CODE = "CKADMIN2025";
+    const logo = document.querySelector(".brand-logo");
+    if (!logo) return;
+
+    let clicks = 0;
+    let timer = null;
+
+    logo.addEventListener("click", () => {
+      clicks++;
+      if (timer) clearTimeout(timer);
+
+      // reset counter after 2.5 seconds
+      timer = setTimeout(() => {
+        clicks = 0;
+      }, 2500);
+
+      if (clicks >= 5) {
+        clicks = 0;
+        const code = prompt("Admin access code:");
+        if (code === ADMIN_CODE) {
+          window.location.href = "admin.html";
+        } else if (code) {
+          alert("Incorrect code.");
+        }
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
+

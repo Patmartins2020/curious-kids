@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Curious Kids – Ask a Question</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --primary:#ff8a3d; --primary-dark:#e46f22;
+      --card-bg:#ffffff; --bg:#f7fbff; --text:#1f2933; --muted:#6b7280;
+      --shadow-soft:0 10px 25px rgba(15,23,42,0.08);
+      --radius-lg:18px; --radius-sm:10px;
+      --font-main:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:var(--font-main);
+      background:radial-gradient(circle at top,#e0f2ff 0,#f7fbff 45%,#ffffff 100%);
+      color:var(--text);min-height:100vh;
+    }
+    a{text-decoration:none;color:inherit;}
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(247,251,255,0.96);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(148,163,184,0.2);
+    }
+    .nav-inner{
+      max-width:1100px;margin:0 auto;
+      padding:0.6rem 1rem;
+      display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    }
+    .brand{display:flex;align-items:center;gap:0.5rem;}
+    .brand-logo{
+      width:34px;height:34px;border-radius:50%;
+      background:conic-gradient(from 180deg,#ff8a3d,#ffd74d,#4d8fff,#ff8a3d);
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;font-weight:800;font-size:1.1rem;
+      box-shadow:0 4px 12px rgba(15,23,42,0.15);
+    }
+    .brand-text{display:flex;flex-direction:column;line-height:1.1;}
+    .brand-text span:first-child{font-weight:800;font-size:1rem;letter-spacing:.03em;}
+    .brand-text span:last-child{font-size:.75rem;color:var(--muted);}
+    nav ul{list-style:none;display:flex;gap:.75rem;font-size:.9rem;}
+    nav a{
+      padding:.35rem .8rem;border-radius:999px;
+      color:#475569;font-weight:500;
+      transition:background .15s,color .15s,transform .1s;
+    }
+    nav a:hover{background:rgba(77,143,255,.12);color:#1d4ed8;transform:translateY(-1px);}
+    .nav-cta{background:#1d4ed8;color:#fff;box-shadow:0 3px 10px rgba(37,99,235,.4);}
+    main{max-width:1100px;margin:0 auto;padding:1.5rem 1rem 2.5rem;}
+    .section-header{margin-bottom:.9rem;}
+    .section-header h1{font-size:1.5rem;margin-bottom:.25rem;}
+    .section-header p{font-size:.9rem;color:var(--muted);}
+    .card{
+      background:var(--card-bg);border-radius:var(--radius-lg);
+      padding:1.1rem 1rem;box-shadow:var(--shadow-soft);
+      border:1px solid rgba(148,163,184,0.18);
+    }
+    .ask-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1.1fr);gap:1.3rem;}
+    .form-row{display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:.7rem;}
+    .inline-field{flex:1 1 130px;}
+    label{font-size:.8rem;font-weight:600;color:#4b5563;margin-bottom:.2rem;display:block;}
+    input,select,textarea{
+      width:100%;border-radius:var(--radius-sm);
+      border:1px solid rgba(148,163,184,0.8);
+      padding:.5rem .6rem;font-size:.85rem;font-family:inherit;
+      outline:none;background:#f9fafb;
+    }
+    textarea{min-height:120px;resize:vertical;}
+    .hint{font-size:.7rem;color:var(--muted);margin-top:.1rem;}
+    .consent-row{
+      display:flex;align-items:flex-start;gap:.5rem;
+      margin-top:.4rem;font-size:.75rem;color:#4b5563;
+    }
+    .form-options{margin-top:.6rem;font-size:.78rem;color:#4b5563;display:flex;flex-direction:column;gap:.3rem;}
+    .form-options-row{display:flex;gap:.4rem;align-items:flex-start;}
+    .consultation-info{margin-top:.25rem;font-size:.72rem;color:var(--muted);}
+    #consultationPrice{font-weight:600;}
+    .btn{
+      border-radius:999px;padding:.6rem 1.3rem;border:none;cursor:pointer;
+      font-weight:600;font-size:.9rem;display:inline-flex;align-items:center;gap:.4rem;
+    }
+    .btn-primary{background:var(--primary);color:#fff;
+      box-shadow:0 5px 16px rgba(248,113,22,.5);}
+    .btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px);}
+    #formMessage{margin-top:.5rem;font-size:.78rem;min-height:1em;}
+    .message-success{color:#16a34a;}
+    .message-error{color:#e11d48;}
+    footer{
+      margin-top:2.8rem;padding:1.2rem 1rem 1.8rem;
+      font-size:.75rem;color:var(--muted);
+      border-top:1px solid rgba(148,163,184,0.25);text-align:center;
+    }
+    @media(max-width:800px){
+      nav ul{display:none;}
+      .ask-grid{grid-template-columns:minmax(0,1fr);}
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-logo">CK</div>
+      <div class="brand-text">
+        <span>Curious Kids Q&A</span>
+        <span>Ask big questions. Get gentle answers.</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ask.html">Ask a Question</a></li>
+        <li><a href="questions.html">Question Wall</a></li>
+        <li><a href="store.html">Store</a></li>
+        <li><a href="parents.html">For Parents</a></li>
+        <li><a href="legal.html">Legal</a></li>
+        <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="section-header">
+    <h1>Ask a Question</h1>
+    <p>Kids, parents and teachers can ask anything respectfully. Private and adult consultation questions are never shown on the public wall.</p>
+  </section>
+
+  <section class="card ask-grid">
+    <form id="questionForm" novalidate>
+      <div class="form-row">
+        <div class="inline-field">
+          <label for="nickname">Nickname (first name only)</label>
+          <input id="nickname" maxlength="20" placeholder="e.g. Victoria" />
+          <p class="hint">Please don’t use your surname.</p>
+        </div>
+        <div class="inline-field">
+          <label for="ageRange">Age</label>
+          <select id="ageRange">
+            <option value="">Prefer not to say</option>
+            <option value="4-6">4–6 years</option>
+            <option value="7-9">7–9 years</option>
+            <option value="10-12">10–12 years</option>
+            <option value="13-15">13–15 years</option>
+            <option value="16+">16+ / Adult</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="inline-field">
+          <label for="who">Who is asking?</label>
+          <select id="who" required>
+            <option value="Kid">Kid</option>
+            <option value="Parent">Parent</option>
+            <option value="Teacher">Teacher</option>
+            <option value="Adult">Adult (other)</option>
+          </select>
+        </div>
+        <div class="inline-field">
+          <label for="category">Question is about</label>
+          <select id="category">
+            <option value="God & Bible">God &amp; the Bible</option>
+            <option value="Feelings & Worries">Feelings &amp; worries</option>
+            <option value="School & Friends">School &amp; friends</option>
+            <option value="Growing Up & Life">Growing up &amp; life</option>
+            <option value="Other">Something else</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div style="flex:1 1 100%;">
+          <label for="questionText">Your question</label>
+          <textarea id="questionText"
+            placeholder="You can be funny, serious or confused — it’s okay to ask anything respectfully."></textarea>
+          <p class="hint">Please do not include phone numbers, email addresses or links.</p>
+        </div>
+      </div>
+
+      <div class="consent-row">
+        <input type="checkbox" id="consent" />
+        <label for="consent">
+          I understand this is a question platform. I won’t share private contact details, and I’m asking kindly.
+        </label>
+      </div>
+
+      <div class="form-options">
+        <div class="form-options-row">
+          <input type="checkbox" id="isPrivate" />
+          <label for="isPrivate">
+            This is a <strong>private question</strong>. Please do not show it on the public Question Wall.
+          </label>
+        </div>
+        <div class="form-options-row">
+          <input type="checkbox" id="isConsultation" />
+          <label for="isConsultation">
+            I am a <strong>parent/teacher/adult</strong> and I need a private consultation-style answer.
+          </label>
+        </div>
+        <p class="consultation-info">
+          <span id="consultationPrice"></span><br>
+          Kids’ private questions remain free. Adult consultation questions go through a small payment step and are always private.
+        </p>
+      </div>
+
+      <div style="margin-top:0.8rem;">
+        <button type="submit" class="btn btn-primary">🚀 Send My Question</button>
+      </div>
+      <div id="formMessage"></div>
+    </form>
+
+    <div>
+      <h2 style="font-size:1rem;margin-bottom:.4rem;">How it works</h2>
+      <p class="hint">
+        • Public questions will show only on your device’s Question Wall (demo mode).<br>
+        • Private questions are hidden from the public wall and visible only to the admin.<br>
+        • Adult consultation questions are private + paid (simulated) and never displayed publicly.
+      </p>
+    </div>
+  </section>
+</main>
+
+
+
+<script>
+  const STORAGE_KEY = "curiousKidsQuestions";
+  const PENDING_KEY = "curiousKidsPendingConsult";
+  const CONSULTATION_PRICE_USD = 3;
+  let currency = "USD";
+  const currencyData = {
+    USD:{symbol:"$",rate:1},
+    EUR:{symbol:"€",rate:0.9},
+    GBP:{symbol:"£",rate:0.8},
+    NGN:{symbol:"₦",rate:1500}
+  };
+
+  function formatPrice(usd){
+    const c = currencyData[currency] || currencyData.USD;
+    const v = usd * c.rate;
+    if(["USD","EUR","GBP"].includes("USD")) return c.symbol+v.toFixed(2);
+    return c.symbol+Math.round(v);
+  }
+  function renderConsultationPrice(){
+    const el = document.getElementById("consultationPrice");
+    if(el) el.textContent = "Adult private consultation (token): " + formatPrice(CONSULTATION_PRICE_USD);
+  }
+  function loadQuestions(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return [];
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed)?parsed:[];
+    }catch{return [];}
+  }
+  function saveQuestions(list){
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(list));}catch{}
+  }
+  function showFormMessage(text,type){
+    const el = document.getElementById("formMessage");
+    if(!el) return;
+    el.textContent = text||"";
+    el.className = "";
+    if(text) el.classList.add(type==="error"?"message-error":"message-success");
+  }
+
+  document.addEventListener("DOMContentLoaded",()=>{
+    const y=document.getElementById("year"); if(y) y.textContent=new Date().getFullYear();
+    renderConsultationPrice();
+
+    const form=document.getElementById("questionForm");
+    form.addEventListener("submit",(e)=>{
+      e.preventDefault();
+      showFormMessage("","");
+
+      const nickname = document.getElementById("nickname").value.trim();
+      const ageRange = document.getElementById("ageRange").value;
+      const who = document.getElementById("who").value || "Kid";
+      const category = document.getElementById("category").value || "Question";
+      const questionText = document.getElementById("questionText").value.trim();
+      const consent = document.getElementById("consent").checked;
+      let isPrivate = document.getElementById("isPrivate").checked;
+      const isConsultationCheckbox = document.getElementById("isConsultation").checked;
+
+      if(!consent){
+        showFormMessage("Please tick the consent box before sending your question.","error");
+        return;
+      }
+      if(questionText.length<10){
+        showFormMessage("Your question is a bit short. Please add more detail.","error");
+        return;
+      }
+      const lower = questionText.toLowerCase();
+      if(lower.includes("@")||lower.includes("http")){
+        showFormMessage("Please remove email addresses or links from your question and try again.","error");
+        return;
+      }
+
+      let isConsultation = isConsultationCheckbox && who!=="Kid";
+      if(isConsultation){
+        // ALWAYS private for adult consultation
+        isPrivate = true;
+        const pending = {
+          nickname,ageRange,who,category,questionText,
+          isPrivate:true,isConsultation:true,createdAt:new Date().toISOString()
+        };
+        try{localStorage.setItem(PENDING_KEY,JSON.stringify(pending));}catch{}
+        window.location.href = "consult-pay.html";
+        return;
+      }
+
+      const questions = loadQuestions();
+      questions.push({
+        nickname,ageRange,who,category,questionText,
+        isPrivate:isPrivate,isConsultation:false,
+        createdAt:new Date().toISOString()
+      });
+      saveQuestions(questions);
+      form.reset();
+      showFormMessage(
+        isPrivate
+          ? "Thank you! Your private question has been saved (not shown on the public wall)."
+          : "Thank you! Your question has been added to the Question Wall on this device.",
+        "success"
+      );
+    });
+  });
+</script>
+<footer>
+  <p>
+    © <span id="year"></span> Curious Kids Q&amp;A.
+    All rights reserved.
+  </p>
+  <p style="margin-top:0.25rem;">
+    <a href="legal.html#terms">Terms of Service</a> ·
+    <a href="legal.html#privacy">Privacy Policy</a> ·
+    <a href="legal.html#cookies">Cookies</a>
+  </p>
+</footer>
+<script>
+  (function () {
+    const ADMIN_CODE = "CKADMIN2025";
+    const logo = document.querySelector(".brand-logo");
+    if (!logo) return;
+
+    let clicks = 0;
+    let timer = null;
+
+    logo.addEventListener("click", () => {
+      clicks++;
+      if (timer) clearTimeout(timer);
+
+      // reset counter after 2.5 seconds
+      timer = setTimeout(() => {
+        clicks = 0;
+      }, 2500);
+
+      if (clicks >= 5) {
+        clicks = 0;
+        const code = prompt("Admin access code:");
+        if (code === ADMIN_CODE) {
+          window.location.href = "admin.html";
+        } else if (code) {
+          alert("Incorrect code.");
+        }
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

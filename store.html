@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Curious Kids – Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        --primary: #ff8a3d;
+        --primary-dark: #e46f22;
+        --secondary: #4d8fff;
+        --card-bg: #ffffff;
+        --bg: #f7fbff;
+        --text: #1f2933;
+        --muted: #6b7280;
+        --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+        --radius-lg: 18px;
+        --radius-sm: 10px;
+        --font-main: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+          sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: var(--font-main);
+        background: radial-gradient(
+          circle at top,
+          #e0f2ff 0,
+          #f7fbff 45%,
+          #ffffff 100%
+        );
+        color: var(--text);
+        min-height: 100vh;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(247, 251, 255, 0.96);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      }
+      .nav-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0.6rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .brand-logo {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: conic-gradient(
+          from 180deg,
+          #ff8a3d,
+          #ffd74d,
+          #4d8fff,
+          #ff8a3d
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 800;
+        font-size: 1.1rem;
+        cursor: pointer; /* admin unlock */
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+      }
+      .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+      }
+      .brand-text span:first-child {
+        font-weight: 800;
+        font-size: 1rem;
+        letter-spacing: 0.03em;
+      }
+      .brand-text span:last-child {
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.9rem;
+      }
+      nav a {
+        padding: 0.35rem 0.8rem;
+        border-radius: 999px;
+        color: #475569;
+        font-weight: 500;
+        transition: background 0.15s, color 0.15s, transform 0.1s;
+      }
+      nav a:hover {
+        background: rgba(77, 143, 255, 0.12);
+        color: #1d4ed8;
+        transform: translateY(-1px);
+      }
+      .nav-cta {
+        background: #1d4ed8;
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(37, 99, 235, 0.4);
+      }
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem 2.5rem;
+      }
+
+      .section-header {
+        margin-bottom: 0.9rem;
+      }
+      .section-header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+      }
+      .section-header p {
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        padding: 1.1rem 1rem;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+      }
+
+      .store-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+        gap: 1.3rem;
+        align-items: flex-start;
+      }
+      .currency-row {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.4rem;
+        font-size: 0.78rem;
+        color: #4b5563;
+        margin-bottom: 0.4rem;
+      }
+      select {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.4rem;
+        border-radius: 999px;
+        border: 1px solid #cbd5f5;
+        background: #f9fbff;
+        outline: none;
+      }
+      .store-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 0.9rem;
+      }
+      .product-card {
+        background: #fff;
+        border-radius: var(--radius-lg);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        padding: 0.7rem 0.75rem 0.8rem;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        font-size: 0.85rem;
+      }
+      .product-type {
+        font-size: 0.7rem;
+        color: #6b7280;
+      }
+      .product-name {
+        font-weight: 600;
+      }
+      .product-tag {
+        font-size: 0.75rem;
+        color: #6b7280;
+      }
+      .product-price {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #16a34a;
+      }
+      .btn {
+        border-radius: 999px;
+        padding: 0.5rem 1rem;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+        box-shadow: 0 5px 16px rgba(248, 113, 22, 0.5);
+      }
+      .btn-primary:hover {
+        background: var(--primary-dark);
+      }
+      .btn-ghost {
+        background: #f9fafb;
+        color: #1f2937;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+      }
+      .store-cart-items {
+        margin-top: 0.4rem;
+        max-height: 200px;
+        overflow-y: auto;
+        font-size: 0.8rem;
+      }
+      .cart-item-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.2rem;
+      }
+      .cart-total {
+        margin-top: 0.4rem;
+        font-weight: 700;
+      }
+
+      .nav-cart {
+        position: relative;
+      }
+      .nav-cart-count {
+        position: absolute;
+        top: -4px;
+        right: -6px;
+        background: #e11d48;
+        color: #fff;
+        font-size: 0.6rem;
+        border-radius: 999px;
+        padding: 0 0.25rem;
+        min-width: 14px;
+        text-align: center;
+      }
+
+      /* Admin */
+      #adminSection {
+        display: none;
+        margin-top: 1.8rem;
+      }
+      .admin-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.5fr);
+        gap: 1.3rem;
+        align-items: flex-start;
+      }
+      .admin-field {
+        margin-bottom: 0.7rem;
+        font-size: 0.85rem;
+      }
+      .admin-tag-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        margin-top: 0.35rem;
+      }
+      .admin-tag-pill {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.45rem;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.18);
+        cursor: pointer;
+      }
+      .admin-questions-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        margin-bottom: 0.4rem;
+      }
+      .admin-question-item {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+        font-size: 0.8rem;
+      }
+      .admin-question-meta {
+        color: #6b7280;
+        font-size: 0.75rem;
+        margin-bottom: 0.15rem;
+      }
+      .admin-question-text {
+        font-size: 0.8rem;
+      }
+
+      .message-success {
+        color: #16a34a;
+        font-size: 0.78rem;
+        margin-top: 0.3rem;
+      }
+      .message-error {
+        color: #e11d48;
+        font-size: 0.78rem;
+        margin-top: 0.3rem;
+      }
+      .empty-state {
+        font-size: 0.85rem;
+        color: var(--muted);
+        background: #eff6ff;
+        border-radius: var(--radius-lg);
+        padding: 0.9rem 0.8rem;
+        border: 1px dashed rgba(129, 140, 248, 0.7);
+      }
+
+      footer {
+        margin-top: 2.8rem;
+        padding: 1.2rem 1rem 1.8rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+        border-top: 1px solid rgba(148, 163, 184, 0.25);
+        text-align: center;
+      }
+      @media (max-width: 900px) {
+        .store-layout,
+        .admin-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+      @media (max-width: 800px) {
+        nav ul {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="nav-inner">
+        <div class="brand">
+          <div class="brand-logo" onclick="handleAdminLogoClick()">CK</div>
+          <div class="brand-text">
+            <span>Curious Kids Q&A</span>
+            <span>Ask big questions. Get gentle answers.</span>
+          </div>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="ask.html">Ask a Question</a></li>
+            <li><a href="questions.html">Question Wall</a></li>
+            <li><a href="store.html">Store</a></li>
+            <li><a href="parents.html">For Parents</a></li>
+            <li><a href="legal.html">Legal</a></li>
+            <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
+            <li>
+              <a href="store.html" class="nav-cart">
+                🛒 Cart
+                <span
+                  id="navCartCount"
+                  class="nav-cart-count"
+                  style="display: none"
+                  >0</span
+                >
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="section-header">
+        <h1>Curious Kids Store</h1>
+        <p>
+          Kid-friendly colouring books, Bible story printables, shirts and more.
+          Prices are shown in <strong>US Dollars</strong> by default with a
+          toggle for other currencies.
+        </p>
+      </section>
+
+      <section class="card store-layout">
+        <div>
+          <div class="currency-row">
+            <span>Currency:</span>
+            <select id="currencySelect" onchange="setCurrency(this.value)">
+              <option value="USD" selected>USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+              <option value="NGN">NGN (₦)</option>
+              <option value="GHC">GH (C)</option>
+            </select>
+          </div>
+          <h3 style="font-size: 1rem; margin-bottom: 0.4rem">
+            Browse Products
+          </h3>
+          <div id="storeGrid" class="store-grid"></div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size: 1rem">Your Cart</h3>
+          <p class="hint" style="font-size: 0.75rem; color: #6b7280">
+            Cart is local to this device. Later you can connect this page to
+            Paystack, Flutterwave, Stripe or other gateways.
+          </p>
+          <div id="cartItems" class="store-cart-items"></div>
+          <div id="cartTotal" class="cart-total"></div>
+          <button
+            class="btn btn-ghost"
+            type="button"
+            onclick="clearCart()"
+            style="margin-top: 0.5rem"
+          >
+            🧹 Clear Cart
+          </button>
+        </div>
+      </section>
+
+      <!-- ADMIN SECTION: hidden until secret unlock -->
+      <section id="adminSection" class="card">
+        <div class="section-header" style="margin-bottom: 0.6rem">
+          <h2 style="font-size: 1.1rem">
+            Admin Panel – Store & Private Questions
+          </h2>
+          <p style="font-size: 0.8rem">
+            Triple-click the CK logo and enter your admin code to open this
+            panel. This section is for the owner only and does not appear to
+            regular visitors.
+          </p>
+        </div>
+
+        <div class="admin-grid">
+          <div>
+            <h3 style="font-size: 1rem; margin-bottom: 0.4rem">
+              Add / Update Product
+            </h3>
+
+            <div class="admin-field">
+              <label for="adminName">Product Name</label>
+              <input
+                id="adminName"
+                placeholder="e.g. Noah’s Ark Coloring Book"
+              />
+            </div>
+            <div class="admin-field">
+              <label for="adminPrice">Price in USD (e.g. 5)</label>
+              <input id="adminPrice" placeholder="e.g. 5" />
+            </div>
+            <div class="admin-field">
+              <label for="adminType">Type</label>
+              <select id="adminType">
+                <option value="Digital Download">Digital Download (PDF)</option>
+                <option value="Physical Item">
+                  Physical Item (Shirt, Mug, etc.)
+                </option>
+              </select>
+            </div>
+            <div class="admin-field">
+              <label for="adminTagline">Short Tagline</label>
+              <input
+                id="adminTagline"
+                placeholder="e.g. Bible story colouring fun"
+              />
+            </div>
+            <div class="admin-field">
+              <label for="adminCategory">Category / Label</label>
+              <input
+                id="adminCategory"
+                placeholder="e.g. Colouring Book, Shirt, Stickers"
+              />
+              <div class="admin-tag-group">
+                <span
+                  class="admin-tag-pill"
+                  onclick="quickFillCategory('Colouring Book')"
+                  >Colouring Book</span
+                >
+                <span
+                  class="admin-tag-pill"
+                  onclick="quickFillCategory('Bible Story')"
+                  >Bible Story</span
+                >
+                <span
+                  class="admin-tag-pill"
+                  onclick="quickFillCategory('Kids Shirt')"
+                  >Kids Shirt</span
+                >
+                <span
+                  class="admin-tag-pill"
+                  onclick="quickFillCategory('Stickers')"
+                  >Stickers</span
+                >
+                <span class="admin-tag-pill" onclick="quickFillCategory('Mug')"
+                  >Mug</span
+                >
+              </div>
+            </div>
+            <div class="admin-field">
+              <label for="adminImage">Image URL (optional)</label>
+              <input
+                id="adminImage"
+                placeholder="CDN/hosted image URL or leave blank"
+              />
+            </div>
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="addProductFromAdmin()"
+            >
+              💾 Save Product
+            </button>
+            <div id="adminMessage"></div>
+          </div>
+
+          <div>
+            <h3 style="font-size: 1rem; margin-bottom: 0.4rem">
+              Current Products (Preview)
+            </h3>
+            <div id="adminProductList" class="store-grid"></div>
+
+            <div style="margin-top: 1rem">
+              <div class="admin-questions-title">
+                <h3 style="font-size: 1rem">
+                  Private & Consultation Questions
+                </h3>
+                <button
+                  class="btn-ghost"
+                  type="button"
+                  onclick="clearPrivateQuestions()"
+                  style="font-size: 0.75rem; padding: 0.25rem 0.6rem"
+                >
+                  🧹 Clear Private Questions
+                </button>
+              </div>
+              <p
+                class="hint"
+                style="
+                  font-size: 0.75rem;
+                  color: #6b7280;
+                  margin-bottom: 0.3rem;
+                "
+              >
+                These questions are marked private/consultation and never appear
+                on the public Question Wall.
+              </p>
+              <div id="privateQuestionsList"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+
+    <script>
+      const STORE_KEY = 'curiousKidsStoreProducts';
+      const CART_KEY = 'curiousKidsCart';
+      const QUESTIONS_KEY = 'curiousKidsQuestions';
+      const ADMIN_CODE = 'CKAdmin2025';
+
+      let currency = 'USD';
+      const currencyData = {
+        USD: { symbol: '$', rate: 1 },
+        EUR: { symbol: '€', rate: 0.9 },
+        GBP: { symbol: '£', rate: 0.8 },
+        NGN: { symbol: '₦', rate: 1500 },
+      };
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(
+          /[&<>"']/g,
+          (ch) =>
+            ({
+              '&': '&amp;',
+              '<': '&lt;',
+              '>': '&gt;',
+              '"': '&quot;',
+              "'": '&#39;',
+            }[ch] || ch)
+        );
+      }
+
+      /* Store + Cart */
+      function loadStoreProducts() {
+        try {
+          const raw = localStorage.getItem(STORE_KEY);
+          if (!raw) return null;
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed : null;
+        } catch {
+          return null;
+        }
+      }
+      function saveStoreProducts(list) {
+        try {
+          localStorage.setItem(STORE_KEY, JSON.stringify(list));
+        } catch {}
+      }
+      function defaultProducts() {
+        return [
+          {
+            id: 1,
+            name: 'Curious Kids Bible Colouring Book',
+            priceUSD: 5,
+            type: 'Digital Download',
+            tagline: 'Print-at-home colouring fun.',
+            category: 'Colouring Book',
+          },
+          {
+            id: 2,
+            name: 'Noah’s Ark Story Colouring Pack',
+            priceUSD: 4,
+            type: 'Digital Download',
+            tagline: 'Animals, rainbows and the ark.',
+            category: 'Bible Story',
+          },
+          {
+            id: 3,
+            name: 'Curious Kids Logo T-Shirt',
+            priceUSD: 12,
+            type: 'Physical Item',
+            tagline: 'Bright, fun and kid-friendly.',
+            category: 'Kids Shirt',
+          },
+          {
+            id: 4,
+            name: 'Sticker Sheet – Faith & Fun',
+            priceUSD: 3,
+            type: 'Physical Item',
+            tagline: 'Reward stickers for kids.',
+            category: 'Stickers',
+          },
+        ];
+      }
+      function getProducts() {
+        let stored = loadStoreProducts();
+        if (!stored) {
+          stored = defaultProducts();
+          saveStoreProducts(stored);
+        } else {
+          stored = stored.map((p) =>
+            p.priceUSD == null && p.price != null
+              ? { ...p, priceUSD: p.price }
+              : p
+          );
+        }
+        return stored;
+      }
+
+      function loadCart() {
+        try {
+          const raw = localStorage.getItem(CART_KEY);
+          if (!raw) return [];
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed : [];
+        } catch {
+          return [];
+        }
+      }
+      function saveCart(list) {
+        try {
+          localStorage.setItem(CART_KEY, JSON.stringify(list));
+        } catch {}
+      }
+
+      function formatPrice(usd) {
+        const c = currencyData[currency] || currencyData.USD;
+        const v = usd * c.rate;
+        if (['USD', 'EUR', 'GBP'].includes(currency))
+          return c.symbol + v.toFixed(2);
+        return c.symbol + Math.round(v);
+      }
+
+      function renderStore() {
+        const grid = document.getElementById('storeGrid');
+        const adminList = document.getElementById('adminProductList');
+        const products = getProducts();
+        if (!grid) return;
+
+        const html = products
+          .map(
+            (p) => `
+      <article class="product-card">
+        <div class="product-type">${escapeHtml(p.type || 'Item')}</div>
+        <div class="product-name">${escapeHtml(p.name)}</div>
+        <div class="product-tag">${escapeHtml(p.tagline || '')}</div>
+        <div class="product-tag" style="font-size:.7rem;opacity:.8;">${escapeHtml(
+          p.category || ''
+        )}</div>
+        <div class="product-price">${formatPrice(Number(p.priceUSD || 0))}</div>
+        <button type="button" class="btn btn-primary" onclick="addToCart(${
+          p.id
+        })">🛒 Add to Cart</button>
+      </article>`
+          )
+          .join('');
+
+        grid.innerHTML =
+          html ||
+          '<p class="empty-state">No products yet. Use admin panel to add some.</p>';
+        if (adminList)
+          adminList.innerHTML =
+            html || '<p class="empty-state">No products yet.</p>';
+      }
+
+      function renderCart() {
+        const itemsEl = document.getElementById('cartItems');
+        const totalEl = document.getElementById('cartTotal');
+        const navCount = document.getElementById('navCartCount');
+        if (!itemsEl || !totalEl || !navCount) return;
+        const cart = loadCart();
+
+        if (!cart.length) {
+          itemsEl.innerHTML = '<p class="empty-state">Cart is empty.</p>';
+          totalEl.textContent = '';
+          navCount.style.display = 'none';
+          return;
+        }
+        let totalUsd = 0;
+        itemsEl.innerHTML = cart
+          .map((p) => {
+            const usd = Number(p.priceUSD || 0);
+            totalUsd += usd;
+            return `<div class="cart-item-row"><span>${escapeHtml(
+              p.name
+            )}</span><span>${formatPrice(usd)}</span></div>`;
+          })
+          .join('');
+        totalEl.textContent = 'Total: ' + formatPrice(totalUsd);
+        navCount.textContent = String(cart.length);
+        navCount.style.display = 'inline-block';
+      }
+
+      function addToCart(id) {
+        const product = getProducts().find((p) => p.id === id);
+        if (!product) return;
+        const cart = loadCart();
+        cart.push(product);
+        saveCart(cart);
+        renderCart();
+      }
+      function clearCart() {
+        saveCart([]);
+        renderCart();
+      }
+      function setCurrency(c) {
+        currency = c || 'USD';
+        renderStore();
+        renderCart();
+      }
+
+      /* Admin: products */
+      function quickFillCategory(label) {
+        const input = document.getElementById('adminCategory');
+        if (!input) return;
+        if (!input.value) input.value = label;
+        else if (!input.value.includes(label)) input.value += ', ' + label;
+      }
+
+      function addProductFromAdmin() {
+        const name = document.getElementById('adminName').value.trim();
+        const priceStr = document.getElementById('adminPrice').value.trim();
+        const type = document.getElementById('adminType').value;
+        const tagline = document.getElementById('adminTagline').value.trim();
+        const category = document.getElementById('adminCategory').value.trim();
+        const image = document.getElementById('adminImage').value.trim();
+        const msg = document.getElementById('adminMessage');
+        msg.textContent = '';
+        msg.className = '';
+
+        if (!name || !priceStr) {
+          msg.textContent = 'Please fill product name and price.';
+          msg.classList.add('message-error');
+          return;
+        }
+        const priceUSD = Number(priceStr);
+        if (Number.isNaN(priceUSD) || priceUSD <= 0) {
+          msg.textContent = 'Price must be a positive number in USD.';
+          msg.classList.add('message-error');
+          return;
+        }
+        const products = getProducts();
+        const newId = products.length
+          ? Math.max(...products.map((p) => p.id || 0)) + 1
+          : 1;
+        products.push({
+          id: newId,
+          name,
+          priceUSD,
+          type,
+          tagline,
+          category,
+          image,
+        });
+        saveStoreProducts(products);
+        renderStore();
+        msg.textContent = 'Product saved!';
+        msg.classList.add('message-success');
+
+        document.getElementById('adminName').value = '';
+        document.getElementById('adminPrice').value = '';
+        document.getElementById('adminTagline').value = '';
+        document.getElementById('adminCategory').value = '';
+        document.getElementById('adminImage').value = '';
+      }
+
+      /* Admin: private questions */
+      function loadQuestions() {
+        try {
+          const raw = localStorage.getItem(QUESTIONS_KEY);
+          if (!raw) return [];
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed : [];
+        } catch {
+          return [];
+        }
+      }
+      function saveQuestions(list) {
+        try {
+          localStorage.setItem(QUESTIONS_KEY, JSON.stringify(list));
+        } catch {}
+      }
+
+      function renderPrivateQuestions() {
+        const container = document.getElementById('privateQuestionsList');
+        if (!container) return;
+        const all = loadQuestions();
+        const privates = all.filter((q) => q.isPrivate); // only private/consultation
+        if (!privates.length) {
+          container.innerHTML =
+            '<p class="empty-state">No private or consultation questions yet on this device.</p>';
+          return;
+        }
+        container.innerHTML = privates
+          .slice()
+          .reverse()
+          .map((q) => {
+            const meta =
+              (q.who || 'User') +
+              (q.ageRange ? ' • ' + q.ageRange : '') +
+              (q.isConsultation ? ' • Adult consultation' : '');
+            const nick = q.nickname ? 'From: ' + escapeHtml(q.nickname) : '';
+            return `<div class="admin-question-item">
+        <div class="admin-question-meta">${escapeHtml(meta)}</div>
+        <div class="admin-question-text">${escapeHtml(
+          q.questionText || ''
+        )}</div>
+        ${
+          nick
+            ? `<div class="admin-question-meta">${escapeHtml(nick)}</div>`
+            : ''
+        }
+      </div>`;
+          })
+          .join('');
+      }
+
+      // 🧹 Clear ONLY private/consultation questions (keep public)
+      function clearPrivateQuestions() {
+        if (
+          !confirm(
+            'Clear all PRIVATE & consultation questions on this device? Public questions will be kept.'
+          )
+        )
+          return;
+        const all = loadQuestions();
+        const keep = all.filter((q) => !q.isPrivate);
+        saveQuestions(keep);
+        renderPrivateQuestions();
+      }
+
+      /* Admin unlock */
+      let adminClickCount = 0;
+      let adminClickTimer = null;
+      function handleAdminLogoClick() {
+        adminClickCount++;
+        if (adminClickTimer) clearTimeout(adminClickTimer);
+        adminClickTimer = setTimeout(() => {
+          adminClickCount = 0;
+        }, 800);
+
+        if (adminClickCount >= 3) {
+          adminClickCount = 0;
+          const code = prompt('Admin login: enter secret code');
+          if (code === ADMIN_CODE) {
+            const sec = document.getElementById('adminSection');
+            if (sec) sec.style.display = 'block';
+            renderPrivateQuestions();
+            alert('Admin panel unlocked on this page.');
+          } else if (code !== null) {
+            alert('Wrong code.');
+          }
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const y = document.getElementById('year');
+        if (y) y.textContent = new Date().getFullYear();
+        renderStore();
+        renderCart();
+      });
+    </script>
+    <footer>
+  <p>
+    © <span id="year"></span> Curious Kids Q&amp;A.
+    All rights reserved.
+  </p>
+  <p style="margin-top:0.25rem;">
+    <a href="legal.html#terms">Terms of Service</a> ·
+    <a href="legal.html#privacy">Privacy Policy</a> ·
+    <a href="legal.html#cookies">Cookies</a>
+  </p>
+</footer>
+<script>
+  (function () {
+    const ADMIN_CODE = "CKADMIN2025";
+    const logo = document.querySelector(".brand-logo");
+    if (!logo) return;
+
+    let clicks = 0;
+    let timer = null;
+
+    logo.addEventListener("click", () => {
+      clicks++;
+      if (timer) clearTimeout(timer);
+
+      // reset counter after 2.5 seconds
+      timer = setTimeout(() => {
+        clicks = 0;
+      }, 2500);
+
+      if (clicks >= 5) {
+        clicks = 0;
+        const code = prompt("Admin access code:");
+        if (code === ADMIN_CODE) {
+          window.location.href = "admin.html";
+        } else if (code) {
+          alert("Incorrect code.");
+        }
+      }
+    });
+  })();
+</script>
+
+  </body>
+</html>

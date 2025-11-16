@@ -1,0 +1,21 @@
+{
+  "name": "Curious Kids Q&A",
+  "short_name": "Curious Kids",
+  "description": "A safe, kid-friendly place to ask big questions about God, life and the Bible.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f7fbff",
+  "theme_color": "#ff8a3d",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Curious Kids Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-soft: #dbeafe;
+      --danger: #dc2626;
+      --bg: #f7fbff;
+      --card-bg: #ffffff;
+      --border: rgba(148, 163, 184, 0.5);
+      --text: #111827;
+      --muted: #6b7280;
+      --radius-lg: 18px;
+      --radius-sm: 12px;
+      --shadow-soft: 0 12px 28px rgba(15, 23, 42, 0.12);
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background: radial-gradient(circle at top, #e0f2ff 0, #f7fbff 45%, #ffffff 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 251, 255, 0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.7rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: conic-gradient(from 180deg, #ff8a3d, #ffd74d, #4d8fff, #ff8a3d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.05rem;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+    }
+
+    .brand-text span:first-child {
+      font-weight: 700;
+      font-size: 0.98rem;
+    }
+
+    .brand-text span:last-child {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .nav-tag {
+      font-size: 0.75rem;
+      padding: 0.22rem 0.55rem;
+      border-radius: 999px;
+      background: #fef3c7;
+      border: 1px solid #fbbf24aa;
+      color: #92400e;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.2rem 1rem 2rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.3fr);
+      gap: 1.2rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      padding: 1rem 1rem 1.1rem;
+    }
+
+    h1 {
+      font-size: 1.3rem;
+      margin-bottom: 0.2rem;
+    }
+
+    h2 {
+      font-size: 1.05rem;
+      margin-bottom: 0.25rem;
+    }
+
+    p {
+      font-size: 0.85rem;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.2rem;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      padding: 0.45rem 0.6rem;
+      font-size: 0.85rem;
+      font-family: inherit;
+      outline: none;
+      background: #f9fafb;
+      transition: border 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+      background: #ffffff;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .field-row {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .field {
+      flex: 1 1 140px;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: none;
+      padding: 0.48rem 1.05rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.5);
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: #ffffff;
+      color: #111827;
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background: #f3f4f6;
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: var(--danger);
+      border: 1px solid #fecaca;
+    }
+
+    .btn-danger:hover {
+      background: #fecaca;
+    }
+
+    .btn-small {
+      padding: 0.3rem 0.75rem;
+      font-size: 0.74rem;
+    }
+
+    .section-header {
+      margin-bottom: 0.7rem;
+    }
+
+    .section-header p {
+      margin-top: 0.15rem;
+    }
+
+    .hint {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+
+    .list {
+      margin-top: 0.7rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .item {
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 0.55rem 0.6rem;
+      background: #f9fafb;
+      font-size: 0.82rem;
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.4rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .item-title {
+      font-weight: 600;
+    }
+
+    .badge {
+      font-size: 0.68rem;
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: #eef2ff;
+      color: #3730a3;
+    }
+
+    .price {
+      font-weight: 600;
+    }
+
+    .empty {
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: #eff6ff;
+      border: 1px dashed rgba(37, 99, 235, 0.3);
+      border-radius: var(--radius-sm);
+      padding: 0.7rem 0.6rem;
+    }
+
+    footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem 1rem 1.5rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 880px) {
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      main {
+        padding-inline: 0.75rem;
+      }
+      .card {
+        border-radius: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-logo">CK</div>
+        <div class="brand-text">
+          <span>Curious Kids Admin</span>
+          <span>Private dashboard – not for children.</span>
+        </div>
+      </div>
+      <div class="nav-tag">Internal Use Only</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- STORE MANAGER -->
+    <section class="card" id="storeCard">
+      <div class="section-header">
+        <h1>Store Manager</h1>
+        <p class="muted">
+          Add, edit or remove products for the Curious Kids Store.
+          This demo saves items in this browser using <strong>localStorage</strong>.
+        </p>
+      </div>
+
+      <form id="productForm">
+        <div class="field-row">
+          <div class="field">
+            <label for="pName">Product name</label>
+            <input id="pName" type="text" required placeholder="e.g. Curious Kids Colouring Book" />
+          </div>
+          <div class="field">
+            <label for="pPrice">Price (USD)</label>
+            <input id="pPrice" type="number" min="0" step="0.01" required placeholder="9.99" />
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="pCategory">Category</label>
+            <input
+              id="pCategory"
+              type="text"
+              placeholder="e.g. Colouring, Clothing, Toys"
+            />
+          </div>
+          <div class="field">
+            <label for="pImage">Image URL (optional)</label>
+            <input
+              id="pImage"
+              type="text"
+              placeholder="https://example.com/image.jpg"
+            />
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field" style="flex: 1 1 100%;">
+            <label for="pDescription">Short description</label>
+            <textarea
+              id="pDescription"
+              placeholder="e.g. A fun Bible-based colouring book for curious children."
+            ></textarea>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-top:.3rem;">
+          <button type="submit" class="btn btn-primary">
+            Save Product
+          </button>
+          <button type="button" id="clearStore" class="btn btn-danger btn-small">
+            Clear All Products (this browser)
+          </button>
+        </div>
+        <p class="hint">
+          These products are stored under <code>curiousKidsStoreProducts</code> in localStorage.
+          Your public <code>store.html</code> can be updated later to read from the same key.
+        </p>
+      </form>
+
+      <div class="list" id="productList"></div>
+    </section>
+
+    <!-- PRIVATE CONSULTATIONS -->
+    <section class="card">
+      <div class="section-header">
+        <h2>Private Consultations & Sensitive Questions</h2>
+        <p class="muted">
+          View private questions submitted from the main site. These are stored (for now)
+          in this browser only, under <code>curiousKidsPrivateConsults</code>.
+        </p>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;gap:.5rem;margin-bottom:.4rem;">
+        <button id="refreshConsults" class="btn btn-outline btn-small">
+          Refresh List
+        </button>
+        <button id="clearConsults" class="btn btn-danger btn-small">
+          Clear All Consults (this browser)
+        </button>
+      </div>
+
+      <div class="list" id="consultList"></div>
+
+      <div style="margin-top:1rem;border-top:1px dashed rgba(148,163,184,.6);padding-top:.6rem;">
+        <h2 style="font-size:1rem;margin-bottom:.25rem;">Parent Forum Admin</h2>
+        <p class="muted" style="margin-bottom:.45rem;">
+          To manage the <strong>Curious Kids Parent Forum</strong>, open the forum app and
+          tap the CK logo 5 times, then enter your admin code to unlock the hidden admin
+          tools.
+        </p>
+        <button
+          type="button"
+          class="btn btn-outline btn-small"
+          onclick="window.open('https://curiouskids.vercel.app/', '_blank')"
+        >
+          Open Parent Forum App
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © <span id="year"></span> Curious Kids Admin. This dashboard is a front-end
+    demo only – no real server or sensitive data is stored here.
+  </footer>
+
+  <script>
+    // ========= SIMPLE ADMIN GUARD (front-end only) =========
+    (function () {
+      const ADMIN_CODE = "CKADMIN2025";
+      const alreadyOk = sessionStorage.getItem("ck_admin_ok") === "yes";
+      if (!alreadyOk) {
+        const code = prompt("Admin access code:");
+        if (code !== ADMIN_CODE) {
+          alert("Access denied.");
+          window.location.href = "index.html";
+          return;
+        }
+        sessionStorage.setItem("ck_admin_ok", "yes");
+      }
+    })();
+
+    // ========= UTILITIES =========
+    const STORE_KEY = "curiousKidsStoreProducts";
+    const CONSULT_KEY = "curiousKidsPrivateConsults";
+
+    function loadJson(key) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        console.warn("Could not parse", key, e);
+        return [];
+      }
+    }
+
+    function saveJson(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+      } catch (e) {
+        console.warn("Could not save", key, e);
+      }
+    }
+
+    // ========= STORE MANAGER =========
+    const productForm = document.getElementById("productForm");
+    const productList = document.getElementById("productList");
+    const clearStoreBtn = document.getElementById("clearStore");
+
+    function renderProducts() {
+      const products = loadJson(STORE_KEY);
+      if (!products.length) {
+        productList.innerHTML =
+          '<div class="empty">No products saved yet in this browser. Add your first store item above.</div>';
+        return;
+      }
+
+      productList.innerHTML = products
+        .map(
+          (p, idx) => `
+        <div class="item">
+          <div class="item-header">
+            <span class="item-title">${p.name || "Untitled product"}</span>
+            <span class="price">$${Number(p.price || 0).toFixed(2)}</span>
+          </div>
+          <div style="font-size:.78rem;margin-bottom:.15rem;">
+            ${p.category ? `<span class="badge">${p.category}</span>` : ""}
+          </div>
+          <p>${p.description || ""}</p>
+          <div class="hint" style="margin-top:.3rem;">
+            ${p.imageUrl ? `Image: ${p.imageUrl}` : "No image URL set."}
+          </div>
+          <div style="margin-top:.4rem;display:flex;gap:.4rem;flex-wrap:wrap;">
+            <button class="btn btn-outline btn-small" onclick="editProduct(${idx})">
+              Edit
+            </button>
+            <button class="btn btn-danger btn-small" onclick="deleteProduct(${idx})">
+              Delete
+            </button>
+          </div>
+        </div>
+      `
+        )
+        .join("");
+    }
+
+    function editProduct(index) {
+      const products = loadJson(STORE_KEY);
+      const p = products[index];
+      if (!p) return;
+      document.getElementById("pName").value = p.name || "";
+      document.getElementById("pPrice").value = p.price || "";
+      document.getElementById("pCategory").value = p.category || "";
+      document.getElementById("pImage").value = p.imageUrl || "";
+      document.getElementById("pDescription").value = p.description || "";
+      productForm.dataset.editIndex = String(index);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function deleteProduct(index) {
+      if (!confirm("Delete this product?")) return;
+      const products = loadJson(STORE_KEY);
+      products.splice(index, 1);
+      saveJson(STORE_KEY, products);
+      renderProducts();
+    }
+
+    window.editProduct = editProduct;
+    window.deleteProduct = deleteProduct;
+
+    productForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = document.getElementById("pName").value.trim();
+      const price = document.getElementById("pPrice").value;
+      const category = document.getElementById("pCategory").value.trim();
+      const imageUrl = document.getElementById("pImage").value.trim();
+      const description = document
+        .getElementById("pDescription")
+        .value.trim();
+
+      if (!name) {
+        alert("Please add a product name.");
+        return;
+      }
+
+      const products = loadJson(STORE_KEY);
+      const product = { name, price, category, imageUrl, description };
+
+      const editIndex = productForm.dataset.editIndex;
+      if (editIndex !== undefined) {
+        products[Number(editIndex)] = product;
+        delete productForm.dataset.editIndex;
+      } else {
+        products.push(product);
+      }
+
+      saveJson(STORE_KEY, products);
+      productForm.reset();
+      renderProducts();
+    });
+
+    clearStoreBtn.addEventListener("click", function () {
+      if (
+        !confirm(
+          "Clear ALL products stored in this browser? This cannot be undone."
+        )
+      )
+        return;
+      localStorage.removeItem(STORE_KEY);
+      renderProducts();
+    });
+
+    // ========= PRIVATE CONSULTS =========
+    const consultList = document.getElementById("consultList");
+    const refreshConsultsBtn = document.getElementById("refreshConsults");
+    const clearConsultsBtn = document.getElementById("clearConsults");
+
+    function renderConsults() {
+      const consults = loadJson(CONSULT_KEY);
+      if (!consults.length) {
+        consultList.innerHTML =
+          '<div class="empty">No private consultations stored yet on this device.</div>';
+        return;
+      }
+
+      consultList.innerHTML = consults
+        .map((c, idx) => {
+          const created = c.createdAt
+            ? new Date(c.createdAt).toLocaleString()
+            : "Date unknown";
+          return `
+          <div class="item">
+            <div class="item-header">
+              <span class="item-title">${
+                c.nickname || c.name || "Anonymous"
+              }</span>
+              <span class="badge">Private question</span>
+            </div>
+            <p class="muted" style="font-size:.76rem;margin-bottom:.2rem;">
+              ${created}
+            </p>
+            <p>${c.question || c.message || "(No text saved)"}</p>
+            ${
+              c.email
+                ? `<p class="hint" style="margin-top:.25rem;">Email: ${c.email}</p>`
+                : ""
+            }
+            <div style="margin-top:.4rem;display:flex;gap:.4rem;flex-wrap:wrap;">
+              <button class="btn btn-danger btn-small" onclick="deleteConsult(${idx})">
+                Delete
+              </button>
+            </div>
+          </div>`;
+        })
+        .join("");
+    }
+
+    function deleteConsult(index) {
+      if (!confirm("Delete this consultation?")) return;
+      const consults = loadJson(CONSULT_KEY);
+      consults.splice(index, 1);
+      saveJson(CONSULT_KEY, consults);
+      renderConsults();
+    }
+
+    window.deleteConsult = deleteConsult;
+
+    refreshConsultsBtn.addEventListener("click", renderConsults);
+
+    clearConsultsBtn.addEventListener("click", function () {
+      if (
+        !confirm(
+          "Clear ALL private consultations stored in this browser? This cannot be undone."
+        )
+      )
+        return;
+      localStorage.removeItem(CONSULT_KEY);
+      renderConsults();
+    });
+
+    // ========= INIT =========
+    document.getElementById("year").textContent =
+      new Date().getFullYear().toString();
+    renderProducts();
+    renderConsults();
+  </script>
+</body>
+</html>

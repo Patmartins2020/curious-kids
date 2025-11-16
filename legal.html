@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Curious Kids – Legal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --card-bg:#ffffff;--bg:#f7fbff;--text:#1f2933;--muted:#6b7280;
+      --shadow-soft:0 10px 25px rgba(15,23,42,0.08);
+      --radius-lg:18px;
+      --font-main:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:var(--font-main);
+      background:radial-gradient(circle at top,#e0f2ff 0,#f7fbff 45%,#ffffff 100%);
+      color:var(--text);min-height:100vh;
+    }
+    a{text-decoration:none;color:#1d4ed8;}
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(247,251,255,0.96);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(148,163,184,0.2);
+    }
+    .nav-inner{
+      max-width:1100px;margin:0 auto;padding:.6rem 1rem;
+      display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    }
+    .brand{display:flex;align-items:center;gap:0.5rem;}
+    .brand-logo{
+      width:34px;height:34px;border-radius:50%;
+      background:conic-gradient(from 180deg,#ff8a3d,#ffd74d,#4d8fff,#ff8a3d);
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;font-weight:800;font-size:1.1rem;
+      box-shadow:0 4px 12px rgba(15,23,42,0.15);
+    }
+    .brand-text{display:flex;flex-direction:column;line-height:1.1;}
+    .brand-text span:first-child{font-weight:800;font-size:1rem;letter-spacing:.03em;}
+    .brand-text span:last-child{font-size:.75rem;color:var(--muted);}
+    nav ul{list-style:none;display:flex;gap:.75rem;font-size:.9rem;}
+    nav a{
+      padding:.35rem .8rem;border-radius:999px;
+      color:#475569;font-weight:500;
+      transition:background .15s,color .15s,transform .1s;
+      text-decoration:none;
+    }
+    nav a:hover{background:rgba(77,143,255,.12);color:#1d4ed8;transform:translateY(-1px);}
+    .nav-cta{background:#1d4ed8;color:#fff;box-shadow:0 3px 10px rgba(37,99,235,.4);}
+    main{max-width:1100px;margin:0 auto;padding:1.5rem 1rem 2.5rem;}
+    .card{
+      background:var(--card-bg);border-radius:var(--radius-lg);
+      padding:1.2rem 1.1rem;box-shadow:var(--shadow-soft);
+      border:1px solid rgba(148,163,184,0.18);
+      margin-bottom:1.2rem;
+    }
+    h1{font-size:1.5rem;margin-bottom:.4rem;}
+    h2{font-size:1.2rem;margin-bottom:.3rem;margin-top:.4rem;}
+    p{font-size:.9rem;color:var(--muted);margin-bottom:.3rem;}
+    ul{font-size:.9rem;color:var(--muted);padding-left:1rem;margin-bottom:.4rem;}
+    footer{
+      margin-top:2.8rem;padding:1.2rem 1rem 1.8rem;
+      font-size:.75rem;color:var(--muted);
+      border-top:1px solid rgba(148,163,184,0.25);text-align:center;
+    }
+    footer a{text-decoration:none;color:#1d4ed8;}
+    @media(max-width:800px){nav ul{display:none;}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-logo">CK</div>
+      <div class="brand-text">
+        <span>Curious Kids Q&A</span>
+        <span>Ask big questions. Get gentle answers.</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ask.html">Ask a Question</a></li>
+        <li><a href="questions.html">Question Wall</a></li>
+        <li><a href="store.html">Store</a></li>
+        <li><a href="parents.html">For Parents</a></li>
+        <li><a href="legal.html" class="nav-cta">Legal</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="card" id="terms">
+    <h1>Terms of Service</h1>
+    <p>
+      Curious Kids Q&amp;A is a kid-friendly question and answer platform.
+      By using this site, you agree to:
+    </p>
+    <ul>
+      <li>Ask questions kindly and respectfully.</li>
+      <li>Not share personal contact details (phone number, email, address, social media, etc.).</li>
+      <li>Use the site only for lawful and family-friendly purposes.</li>
+      <li>Allow us to moderate, edit or remove any content that is unsafe or inappropriate for children.</li>
+    </ul>
+    <p>
+      This site is provided “as is” for educational and inspirational purposes.
+      It does not replace professional counselling, medical, legal or safeguarding help.
+    </p>
+  </section>
+
+  <section class="card" id="privacy">
+    <h2>Privacy Policy</h2>
+    <p>
+      This demo version of Curious Kids Q&amp;A stores questions and store data
+      only on your own device using <strong>local storage</strong> in your browser.
+      We do not collect names, emails or contact details through this demo.
+    </p>
+    <p>
+      Children are encouraged to use nicknames only. Parents and guardians should
+      supervise young children when they are online.
+    </p>
+    <p>
+      If you later connect this site to a real server or database, you should add
+      an updated privacy policy that explains what data is collected, how it is stored,
+      and how users can request removal.
+    </p>
+  </section>
+
+  <section class="card" id="cookies">
+    <h2>Cookies & Local Storage</h2>
+    <p>
+      This demo uses your browser’s local storage to remember:
+    </p>
+    <ul>
+      <li>Questions asked from this device.</li>
+      <li>Store products and cart items.</li>
+      <li>Admin settings (for the owner only).</li>
+    </ul>
+    <p>
+      No tracking cookies are used in this demo. If you add analytics or ads in
+      the future, you should update this section and show a clear cookie notice.
+    </p>
+  </section>
+</main>
+
+<footer>
+  <p>
+    © <span id="year"></span> Curious Kids Q&amp;A. All rights reserved.
+  </p>
+  <p style="margin-top:0.25rem;">
+    <a href="#terms">Terms of Service</a> ·
+    <a href="#privacy">Privacy Policy</a> ·
+    <a href="#cookies">Cookies</a>
+  </p>
+</footer>
+
+<script>
+  const y=document.getElementById("year");
+  if(y) y.textContent=new Date().getFullYear();
+</script>
+<script>
+  (function () {
+    const ADMIN_CODE = "CKADMIN2025";
+    const logo = document.querySelector(".brand-logo");
+    if (!logo) return;
+
+    let clicks = 0;
+    let timer = null;
+
+    logo.addEventListener("click", () => {
+      clicks++;
+      if (timer) clearTimeout(timer);
+
+      // reset counter after 2.5 seconds
+      timer = setTimeout(() => {
+        clicks = 0;
+      }, 2500);
+
+      if (clicks >= 5) {
+        clicks = 0;
+        const code = prompt("Admin access code:");
+        if (code === ADMIN_CODE) {
+          window.location.href = "admin.html";
+        } else if (code) {
+          alert("Incorrect code.");
+        }
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
