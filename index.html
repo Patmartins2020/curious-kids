@@ -112,10 +112,9 @@
       nav ul{display:none;}
     }
   </style>
-  <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#ff8a3d">
-<link rel="icon" href="icon.png" />
-
+ <link rel="manifest" href="/manifest.webmanifest" />
+<meta name="theme-color" content="#ff8a3d" />
+<link rel="icon" href="/public/icon-192.png" type="image/png" />
 </head>
 <body>
 <header>
@@ -247,6 +246,17 @@
         });
     });
   }
+  
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .catch(function (err) {
+          console.log("SW registration failed:", err);
+        });
+    });
+  }
+
 </script>
 
 </body>
