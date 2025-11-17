@@ -227,6 +227,53 @@
           display: none;
         }
       }
+      /* In-app splash screen */
+#splash-screen {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top, #fff7e8, #ffb36b);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  text-align: center;
+  color: #4a2800;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  animation: splash-fade-out 900ms ease-out forwards;
+  animation-delay: 1.8s; /* how long the splash stays visible */
+}
+
+#splash-screen img {
+  width: 144px;
+  height: 144px;
+  border-radius: 32px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1rem;
+}
+
+#splash-screen h1 {
+  font-size: 1.6rem;
+  margin: 0.2rem 0;
+}
+
+#splash-screen p {
+  margin: 0;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+@keyframes splash-fade-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-12px);
+    visibility: hidden;
+  }
+}
     </style>
     <link rel="manifest" href="manifest.webmanifest" />
 
@@ -386,21 +433,41 @@
         });
       })();
 
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function () {
-          navigator.serviceWorker.register('/sw.js').catch(function (err) {
-            console.log('SW registration failed:', err);
-          });
-        });
-      }
+      window.addEventListener("load", function () {
+    // Handle splash screen fade + removal
+    const splash = document.getElementById("splash-screen");
+    if (splash) {
+      // Give time for the CSS animation to finish (900ms + a little buffer)
+      setTimeout(function () {
+        splash.style.display = "none";
+      }, 2600); // matches 1.8s delay + 0.9s animation
+    }
 
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function () {
-          navigator.serviceWorker.register('/sw.js').catch(function (err) {
-            console.log('SW registration failed:', err);
-          });
+    // Register service worker for PWA behavior
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .catch(function (err) {
+          console.log("SW registration failed:", err);
         });
-      }
+    }
+  });
+      
     </script>
+    <body>
+  <!-- In-app splash screen -->
+  <div id="splash-screen">
+    <img src="/icons/icon-192.png" alt="Curious Kids logo">
+    <h1>Curious Kids</h1>
+    <p>A safe place where kids can ask big questions</p>
+  </div>
+
+  <!-- Wrap your existing content in this container -->
+  <div id="app-root">
+    <!-- 🔽 Everything that was originally inside <body> goes here 🔽 -->
+    <!-- Your header, hero, sections, footer, etc. -->
+  </div>
+</body>
+
   </body>
 </html>

@@ -1,23 +1,87 @@
-const CACHE_NAME = "curious-kids-v1";
-const URLS_TO_CACHE = [
-  "/",
-  "/index.html"
-  // you can add "/store.html", "/ask.html", etc., later
+// Name your cache – update the version when you change files
+const CACHE_NAME = "curiouskids-v1";
+
+// All the files we want available offline
+const OFFLINE_ASSETS = [
+  "/",                 // root
+  "/index.html",
+  "/ask.html",
+  "/forum.html",
+  "/store.html",
+  "/questions.html",
+  "/admin.html",
+  "/legal.html",
+  "/icons/icon-192.png",
+  "/icons/icon-512.png",
+  "/manifest.webmanifest"
 ];
 
-self.addEventListener("install", (event) => {
+// Install: cache all core assets
+self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(URLS_TO_CACHE);
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(OFFLINE_ASSETS);
     })
   );
+  self.skipWaiting();
 });
 
-self.addEventListener("fetch", (event) => {
+// Activate: clean up old caches
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
+      );
+    })
+  );
+  self.clients.claim();
+});
+
+// Fetch: offline support
+self.addEventListener("fetch", event => {
+  const request = event.request;
+
+  // Only handle GET requests
+  if (request.method !== "GET") {
+    return;
+  }
+
+  // For navigation (HTML pages) – network first, then cache fallback
+  if (request.mode === "navigate") {
+    event.respondWith(
+      fetch(request)
+        .then(response => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+          return response;
+        })
+        .catch(() => {
+          // If offline, show cached index.html as a fallback
+          return caches.match("/index.html");
+        })
+    );
+    return;
+  }
+
+  // For everything else – cache first, then network
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      // return cache first, then network
-      return response || fetch(event.request);
+    caches.match(request).then(cached => {
+      if (cached) {
+        return cached;
+      }
+      return fetch(request)
+        .then(response => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+          return response;
+        })
+        .catch(() => {
+          // If it’s not in cache and network fails, just fail silently
+          return cached;
+        });
     })
   );
 });
