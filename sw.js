@@ -1,5 +1,5 @@
 // Name your cache – update the version when you change files
-const CACHE_NAME = "curiouskids-v1";
+const CACHE_NAME = "curiouskids-v2";
 
 // All the files we want available offline
 const OFFLINE_ASSETS = [

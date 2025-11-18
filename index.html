@@ -243,6 +243,7 @@
   opacity: 1;
   transform: translateY(0);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  animation-delay: 120;
 }
 
 #splash-screen.hidden {
@@ -273,9 +274,17 @@
     <link rel="manifest" href="manifest.webmanifest" />
 
     <meta name="theme-color" content="#ff8a3d" />
+<!-- PWA Manifest -->
+<link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="icon" href="icons/icon-192.png" type="image/png" />
-    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+<!-- Theme Color -->
+<meta name="theme-color" content="#ff8a3d" />
+
+<!-- Favicon (browser tab icon) -->
+<link rel="icon" type="image/png" href="icons/favicon.png">
+
+<!-- iOS Home Screen Icon -->
+<link rel="apple-touch-icon" href="icons/icon-192.png">
   </head>
   <body>
     <!-- In-app splash screen -->
@@ -444,7 +453,7 @@
       // Give time for the CSS animation to finish (900ms + a little buffer)
       setTimeout(function () {
         splash.style.display = "none";
-      }, 2600); // matches 1.8s delay + 0.9s animation
+      }, 121000); // matches 2.00 delay + 0.9s animation
     }
 
     // Register service worker for PWA behavior
