@@ -227,7 +227,7 @@
           display: none;
         }
       }
-      /* In-app splash screen */
+ /* In-app splash screen */
 #splash-screen {
   position: fixed;
   inset: 0;
@@ -240,8 +240,15 @@
   text-align: center;
   color: #4a2800;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  animation: splash-fade-out 900ms ease-out forwards;
-  animation-delay: 1.8s; /* how long the splash stays visible */
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+#splash-screen.hidden {
+  opacity: 0;
+  transform: translateY(-12px);
+  pointer-events: none;
 }
 
 #splash-screen img {
@@ -262,18 +269,6 @@
   font-size: 0.95rem;
   opacity: 0.9;
 }
-
-@keyframes splash-fade-out {
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-12px);
-    visibility: hidden;
-  }
-}
     </style>
     <link rel="manifest" href="manifest.webmanifest" />
 
@@ -283,6 +278,15 @@
     <link rel="apple-touch-icon" href="icons/icon-192.png" />
   </head>
   <body>
+    <!-- In-app splash screen -->
+<div id="splash-screen">
+  <img src="icons/icon-192.png" alt="Curious Kids logo" />
+  <h1>Curious Kids</h1>
+  <p>A safe place where kids can ask big questions</p>
+</div>
+
+<!-- App root: all main content goes here -->
+<div id="app-root">
     <header>
       <div class="nav-inner">
         <div class="brand">
@@ -454,20 +458,7 @@
   });
       
     </script>
-    <body>
-  <!-- In-app splash screen -->
-  <div id="splash-screen">
-    <img src="/icons/icon-192.png" alt="Curious Kids logo">
-    <h1>Curious Kids</h1>
-    <p>A safe place where kids can ask big questions</p>
-  </div>
-
-  <!-- Wrap your existing content in this container -->
-  <div id="app-root">
-    <!-- 🔽 Everything that was originally inside <body> goes here 🔽 -->
-    <!-- Your header, hero, sections, footer, etc. -->
-  </div>
-</body>
+   
 
   </body>
 </html>
