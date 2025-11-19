@@ -374,56 +374,93 @@
       // MUST match store.html
       const CART_KEY = "curiousKidsCart";
 
-      function getCart() {
-        try {
-          return JSON.parse(localStorage.getItem(CART_KEY)) || [];
-        } catch (e) {
-          return [];
-        }
-      }
+      // ===== CART HELPERS – store.html =====
+function getCart() {
+  try {
+    const raw = localStorage.getItem(CART_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    console.warn("Could not read cart from storage:", e);
+    return [];
+  }
+}
 
-      function formatMoney(amount) {
-        const n = Number(amount || 0);
-        return "$" + n.toFixed(2);
-      }
+function saveCart(cart) {
+  try {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  } catch (e) {
+    console.warn("Could not save cart:", e);
+  }
+}
 
-      function renderOrderSummary() {
-        const items = getCart();
-        const list = document.getElementById("orderItems");
-        const totalEl = document.getElementById("orderTotal");
+// Add one item (name + price) with quantity 1
+function addToCart(name, price) {
+  const cart = getCart();
 
-        list.innerHTML = "";
+  // Check if product already in cart
+  const existing = cart.find((item) => item.name === name);
 
-        if (!items.length) {
-          list.innerHTML =
-            '<li class="cart-item"><span>Your cart is empty.</span></li>';
-          totalEl.textContent = formatMoney(0);
-          return;
-        }
+  if (existing) {
+    existing.quantity = (existing.quantity || 1) + 1;
+  } else {
+    cart.push({
+      name: name,
+      price: Number(price) || 0,
+      quantity: 1
+    });
+  }
 
-        let total = 0;
+  saveCart(cart);
+  renderCart();
+  alert("Added to cart: " + name);
+}
+// Show cart items + total on the store page (if elements exist)
+function renderCart() {
+  const items = getCart();
+  const listEl = document.getElementById("cartItems");
+  const totalEl = document.getElementById("cartTotal");
 
-        items.forEach((item) => {
-          const name = item.name || item.title || "Item";
-          const qty = item.quantity || 1;
-          const price = Number(item.price || 0);
-          const lineTotal = price * qty;
-          total += lineTotal;
+  if (!listEl || !totalEl) {
+    // If your HTML uses different ids, this will just quietly do nothing
+    return;
+  }
 
-          const li = document.createElement("li");
-          li.className = "cart-item";
-          li.innerHTML = `
-            <div>
-              <strong>${name}</strong>
-              <small>Qty: ${qty} × ${formatMoney(price)}</small>
-            </div>
-            <span>${formatMoney(lineTotal)}</span>
-          `;
-          list.appendChild(li);
-        });
+  if (!items.length) {
+    listEl.innerHTML =
+      '<p class="empty-cart">Your cart is empty. Add something from the store.</p>';
+    totalEl.textContent = "$0.00";
+    return;
+  }
 
-        totalEl.textContent = formatMoney(total);
-      }
+  let html = "";
+  let total = 0;
+
+  items.forEach((item) => {
+    const name = item.name || "Item";
+    const qty = item.quantity || 1;
+    const price = Number(item.price || 0);
+    const lineTotal = price * qty;
+    total += lineTotal;
+
+    html += `
+      <div class="cart-row">
+        <span>${name}</span>
+        <span>Qty: ${qty}</span>
+        <span>$${lineTotal.toFixed(2)}</span>
+      </div>
+    `;
+  });
+
+  listEl.innerHTML = html;
+  totalEl.textContent = "$" + total.toFixed(2);
+}
+
+// Clear cart (you already had something like this)
+function clearCart() {
+  if (!window.confirm("Clear all items from your cart?")) return;
+  localStorage.removeItem(CART_KEY);
+  renderCart();
+}
 
       document
         .getElementById("paymentForm")
