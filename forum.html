@@ -1,54 +1,749 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Curious Kids — Parent Forum</title>
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
-    iframe {
-      width: 100%;
-      height: 100vh;
-      border: none;
-    }
-  </style>
-</head>
-<body>
-  <iframe src="https://https://curiouskids.vercel.app//"></iframe>
-  <script>
-  (function () {
-    const ADMIN_CODE = "CKADMIN2025";
-    const logo = document.querySelector(".brand-logo");
-    if (!logo) return;
+  <head>
+    <meta charset="UTF-8" />
+    <title>Curious Kids – Parent Forum</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        --primary: #ff8a3d;
+        --primary-dark: #e46f22;
+        --secondary: #4d8fff;
+        --bg: #f7fbff;
+        --card-bg: #ffffff;
+        --text: #1f2933;
+        --muted: #6b7280;
+        --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+        --radius-lg: 18px;
+        --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
 
-    let clicks = 0;
-    let timer = null;
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    logo.addEventListener("click", () => {
-      clicks++;
-      if (timer) clearTimeout(timer);
+      body {
+        font-family: var(--font-main);
+        background: radial-gradient(
+          circle at top,
+          #e0f2ff 0,
+          #f7fbff 45%,
+          #ffffff 100%
+        );
+        color: var(--text);
+        min-height: 100vh;
+      }
 
-      // reset counter after 2.5 seconds
-      timer = setTimeout(() => {
-        clicks = 0;
-      }, 2500);
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
 
-      if (clicks >= 5) {
-        clicks = 0;
-        const code = prompt("Admin access code:");
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(247, 251, 255, 0.96);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      }
+
+      .nav-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0.6rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .brand-logo {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: conic-gradient(
+          from 180deg,
+          #ff8a3d,
+          #ffd74d,
+          #4d8fff,
+          #ff8a3d
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 800;
+        font-size: 1.1rem;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+      }
+
+      .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+      }
+
+      .brand-text span:first-child {
+        font-weight: 800;
+        font-size: 1rem;
+        letter-spacing: 0.03em;
+      }
+
+      .brand-text span:last-child {
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.9rem;
+      }
+
+      nav a {
+        padding: 0.35rem 0.8rem;
+        border-radius: 999px;
+        color: #475569;
+        font-weight: 500;
+        transition: background 0.15s, color 0.15s, transform 0.1s;
+      }
+
+      nav a:hover {
+        background: rgba(77, 143, 255, 0.12);
+        color: #1d4ed8;
+        transform: translateY(-1px);
+      }
+
+      .nav-cta {
+        background: #1d4ed8;
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(37, 99, 235, 0.4);
+      }
+
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem 2.5rem;
+      }
+
+      .card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        padding: 1.1rem 1rem;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        margin-bottom: 1rem;
+      }
+
+      .section-header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.3rem;
+      }
+
+      .section-header p {
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .access-card {
+        border-left: 4px solid #f97316;
+        display: none;
+      }
+
+      .forum-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.3fr) minmax(0, 2fr);
+        gap: 1.2rem;
+        align-items: flex-start;
+      }
+
+      .field {
+        margin-bottom: 0.6rem;
+        font-size: 0.85rem;
+      }
+
+      .field label {
+        display: block;
+        margin-bottom: 0.2rem;
+      }
+
+      .field input,
+      .field textarea,
+      .field select {
+        width: 100%;
+        padding: 0.45rem 0.5rem;
+        border-radius: 10px;
+        border: 1px solid #cbd5f5;
+        font-size: 0.85rem;
+        font-family: inherit;
+        resize: vertical;
+      }
+
+      .field small {
+        display: block;
+        margin-top: 0.15rem;
+        color: var(--muted);
+        font-size: 0.75rem;
+      }
+
+      .btn {
+        border-radius: 999px;
+        padding: 0.5rem 1rem;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+        box-shadow: 0 5px 16px rgba(248, 113, 22, 0.5);
+      }
+
+      .btn-primary:hover {
+        background: var(--primary-dark);
+      }
+
+      .btn-ghost {
+        background: #f9fafb;
+        color: #1f2937;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+      }
+
+      .btn-inline {
+        border-radius: 999px;
+        padding: 0.25rem 0.6rem;
+        font-size: 0.75rem;
+      }
+
+      .forum-meta {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-top: 0.2rem;
+      }
+
+      .thread-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+      }
+
+      .thread {
+        border-radius: var(--radius-sm);
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        padding: 0.7rem 0.75rem;
+        background: #fff;
+      }
+
+      .thread-title {
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 0.2rem;
+      }
+
+      .thread-body {
+        font-size: 0.85rem;
+      }
+
+      .thread-actions {
+        margin-top: 0.35rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+      }
+
+      .thread-comments {
+        margin-top: 0.4rem;
+        font-size: 0.8rem;
+      }
+
+      .thread-comments ul {
+        margin-top: 0.2rem;
+        padding-left: 1rem;
+      }
+
+      .thread-comments li {
+        margin-bottom: 0.2rem;
+      }
+
+      .empty-state {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      footer {
+        margin-top: 2.8rem;
+        padding: 1.2rem 1rem 1.8rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+        border-top: 1px solid rgba(148, 163, 184, 0.25);
+        text-align: center;
+      }
+
+      @media (max-width: 900px) {
+        .forum-layout {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+
+      @media (max-width: 800px) {
+        nav ul {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="nav-inner">
+        <div class="brand">
+          <div class="brand-logo" onclick="handleAdminLogoClick()">CK</div>
+          <div class="brand-text">
+            <span>Curious Kids Q&A</span>
+            <span>Adult Forum – Parents & Teachers</span>
+          </div>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="ask.html">Ask a Question</a></li>
+            <li><a href="questions.html">Question Wall</a></li>
+            <li><a href="store.html">Store</a></li>
+            <li><a href="parents.html">For Parents</a></li>
+            <li><a href="forum.html">Adult Forum</a></li>
+            <li><a href="legal.html">Legal</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="card section-header">
+        <h1>Adult Forum – Parents & Teachers</h1>
+        <p>
+          A private space for adults to discuss children’s questions, share
+          wisdom and ask for counsel. This area is for <strong>grown-ups
+          only</strong> and will be accessible after payment / subscription.
+        </p>
+      </section>
+
+      <!-- Locked notice (shown when user has no access yet) -->
+      <section id="accessNotice" class="card access-card">
+        <h2 style="font-size: 1.05rem; margin-bottom: 0.3rem">
+          🔒 Forum Locked
+        </h2>
+        <p style="font-size: 0.9rem; margin-bottom: 0.3rem">
+          The Adult Forum is reserved for verified, paying adults (parents,
+          teachers, guardians). Access will be unlocked after a successful
+          subscription or one-time payment.
+        </p>
+        <p style="font-size: 0.85rem; color: var(--muted)">
+          For now, during development, you can unlock a
+          <strong>demo view</strong> of the forum on this device only by using
+          a special link or admin code.
+        </p>
+      </section>
+
+      <!-- Forum UI (shown only when access granted) -->
+      <section id="forumSection" class="card" style="display: none">
+        <div class="forum-layout">
+          <!-- Left: new topic form -->
+          <div>
+            <h2 style="font-size: 1.05rem; margin-bottom: 0.4rem">
+              Start a New Topic
+            </h2>
+            <form id="newTopicForm">
+              <div class="field">
+                <label for="topicTitle">Topic title</label>
+                <input
+                  id="topicTitle"
+                  placeholder="e.g. How do I answer my child about hell?"
+                />
+              </div>
+              <div class="field">
+                <label for="topicBody">Question / discussion</label>
+                <textarea
+                  id="topicBody"
+                  rows="4"
+                  placeholder="Share the situation or question here…"
+                ></textarea>
+              </div>
+              <div class="field">
+                <label for="topicAuthor">Your name (or initials)</label>
+                <input
+                  id="topicAuthor"
+                  placeholder="e.g. Mum in Lagos, Teacher A., etc."
+                />
+                <small>Shown on the forum. Avoid surnames.</small>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                ✍️ Post Topic
+              </button>
+              <div
+                id="newTopicMessage"
+                style="font-size: 0.78rem; margin-top: 0.3rem"
+              ></div>
+            </form>
+          </div>
+
+          <!-- Right: thread list -->
+          <div>
+            <h2 style="font-size: 1.05rem; margin-bottom: 0.4rem">
+              Current Topics
+            </h2>
+            <div id="threadList" class="thread-list">
+              <p class="empty-state">
+                Loading topics…
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        © <span id="year"></span> Curious Kids Q&A. Adult Forum for parents,
+        teachers and guardians.
+      </p>
+    </footer>
+
+    <script>
+      // ----------------------------
+      // CONSTANTS / KEYS
+      // ----------------------------
+      const FORUM_ACCESS_KEY = "curiousKidsForumAccess";
+      const FORUM_THREADS_KEY = "curiousKidsForumThreads";
+      const ADMIN_CODE = "CKAdmin2025";
+
+      const yearEl = document.getElementById("year");
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+      // ----------------------------
+      // ACCESS CONTROL (payment later)
+      // ----------------------------
+      function hasForumAccess() {
+        return localStorage.getItem(FORUM_ACCESS_KEY) === "granted";
+      }
+
+      // For now: allow ?unlock=demo to grant access on this device only
+      (function checkDemoUnlockFromQuery() {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          if (params.get("unlock") === "demo") {
+            localStorage.setItem(FORUM_ACCESS_KEY, "granted");
+          }
+        } catch (e) {}
+      })();
+
+      function setupAccessUI() {
+        const accessNotice = document.getElementById("accessNotice");
+        const forumSection = document.getElementById("forumSection");
+
+        if (!accessNotice || !forumSection) return;
+
+        if (hasForumAccess()) {
+          accessNotice.style.display = "none";
+          forumSection.style.display = "block";
+          initForum();
+        } else {
+          accessNotice.style.display = "block";
+          forumSection.style.display = "none";
+        }
+      }
+
+      // ----------------------------
+      // SIMPLE ADMIN UNLOCK (optional)
+      // ----------------------------
+      function handleAdminLogoClick() {
+        const code = prompt("Admin / owner access code:");
+        if (!code) return;
         if (code === ADMIN_CODE) {
-          window.location.href = "admin.html";
-        } else if (code) {
+          const makeDemo = confirm(
+            "Admin code correct.\n\nUnlock Adult Forum on THIS device for demo?"
+          );
+          if (makeDemo) {
+            localStorage.setItem(FORUM_ACCESS_KEY, "granted");
+            alert("Forum unlocked on this browser. Reloading…");
+            location.reload();
+          }
+        } else {
           alert("Incorrect code.");
         }
       }
-    });
-  })();
-</script>
 
-</body>
+      // ----------------------------
+      // THREAD STORAGE
+      // ----------------------------
+      function loadThreads() {
+        try {
+          const raw = localStorage.getItem(FORUM_THREADS_KEY);
+          if (!raw) return null;
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed : null;
+        } catch {
+          return null;
+        }
+      }
+
+      function saveThreads(list) {
+        try {
+          localStorage.setItem(FORUM_THREADS_KEY, JSON.stringify(list));
+        } catch (e) {
+          console.warn("Could not save forum threads:", e);
+        }
+      }
+
+      function defaultThreads() {
+        const now = new Date().toISOString();
+        return [
+          {
+            id: 1,
+            title: "My child asked if God is angry with them",
+            body:
+              "How do you reassure a very sensitive 8-year-old who thinks God is angry every time they make a mistake?",
+            author: "Mum in Abuja",
+            createdAt: now,
+            likes: 3,
+            dislikes: 0,
+            comments: [
+              {
+                author: "Children’s teacher",
+                text:
+                  "I usually explain that God is a loving Father who corrects but doesn’t throw us away.",
+                createdAt: now,
+              },
+            ],
+          },
+          {
+            id: 2,
+            title: "Explaining heaven and hell without fear",
+            body:
+              "What are gentle ways to talk about heaven and hell without traumatising kids?",
+            author: "Teacher K.",
+            createdAt: now,
+            likes: 5,
+            dislikes: 1,
+            comments: [],
+          },
+        ];
+      }
+
+      function getThreads() {
+        let threads = loadThreads();
+        if (!threads) {
+          threads = defaultThreads();
+          saveThreads(threads);
+        }
+        return threads;
+      }
+
+      // ----------------------------
+      // RENDERING
+      // ----------------------------
+      function formatDate(iso) {
+        if (!iso) return "";
+        const d = new Date(iso);
+        return d.toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        });
+      }
+
+      function renderThreads() {
+        const container = document.getElementById("threadList");
+        if (!container) return;
+
+        const threads = getThreads();
+        if (!threads.length) {
+          container.innerHTML =
+            '<p class="empty-state">No topics yet. Be the first to start one.</p>';
+          return;
+        }
+
+        const html = threads
+          .slice()
+          .reverse() // newest first
+          .map((t) => {
+            const likeCount = t.likes || 0;
+            const dislikeCount = t.dislikes || 0;
+            const comments = Array.isArray(t.comments) ? t.comments : [];
+            const commentsHtml = comments
+              .map(
+                (c) => `
+            <li>
+              <strong>${escapeHtml(c.author || "Anon")}:</strong>
+              ${escapeHtml(c.text || "")}
+              <span style="opacity:.7;font-size:.7rem;">
+                (${escapeHtml(formatDate(c.createdAt))})
+              </span>
+            </li>
+          `
+              )
+              .join("");
+
+            return `
+          <article class="thread" data-id="${t.id}">
+            <div class="thread-title">${escapeHtml(t.title)}</div>
+            <div class="thread-body">${escapeHtml(t.body)}</div>
+            <div class="forum-meta">
+              Posted by ${escapeHtml(t.author || "Anonymous adult")}
+              on ${escapeHtml(formatDate(t.createdAt))}
+            </div>
+            <div class="thread-actions">
+              <button class="btn btn-ghost btn-inline"
+                data-action="like" data-id="${t.id}">
+                👍 Like (${likeCount})
+              </button>
+              <button class="btn btn-ghost btn-inline"
+                data-action="dislike" data-id="${t.id}">
+                👎 Not-like (${dislikeCount})
+              </button>
+              <button class="btn btn-primary btn-inline"
+                data-action="comment" data-id="${t.id}">
+                💬 Comment
+              </button>
+            </div>
+            <div class="thread-comments">
+              <strong>Comments</strong>
+              ${
+                comments.length
+                  ? <ul>${commentsHtml}</ul>
+                  : '<p style="font-size:.78rem;color:var(--muted);margin-top:.15rem;">No comments yet.</p>'
+              }
+            </div>
+          </article>
+        `;
+          })
+          .join("");
+
+        container.innerHTML = html;
+      }
+
+      function escapeHtml(str) {
+        if (!str) return "";
+        return String(str).replace(
+          /[&<>"']/g,
+          (ch) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            }[ch] || ch)
+        );
+      }
+
+      // ----------------------------
+      // INTERACTION: NEW TOPIC + LIKE/DISLIKE/COMMENT
+      // ----------------------------
+      function initForum() {
+        const form = document.getElementById("newTopicForm");
+        const msgEl = document.getElementById("newTopicMessage");
+        const listEl = document.getElementById("threadList");
+
+        if (!form || !listEl) return;
+
+        renderThreads();
+
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const title = document.getElementById("topicTitle").value.trim();
+          const body = document.getElementById("topicBody").value.trim();
+          const author = document.getElementById("topicAuthor").value.trim();
+
+          if (!title || !body) {
+            if (msgEl) {
+              msgEl.textContent = "Please enter both a title and discussion.";
+              msgEl.style.color = "#e11d48";
+            }
+            return;
+          }
+
+          const threads = getThreads();
+          const newId =
+            threads.length ? Math.max(...threads.map((t) => t.id)) + 1 : 1;
+
+          threads.push({
+            id: newId,
+            title,
+            body,
+            author: author || "Anonymous adult",
+            createdAt: new Date().toISOString(),
+            likes: 0,
+            dislikes: 0,
+            comments: [],
+          });
+
+          saveThreads(threads);
+          form.reset();
+          if (msgEl) {
+            msgEl.textContent = "Topic posted (saved on this device only).";
+            msgEl.style.color = "#16a34a";
+          }
+          renderThreads();
+        });
+
+        // Like / not-like / comment via event delegation
+        listEl.addEventListener("click", (e) => {
+          const btn = e.target.closest("button[data-action]");
+          if (!btn) return;
+
+          const action = btn.getAttribute("data-action");
+          const id = Number(btn.getAttribute("data-id"));
+          if (!id || !action) return;
+
+          const threads = getThreads();
+          const thread = threads.find((t) => t.id === id);
+          if (!thread) return;
+
+          if (action === "like") {
+            thread.likes = (thread.likes || 0) + 1;
+          } else if (action === "dislike") {
+            thread.dislikes = (thread.dislikes || 0) + 1;
+          } else if (action === "comment") {
+            const text = prompt(
+              "Your comment (visible to other adults on this device):"
+            );
+            if (text && text.trim()) {
+              const author =
+                prompt("Your name / initials (optional):") || "Adult";
+              if (!Array.isArray(thread.comments)) thread.comments = [];
+              thread.comments.push({
+                author: author.trim() || "Adult",
+                text: text.trim(),
+                createdAt: new Date().toISOString(),
+              });
+            }
+          }
+
+          saveThreads(threads);
+          renderThreads();
+        });
+      }
+
+      // ----------------------------
+      // BOOTSTRAP
+      // ----------------------------
+      document.addEventListener("DOMContentLoaded", setupAccessUI);
+    </script>
+  </body>
 </html>
