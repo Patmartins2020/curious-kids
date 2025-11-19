@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Curious Kids – For Parents</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        --primary: #ff8a3d;
+        --primary-dark: #e46f22;
+        --bg: #f7fbff;
+        --card-bg: #ffffff;
+        --text: #1f2933;
+        --muted: #6b7280;
+        --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+        --radius-lg: 18px;
+        --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: var(--font-main);
+        background: radial-gradient(
+          circle at top,
+          #e0f2ff 0,
+          #f7fbff 45%,
+          #ffffff 100%
+        );
+        color: var(--text);
+        min-height: 100vh;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(247, 251, 255, 0.96);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      }
+      .nav-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0.6rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .brand-logo {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: conic-gradient(
+          from 180deg,
+          #ff8a3d,
+          #ffd74d,
+          #4d8fff,
+          #ff8a3d
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 800;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+      }
+      .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+      }
+      .brand-text span:first-child {
+        font-weight: 800;
+        font-size: 1rem;
+        letter-spacing: 0.03em;
+      }
+      .brand-text span:last-child {
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.9rem;
+      }
+      nav a {
+        padding: 0.35rem 0.8rem;
+        border-radius: 999px;
+        color: #475569;
+        font-weight: 500;
+        transition: background 0.15s, color 0.15s, transform 0.1s;
+      }
+      nav a:hover {
+        background: rgba(77, 143, 255, 0.12);
+        color: #1d4ed8;
+        transform: translateY(-1px);
+      }
+      .nav-cta {
+        background: #1d4ed8;
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(37, 99, 235, 0.4);
+      }
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem 2.5rem;
+      }
+      .card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        padding: 1.1rem 1rem;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        margin-bottom: 1rem;
+      }
+      .section-header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.3rem;
+      }
+      .section-header p {
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+      .section-body p {
+        font-size: 0.9rem;
+        color: var(--text);
+        margin-bottom: 0.5rem;
+      }
+      .section-body ul {
+        margin-left: 1rem;
+        margin-top: 0.25rem;
+        font-size: 0.9rem;
+        color: var(--text);
+      }
+      .section-body li {
+        margin-bottom: 0.25rem;
+      }
+      footer {
+        margin-top: 2.8rem;
+            }
+      footer {
+        margin-top: 2.8rem;
+        padding: 1.2rem 1rem 1.8rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+        border-top: 1px solid rgba(148, 163, 184, 0.25);
+        text-align: center;
+      }
+      @media (max-width: 800px) {
+        nav ul {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="nav-inner">
+        <div class="brand">
+          <div class="brand-logo">CK</div>
+          <div class="brand-text">
+            <span>Curious Kids Q&A</span>
+            <span>Ask big questions. Get gentle answers.</span>
+          </div>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="ask.html">Ask a Question</a></li>
+            <li><a href="questions.html">Question Wall</a></li>
+            <li><a href="store.html">Store</a></li>
+            <li><a href="parents.html">For Parents</a></li>
+            <li><a href="legal.html">Legal</a></li>
+            <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="card section-header">
+        <h1>For Parents & Guardians</h1>
+        <p>
+          This page explains how Curious Kids Q&A works, how we protect your
+          child’s privacy, and how you can guide them as they ask questions
+          about God, life and feelings.
+        </p>
+      </section>
+
+      <section class="card section-body">
+        <h2 style="font-size: 1.1rem; margin-bottom: 0.4rem">
+          1. How the Question System Works
+        </h2>
+        <p>
+          Children can send questions with or without their first name. We
+          encourage parents to sit with them while they type.
+        </p>
+        <ul>
+          <li>No surnames, phone numbers or contact details are requested.</li>
+          <li>
+            Public questions may appear on the Question Wall, but never with
+            full identity.
+          </li>
+          <li>
+            Private / consultation questions are kept hidden and seen only by
+            the admin for personal responses.
+          </li>
+        </ul>
+      </section>
+
+      <section class="card section-body">
+        <h2 style="font-size: 1.1rem; margin-bottom: 0.4rem">
+          2. Safety & Privacy
+        </h2>
+        <p>
+          We are building this as a faith-based, child-safe space. Please read
+          this together with the Legal page for full details.
+        </p>
+        <ul>
+          <li>We do not sell or trade children’s data.</li>
+          <li>
+            All questions are stored locally in the child’s browser for now.
+          </li>
+          <li>
+            You can clear questions from the device at any time using the admin
+            tools.
+          </li>
+        </ul>
+      </section>
+
+      <section class="card section-body">
+        <h2 style="font-size: 1.1rem; margin-bottom: 0.4rem">
+          3. How You Can Use This Tool
+        </h2>
+        <ul>
+          <li>Let kids type exactly how they feel, then review together.</li>
+            <li>
+            Use the answers as a starting point for deeper family conversations.
+          </li>
+          <li>
+            Send your own “adult” questions via the Adult Forum if you need
+            guidance on how to respond.
+          </li>
+        </ul>
+        <p style="margin-top: 0.4rem">
+          If you have concerns or suggestions, you can reach the project owner
+          directly using the contact details that will be added here later.
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        © <span id="year"></span> Curious Kids Q&A. A kid-friendly question &
+        answer platform.
+      </p>
+    </footer>
+
+    <script>
+      const y = document.getElementById("year");
+      if (y) y.textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
