@@ -2,29 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Curious Kids – Checkout</title>
+    <title>Curious Kids – Checkout (Demo)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <style>
       :root {
         --primary: #ff8a3d;
         --primary-dark: #e46f22;
-        --bg: #f7fbff;
         --card-bg: #ffffff;
+        --bg: #f7fbff;
         --text: #1f2933;
         --muted: #6b7280;
         --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
-        --radius-lg: 20px;
+        --radius-lg: 18px;
         --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
           sans-serif;
       }
-
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
       }
-
       body {
         font-family: var(--font-main);
         background: radial-gradient(
@@ -33,109 +30,103 @@
           #f7fbff 45%,
           #ffffff 100%
         );
-        min-height: 100vh;
         color: var(--text);
+        min-height: 100vh;
       }
-
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
       header {
         position: sticky;
         top: 0;
-        z-index: 10;
+        z-index: 50;
         background: rgba(247, 251, 255, 0.96);
         backdrop-filter: blur(10px);
         border-bottom: 1px solid rgba(148, 163, 184, 0.2);
       }
-
       .nav-inner {
-        max-width: 900px;
+        max-width: 1100px;
         margin: 0 auto;
-        padding: 0.7rem 1rem;
+        padding: 0.6rem 1rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 1rem;
       }
-
       .brand {
         display: flex;
         align-items: center;
         gap: 0.5rem;
       }
-
       .brand-logo {
-        width: 32px;
-        height: 32px;
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
-        background: #15803d;
+        background: conic-gradient(
+          from 180deg,
+          #ff8a3d,
+          #ffd74d,
+          #4d8fff,
+          #ff8a3d
+        );
         display: flex;
         align-items: center;
         justify-content: center;
         color: #fff;
         font-weight: 800;
-        font-size: 1rem;
+        font-size: 1.1rem;
         box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
       }
-
       .brand-text {
         display: flex;
         flex-direction: column;
         line-height: 1.1;
       }
-
       .brand-text span:first-child {
         font-weight: 800;
-        font-size: 0.95rem;
+        font-size: 1rem;
         letter-spacing: 0.03em;
       }
-
       .brand-text span:last-child {
-        font-size: 0.72rem;
+        font-size: 0.75rem;
         color: var(--muted);
       }
-
       nav ul {
         list-style: none;
         display: flex;
         gap: 0.75rem;
         font-size: 0.9rem;
       }
-
       nav a {
-        text-decoration: none;
         padding: 0.35rem 0.8rem;
         border-radius: 999px;
         color: #475569;
         font-weight: 500;
         transition: background 0.15s, color 0.15s, transform 0.1s;
       }
-
       nav a:hover {
         background: rgba(77, 143, 255, 0.12);
         color: #1d4ed8;
         transform: translateY(-1px);
       }
+      .nav-cta {
+        background: #1d4ed8;
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(37, 99, 235, 0.4);
+      }
 
       main {
-        max-width: 900px;
+        max-width: 1100px;
         margin: 0 auto;
         padding: 1.5rem 1rem 2.5rem;
       }
 
-      h1 {
-        font-size: 1.5rem;
-        margin-bottom: 0.35rem;
-      }
-
-      .subtitle {
-        font-size: 0.9rem;
-        color: var(--muted);
-      }
-
-      .layout {
-        margin-top: 1.4rem;
+      .checkout-layout {
         display: grid;
-        grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-        gap: 1.1rem;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+        gap: 1.5rem;
+        align-items: flex-start;
       }
 
       .card {
@@ -144,72 +135,62 @@
         padding: 1.1rem 1rem;
         box-shadow: var(--shadow-soft);
         border: 1px solid rgba(148, 163, 184, 0.18);
+      }
+
+      h1 {
+        font-size: 1.6rem;
+        margin-bottom: 0.3rem;
+      }
+      .page-intro {
         font-size: 0.9rem;
-      }
-
-      .cart-list {
-        list-style: none;
-        margin-top: 0.5rem;
-      }
-
-      .cart-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        padding: 0.45rem 0;
-        border-bottom: 1px dashed rgba(148, 163, 184, 0.4);
-      }
-
-      .cart-item:last-child {
-        border-bottom: none;
-      }
-
-      .cart-item strong {
-        display: block;
-      }
-
-      .cart-item small {
         color: var(--muted);
-        font-size: 0.78rem;
+        margin-bottom: 1rem;
       }
 
-      .total-row {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 0.75rem;
-        font-weight: 700;
-        font-size: 1rem;
-      }
-
-      .form-group {
-        margin-bottom: 0.8rem;
-      }
-
-      label {
-        display: block;
+      .order-items {
         font-size: 0.85rem;
+        margin-top: 0.5rem;
+        max-height: 260px;
+        overflow-y: auto;
+      }
+      .order-row {
+        display: flex;
+          justify-content: space-between;
         margin-bottom: 0.25rem;
       }
-
-      input[type="text"],
-      input[type="email"],
-      select {
-        width: 100%;
-        padding: 0.5rem 0.55rem;
-        border-radius: 8px;
-        border: 1px solid rgba(148, 163, 184, 0.7);
-        font-size: 0.9rem;
+      .order-empty {
+        font-size: 0.85rem;
+        color: var(--muted);
+        background: #eff6ff;
+        border-radius: 12px;
+        padding: 0.7rem 0.6rem;
+        border: 1px dashed rgba(129, 140, 248, 0.7);
+        margin-top: 0.5rem;
+      }
+      .order-total {
+        margin-top: 0.6rem;
+        font-weight: 700;
+        font-size: 0.95rem;
       }
 
-      .hint {
-        font-size: 0.78rem;
-        color: var(--muted);
-        margin-top: 0.18rem;
+      .field-label {
+        font-size: 0.8rem;
+        color: #4b5563;
+        margin-bottom: 0.15rem;
+      }
+      .field-input,
+      .field-select {
+        width: 100%;
+        padding: 0.45rem 0.6rem;
+        border-radius: 10px;
+        border: 1px solid rgba(148, 163, 184, 0.8);
+        font-size: 0.85rem;
+        margin-bottom: 0.7rem;
       }
 
       .btn {
         border-radius: 999px;
-        padding: 0.65rem 1.4rem;
+        padding: 0.55rem 1.4rem;
         border: none;
         cursor: pointer;
         font-weight: 600;
@@ -217,68 +198,50 @@
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
-        transition: transform 0.1s, box-shadow 0.1s, background 0.15s;
       }
-
       .btn-primary {
         background: var(--primary);
         color: #fff;
         box-shadow: 0 5px 16px rgba(248, 113, 22, 0.5);
       }
-
       .btn-primary:hover {
         background: var(--primary-dark);
-        transform: translateY(-1px);
       }
-
       .btn-ghost {
-        background: rgba(255, 255, 255, 0.9);
-        color: #1d4ed8;
-        border: 1px solid rgba(148, 163, 184, 0.4);
+        background: #f9fafb;
+        color: #1f2937;
+        border: 1px solid rgba(148, 163, 184, 0.6);
       }
 
-      .btn-ghost:hover {
-        background: #eff6ff;
-      }
-
-      .actions-row {
-        display: flex;
-        justify-content: space-between;
-        gap: 0.75rem;
-        margin-top: 1rem;
-        flex-wrap: wrap;
-      }
-
-      .notice {
-        font-size: 0.8rem;
+      footer {
+        margin-top: 2.8rem;
+        padding: 1.2rem 1rem 1.8rem;
+        font-size: 0.75rem;
         color: var(--muted);
-        margin-top: 0.4rem;
+        border-top: 1px solid rgba(148, 163, 184, 0.25);
+        text-align: center;
       }
 
-      @media (max-width: 780px) {
-        nav ul {
-          display: none;
-        }
-        .layout {
+      @media (max-width: 900px) {
+        .checkout-layout {
           grid-template-columns: minmax(0, 1fr);
         }
       }
+      @media (max-width: 800px) {
+        nav ul {
+          display: none;
+        }
+      }
     </style>
-
-    <link rel="manifest" href="manifest.webmanifest" />
-    <meta name="theme-color" content="#ff8a3d" />
-    <link rel="icon" type="image/png" href="icons/favicon.png" />
-    <link rel="apple-touch-icon" href="icons/icon-192.png" />
   </head>
-
   <body>
     <header>
       <div class="nav-inner">
         <div class="brand">
           <div class="brand-logo">CK</div>
           <div class="brand-text">
-            <span>Curious Kids Q&amp;A</span>
-            <span>Kid-friendly checkout (demo)</span>
+            <span>Curious Kids Q&A</span>
+            <span>Ask big questions. Get gentle answers.</span>
           </div>
         </div>
         <nav>
@@ -288,8 +251,8 @@
             <li><a href="questions.html">Question Wall</a></li>
             <li><a href="store.html">Store</a></li>
             <li><a href="parents.html">For Parents</a></li>
-            <li><a href="forum.html">Adult Forum</a></li>
             <li><a href="legal.html">Legal</a></li>
+            <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
           </ul>
         </nav>
       </div>
@@ -297,209 +260,174 @@
 
     <main>
       <h1>Checkout &amp; Payment (Demo)</h1>
-      <p class="subtitle">
+      <p class="page-intro">
         Review your order below. This is a demo payment page – real Paystack /
         Flutterwave / Stripe can be added later.
       </p>
 
-      <div class="layout">
+      <section class="checkout-layout">
         <!-- LEFT: ORDER SUMMARY -->
-        <section class="card">
-          <h2>Your Order</h2>
-          <ul id="orderItems" class="cart-list"></ul>
-          <div class="total-row">
-            <span>Total</span>
-            <span id="orderTotal">$0.00</span>
+        <article class="card">
+          <h2 style="font-size: 1.1rem">Your Order</h2>
+            <div id="orderItems" class="order-items"></div>
+          <div id="orderTotal" class="order-total">Total: $0.00</div>
+        </article>
+
+        <!-- RIGHT: PAYMENT FORM (DEMO) -->
+        <article class="card">
+          <h2 style="font-size: 1.1rem">Payment Details</h2>
+
+          <label class="field-label" for="parentName"
+            >Parent / guardian name</label
+          >
+          <input
+            id="parentName"
+            class="field-input"
+            placeholder="e.g. Mrs Akata"
+          />
+
+          <label class="field-label" for="email">Email for receipt</label>
+          <input
+            id="email"
+            class="field-input"
+            type="email"
+            placeholder="you@email.com"
+          />
+
+          <label class="field-label" for="country">We’ll use a sample order country here.</label>
+          <input
+            id="country"
+            class="field-input"
+            placeholder="e.g. Nigeria, Ghana, UK"
+          />
+
+          <label class="field-label" for="method">Payment method</label>
+          <select id="method" class="field-select">
+            <option value="">Choose a method</option>
+            <option value="paystack">Paystack (Card / Transfer)</option>
+            <option value="flutterwave">Flutterwave</option>
+            <option value="stripe">Stripe</option>
+            <option value="other">Other (future option)</option>
+          </select>
+
+          <p
+            style="
+              font-size: 0.75rem;
+              color: var(--muted);
+              margin-bottom: 0.9rem;
+            "
+          >
+            For now, this is only a simulation – no real money is taken.
+          </p>
+
+          <div style="display: flex; gap: 0.6rem; flex-wrap: wrap">
+            <button
+              class="btn btn-primary"
+              type="button"
+              onclick="simulatePayment()"
+              id="payButton"
+            >
+              💳 Pay Now (Demo)
+            </button>
+
+            <a href="store.html" class="btn btn-ghost">← Back to Store</a>
           </div>
-        </section>
-
-        <!-- RIGHT: PAYMENT FORM -->
-        <section class="card">
-          <h2>Payment Details</h2>
-          <form id="paymentForm">
-            <div class="form-group">
-              <label for="payerName">Name</label>
-              <input
-                type="text"
-                id="payerName"
-                required
-                placeholder="Parent or guardian name"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="payerEmail">Email for receipt</label>
-              <input
-                type="email"
-                id="payerEmail"
-                required
-                placeholder="you@example.com"
-              />
-              <p class="hint">We will send a simple order summary here.</p>
-            </div>
-
-            <div class="form-group">
-              <label for="paymentMethod">Payment method</label>
-              <select id="paymentMethod" required>
-                <option value="">Choose a method…</option>
-                <option value="paystack">Paystack (card / bank)</option>
-                <option value="flutterwave">Flutterwave</option>
-                <option value="stripe">Stripe (card)</option>
-                <option value="manual">Manual transfer (future)</option>
-              </select>
-              <p class="hint">
-                For now, this is only a simulation – no real money is taken.
-              </p>
-            </div>
-
-            <div class="actions-row">
-              <button type="button" class="btn btn-ghost" id="backToStore">
-                ← Back to Store
-              </button>
-              <button type="submit" class="btn btn-primary">
-                ✅ Pay Now (Demo)
-              </button>
-            </div>
-
-            <p class="notice">
-              When real payments are added, this button will redirect to
-              Paystack / Flutterwave / Stripe with the same total.
-            </p>
-          </form>
-        </section>
-      </div>
+        </article>
+      </section>
     </main>
 
+    <footer>
+      <p>© <span id="year"></span> Curious Kids Q&amp;A.</p>
+    </footer>
+
     <script>
-      // MUST match store.html
       const CART_KEY = "curiousKidsCart";
 
-      // ===== CART HELPERS – store.html =====
-function getCart() {
-  try {
-    const raw = localStorage.getItem(CART_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch (e) {
-    console.warn("Could not read cart from storage:", e);
-    return [];
-  }
-}
+      document.getElementById("year").textContent = new Date().getFullYear();
 
-function saveCart(cart) {
-  try {
-    localStorage.setItem(CART_KEY, JSON.stringify(cart));
-  } catch (e) {
-    console.warn("Could not save cart:", e);
-  }
-}
+      function escapeHtml(str) {
+        if (!str) return "";
+        return String(str).replace(
+          /[&<>\"']/g,
+          (ch) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            }[ch] || ch)
+        );
+      }
 
-// Add one item (name + price) with quantity 1
-function addToCart(name, price) {
-  const cart = getCart();
+      function loadCart() {
+        try {
+          const raw = localStorage.getItem(CART_KEY);
+          if (!raw) return [];
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed : [];
+        } catch {
+          return [];
+        }
+      }
 
-  // Check if product already in cart
-  const existing = cart.find((item) => item.name === name);
+      function formatUsd(amount) {
+        return "$" + (Number(amount) || 0).toFixed(2);
+      }
+       function renderOrderSummary() {
+        const items = loadCart();
+        const itemsEl = document.getElementById("orderItems");
+        const totalEl = document.getElementById("orderTotal");
+        const payBtn = document.getElementById("payButton");
 
-  if (existing) {
-    existing.quantity = (existing.quantity || 1) + 1;
-  } else {
-    cart.push({
-      name: name,
-      price: Number(price) || 0,
-      quantity: 1
-    });
-  }
+        let total = 0;
 
-  saveCart(cart);
-  renderCart();
-  alert("Added to cart: " + name);
-}
-// Show cart items + total on the store page (if elements exist)
-function renderCart() {
-  const items = getCart();
-  const listEl = document.getElementById("cartItems");
-  const totalEl = document.getElementById("cartTotal");
-
-  if (!listEl || !totalEl) {
-    // If your HTML uses different ids, this will just quietly do nothing
-    return;
-  }
-
-  if (!items.length) {
-    listEl.innerHTML =
-      '<p class="empty-cart">Your cart is empty. Add something from the store.</p>';
-    totalEl.textContent = "$0.00";
-    return;
-  }
-
-  let html = "";
-  let total = 0;
-
-  items.forEach((item) => {
-    const name = item.name || "Item";
-    const qty = item.quantity || 1;
-    const price = Number(item.price || 0);
-    const lineTotal = price * qty;
-    total += lineTotal;
-
-    html += `
-      <div class="cart-row">
-        <span>${name}</span>
-        <span>Qty: ${qty}</span>
-        <span>$${lineTotal.toFixed(2)}</span>
-      </div>
-    `;
-  });
-
-  listEl.innerHTML = html;
-  totalEl.textContent = "$" + total.toFixed(2);
-}
-
-// Clear cart (you already had something like this)
-function clearCart() {
-  if (!window.confirm("Clear all items from your cart?")) return;
-  localStorage.removeItem(CART_KEY);
-  renderCart();
-}
-
-      document
-        .getElementById("paymentForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-
-          const name = document.getElementById("payerName").value.trim();
-          const email = document.getElementById("payerEmail").value.trim();
-          const method = document.getElementById("paymentMethod").value;
-
-          if (!name || !email || !method) {
-            alert("Please fill in all payment details.");
-            return;
+        if (!items.length) {
+          itemsEl.innerHTML =
+            '<div class="order-empty">Your cart is empty. Go back to the store to add items.</div>';
+          totalEl.textContent = "Total: $0.00";
+          if (payBtn) {
+            payBtn.disabled = true;
+            payBtn.style.opacity = 0.6;
           }
+          return;
+        }
 
-          alert(
-            "✅ Demo payment successful!\\n\\n" +
-              "Name: " +
-              name +
-              "\\nEmail: " +
-              email +
-              "\\nMethod: " +
-              method.toUpperCase() +
-              "\\n\\nIn the real app, this will connect to Paystack / Flutterwave / Stripe."
-          );
+        const rows = items
+          .map((item) => {
+            const qty = item.quantity || 1;
+            const line = (item.priceUSD || 0) * qty;
+            total += line;
+            return `
+              <div class="order-row">
+                <span>${escapeHtml(item.name)} x ${qty}</span>
+                <span>${formatUsd(line)}</span>
+              </div>
+            `;
+          })
+          .join("");
 
-          // Clear cart and go back to store
-          localStorage.removeItem(CART_KEY);
-          window.location.href = "store.html";
-        });
+        itemsEl.innerHTML = rows;
+        totalEl.textContent = "Total: " + formatUsd(total);
 
-      document
-        .getElementById("backToStore")
-        .addEventListener("click", function () {
-          window.location.href = "store.html";
-        });
+        if (payBtn) {
+          payBtn.disabled = false;
+          payBtn.style.opacity = 1;
+        }
+      }
 
-      renderOrderSummary();
+      function simulatePayment() {
+        const items = loadCart();
+        if (!items.length) {
+          alert("Your cart is empty. Please go back to the store.");
+          return;
+        }
+        alert(
+          "Demo payment successful! In the real app, this is where Paystack / Flutterwave / Stripe would process the order."
+        );
+      }
+
+      document.addEventListener("DOMContentLoaded", renderOrderSummary);
     </script>
   </body>
 </html>
-
