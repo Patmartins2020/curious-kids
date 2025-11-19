@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Curious Kids Q&A – Payment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+      :root {
+        --primary: #ff8a3d;
+        --primary-dark: #e46f22;
+        --bg: #f7fbff;
+        --card-bg: #ffffff;
+        --text: #1f2933;
+        --muted: #6b7280;
+        --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+        --radius-lg: 20px;
+        --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: var(--font-main);
+        background: radial-gradient(
+          circle at top,
+          #e0f2ff 0,
+          #f7fbff 45%,
+          #ffffff 100%
+        );
+        min-height: 100vh;
+        color: var(--text);
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: rgba(247, 251, 255, 0.96);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      }
+      .nav-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0.7rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .brand-logo {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #15803d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 800;
+        font-size: 1rem;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+        cursor: pointer;
+      }
+      .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+      }
+      .brand-text span:first-child {
+        font-weight: 800;
+        font-size: 0.95rem;
+        letter-spacing: 0.03em;
+      }
+      .brand-text span:last-child {
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.9rem;
+      }
+      nav a {
+        padding: 0.35rem 0.8rem;
+        border-radius: 999px;
+        color: #475569;
+        font-weight: 500;
+        transition: background 0.15s, color 0.15s, transform 0.1s;
+      }
+      nav a:hover {
+        background: rgba(77, 143, 255, 0.12);
+        color: #1d4ed8;
+        transform: translateY(-1px);
+      }
+      .nav-cta {
+        background: #1d4ed8;
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(37, 99, 235, 0.4);
+      }
+
+      main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem 2.5rem;
+      }
+      .page-title {
+        margin-bottom: 1rem;
+      }
+      .page-title h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+      }
+      .page-title p {
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+        gap: 1.2rem;
+        margin-top: 1.2rem;
+      }
+      .card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        padding: 1.1rem 1rem;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        font-size: 0.9rem;
+      }
+
+      .cart-list {
+        list-style: none;
+        margin-top: 0.5rem;
+      }
+      .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 0.45rem 0;
+        border-bottom: 1px dashed rgba(148, 163, 184, 0.4);
+      }
+      .cart-item:last-child {
+        border-bottom: none;
+      }
+      .cart-item span:first-child {
+        font-weight: 500;
+      }
+      .cart-item small {
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .total-row {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.75rem;
+        font-weight: 700;
+        font-size: 1rem;
+      }
+
+      .form-group {
+        margin-bottom: 0.75rem;
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        margin-bottom: 0.25rem;
+      }
+      select,
+      input[type="text"],
+      input[type="email"] {
+        width: 100%;
+        padding: 0.45rem 0.55rem;
+        border-radius: 8px;
+        border: 1px solid rgba(148, 163, 184, 0.7);
+        font-size: 0.9rem;
+      }
+      .hint {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-top: 0.2rem;
+      }
+
+      .btn {
+        border-radius: 999px;
+        padding: 0.65rem 1.4rem;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        transition: transform 0.1s, box-shadow 0.1s, background 0.15s;
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+        box-shadow: 0 5px 16px rgba(248, 113, 22, 0.5);
+      }
+      .btn-primary:hover {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+      }
+      .btn-ghost {
+        background: rgba(255, 255, 255, 0.9);
+        color: #1d4ed8;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+      }
+      .btn-ghost:hover {
+        background: #eff6ff;
+      }
+
+      .actions-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .notice {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-top: 0.4rem;
+      }
+
+      @media (max-width: 780px) {
+        nav ul {
+          display: none;
+        }
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+    </style>
+
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#ff8a3d" />
+    <link rel="icon" type="image/png" href="icons/favicon.png" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  </head>
+
+  <body>
+    <header>
+      <div class="nav-inner">
+        <div class="brand">
+          <div class="brand-logo">CK</div>
+          <div class="brand-text">
+            <span>Curious Kids Q&amp;A</span>
+            <span>Ask big questions. Get gentle answers.</span>
+          </div>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="ask.html">Ask a Question</a></li>
+            <li><a href="questions.html">Question Wall</a></li>
+            <li><a href="store.html">Store</a></li>
+            <li><a href="parents.html">For Parents</a></li>
+            <li><a href="forum.html">Adult Forum</a></li>
+            <li><a href="legal.html">Legal</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-title">
+        <h1>Checkout &amp; Payment</h1>
+        <p>Review your order and choose how you’d like to pay.</p>
+      </div>
+
+      <div class="layout">
+        <!-- LEFT: ORDER SUMMARY -->
+        <section class="card">
+          <h2>Your Order</h2>
+          <p class="notice">
+            Cart is saved only on this device. This is a demo payment page —
+            real Paystack / Flutterwave / Stripe will be added later.
+          </p>
+
+          <ul id="orderItems" class="cart-list"></ul>
+
+          <div class="total-row">
+            <span>Total</span>
+            <span id="orderTotal">$0.00</span>
+          </div>
+        </section>
+
+        <!-- RIGHT: PAYMENT FORM -->
+        <section class="card">
+          <h2>Payment Details</h2>
+
+          <form id="paymentForm">
+            <div class="form-group">
+              <label for="payerName">Your name</label>
+              <input
+                type="text"
+                id="payerName"
+                required
+                placeholder="e.g. Mum or Dad’s name"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="payerEmail">Email for receipt</label>
+              <input
+                type="email"
+                id="payerEmail"
+                required
+                placeholder="you@example.com"
+              />
+              <p class="hint">We’ll send order details to this email.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="paymentMethod">Payment method</label>
+              <select id="paymentMethod" required>
+                <option value="">Select a method…</option>
+                <option value="paystack">Paystack (card / bank)</option>
+                <option value="flutterwave">Flutterwave</option>
+                <option value="stripe">Stripe (international)</option>
+                <option value="bank">Manual bank transfer (future)</option>
+              </select>
+              <p class="hint">
+                For now this is only a simulation — no real money is charged.
+              </p>
+            </div>
+
+            <div class="actions-row">
+              <button type="button" class="btn btn-ghost" id="backToStore">
+                ← Back to Store
+              </button>
+
+              <button type="submit" class="btn btn-primary">
+                ✅ Pay Now (Demo)
+              </button>
+            </div>
+
+            <p class="notice">
+              When we integrate real payments, this button will redirect to
+              Paystack / Flutterwave / Stripe with the correct total.
+            </p>
+          </form>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      // 🔑 Same cart key used on store.html
+      const CART_KEY = "curiousKidsCart";
+
+      function getCart() {
+        try {
+          return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+        } catch (e) {
+          return [];
+        }
+      }
+
+      function formatMoney(amount) {
+        // Simple USD formatting for now
+        const value = Number(amount || 0);
+        return "$" + value.toFixed(2);
+      }
+
+      function renderOrderSummary() {
+        const items = getCart();
+        const list = document.getElementById("orderItems");
+        const totalEl = document.getElementById("orderTotal");
+
+        list.innerHTML = "";
+
+        if (!items.length) {
+          list.innerHTML =
+            '<li class="cart-item"><span>No items in your cart.</span></li>';
+          totalEl.textContent = formatMoney(0);
+          return;
+        }
+
+        let total = 0;
+
+        items.forEach((item) => {
+          const name = item.name || item.title || "Item";
+          const qty = item.quantity || 1;
+          const price = Number(item.price || 0);
+          const lineTotal = price * qty;
+          total += lineTotal;
+
+          const li = document.createElement("li");
+          li.className = "cart-item";
+          li.innerHTML = `
+            <div>
+              <span>${name}</span><br/>
+              <small>Qty: ${qty} × ${formatMoney(price)}</small>
+            </div>
+            <span>${formatMoney(lineTotal)}</span>
+          `;
+          list.appendChild(li);
+        });
+
+        totalEl.textContent = formatMoney(total);
+      }
+
+      // Handle form submit (demo only)
+      document
+        .getElementById("paymentForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const name = document.getElementById("payerName").value.trim();
+          const email = document.getElementById("payerEmail").value.trim();
+          const method = document.getElementById("paymentMethod").value;
+
+          if (!name || !email || !method) {
+            alert("Please fill in all payment details.");
+            return;
+          }
+
+          alert(
+            "✅ Demo payment successful!\\n\\n" +
+              "Name: " +
+              name +
+              "\\nEmail: " +
+              email +
+              "\\nMethod: " +
+              method.toUpperCase() +
+              "\\n\\nIn the real app, this will open Paystack / Flutterwave / Stripe."
+          );
+
+          // Clear cart and return to store
+          localStorage.removeItem(CART_KEY);
+          window.location.href = "store.html";
+        });
+
+      // Back to store button
+      document
+        .getElementById("backToStore")
+        .addEventListener("click", function () {
+          window.location.href = "store.html";
+        });
+
+      // Render summary on load
+      renderOrderSummary();
+    </script>
+  </body>
+</html>

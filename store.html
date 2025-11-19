@@ -418,7 +418,8 @@
           <div id="cartTotal" class="cart-total"></div>
         <div class="cart-actions" style="margin-top: 0.5rem;">
   
-  <button id="checkoutButton" class="btn btn-primary" type="button">
+ <button class="btn btn-primary" type="button" onclick="goToPayment()">
+
     ✅ Proceed to Payment
   </button>
 
@@ -761,6 +762,10 @@
         renderStore();
         renderCart();
       }
+      function goToPayment() {
+  window.location.href = "payment.html";
+}
+
 
       /* Admin: products */
       function quickFillCategory(label) {
