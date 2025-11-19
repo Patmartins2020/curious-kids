@@ -16,7 +16,7 @@
         --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
         --radius-lg: 18px;
         --radius-sm: 10px;
-        --font-main: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+        --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
           sans-serif;
       }
       * {
@@ -118,11 +118,46 @@
         color: #fff;
         box-shadow: 0 3px 10px rgba(37, 99, 235, 0.4);
       }
+
+      .nav-cart {
+        position: relative;
+      }
+      .nav-cart-count {
+        position: absolute;
+        top: -4px;
+        right: -6px;
+        background: #e11d48;
+        color: #fff;
+        font-size: 0.6rem;
+        border-radius: 999px;
+        padding: 0 0.25rem;
+        min-width: 14px;
+        text-align: center;
+      }
+
       main {
         max-width: 1100px;
         margin: 0 auto;
         padding: 1.5rem 1rem 2.5rem;
       }
+
+      .section-header {
+        margin-bottom: 0.9rem;
+      }
+      .section-header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+      }
+      .section-header p {
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        padding: 1.1rem 1rem;
+            }
 
       .section-header {
         margin-bottom: 0.9rem;
@@ -150,6 +185,7 @@
         gap: 1.3rem;
         align-items: flex-start;
       }
+
       .currency-row {
         display: flex;
         align-items: center;
@@ -167,6 +203,7 @@
         background: #f9fbff;
         outline: none;
       }
+
       .store-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -199,6 +236,7 @@
         font-weight: 600;
         color: #16a34a;
       }
+
       .btn {
         border-radius: 999px;
         padding: 0.5rem 1rem;
@@ -223,6 +261,7 @@
         color: #1f2937;
         border: 1px solid rgba(148, 163, 184, 0.6);
       }
+
       .store-cart-items {
         margin-top: 0.4rem;
         max-height: 200px;
@@ -239,22 +278,6 @@
         font-weight: 700;
       }
 
-      .nav-cart {
-        position: relative;
-      }
-      .nav-cart-count {
-        position: absolute;
-        top: -4px;
-        right: -6px;
-        background: #e11d48;
-        color: #fff;
-        font-size: 0.6rem;
-        border-radius: 999px;
-        padding: 0 0.25rem;
-        min-width: 14px;
-        text-align: center;
-      }
-
       /* Admin */
       #adminSection {
         display: none;
@@ -269,6 +292,15 @@
       .admin-field {
         margin-bottom: 0.7rem;
         font-size: 0.85rem;
+      }
+      .admin-field input,
+      .admin-field select {
+        width: 100%;
+        margin-top: 0.25rem;
+        padding: 0.35rem 0.5rem;
+        border-radius: 8px;
+        border: 1px solid rgba(148, 163, 184, 0.7);
+          font-size: 0.85rem;
       }
       .admin-tag-group {
         display: flex;
@@ -332,6 +364,7 @@
         border-top: 1px solid rgba(148, 163, 184, 0.25);
         text-align: center;
       }
+
       @media (max-width: 900px) {
         .store-layout,
         .admin-grid {
@@ -383,7 +416,7 @@
     <main>
       <section class="section-header">
         <h1>Curious Kids Store</h1>
-        <p>
+          <p>
           Kid-friendly colouring books, Bible story printables, shirts and more.
           Prices are shown in <strong>US Dollars</strong> by default with a
           toggle for other currencies.
@@ -391,6 +424,7 @@
       </section>
 
       <section class="card store-layout">
+        <!-- LEFT: PRODUCTS -->
         <div>
           <div class="currency-row">
             <span>Currency:</span>
@@ -399,7 +433,7 @@
               <option value="EUR">EUR (€)</option>
               <option value="GBP">GBP (£)</option>
               <option value="NGN">NGN (₦)</option>
-              <option value="GHC">GH (C)</option>
+              <option value="GHC">GHC (₵)</option>
             </select>
           </div>
           <h3 style="font-size: 1rem; margin-bottom: 0.4rem">
@@ -408,21 +442,35 @@
           <div id="storeGrid" class="store-grid"></div>
         </div>
 
+        <!-- RIGHT: CART -->
         <div class="card">
           <h3 style="font-size: 1rem">Your Cart</h3>
           <p class="hint" style="font-size: 0.75rem; color: #6b7280">
             Cart is local to this device. Later you can connect this page to
             Paystack, Flutterwave, Stripe or other gateways.
           </p>
-         <div class="cart-actions">
-  <button class="btn btn-primary" type="button" onclick="goToPayment()">
-    ✅ Proceed to Payment
-  </button>
-  <button class="btn btn-ghost" type="button" onclick="clearCart()">
-    🧹 Clear Cart
-  </button>
-</div>
 
+          <!-- ✅ These two elements are what renderCart() uses -->
+          <div id="cartItems" class="store-cart-items"></div>
+          <div id="cartTotal" class="cart-total">Total: $0</div>
+
+          <div
+            class="cart-actions"
+            style="
+              margin-top: 0.6rem;
+              display: flex;
+              gap: 0.5rem;
+              flex-wrap: wrap;
+            "
+          >
+            <button class="btn btn-primary" type="button" onclick="goToPayment()">
+              ✅ Proceed to Payment
+            </button>
+            <button class="btn btn-ghost" type="button" onclick="clearCart()">
+              🧹 Clear Cart
+            </button>
+          </div>
+        </div>
       </section>
 
       <!-- ADMIN SECTION: hidden until secret unlock -->
@@ -432,9 +480,9 @@
             Admin Panel – Store & Private Questions
           </h2>
           <p style="font-size: 0.8rem">
-            Triple-click the CK logo and enter your admin code to open this
-            panel. This section is for the owner only and does not appear to
-            regular visitors.
+            Click the CK logo and enter your admin code to open this panel. This
+            section is for the owner only and does not appear to regular
+            visitors.
           </p>
         </div>
 
@@ -453,7 +501,7 @@
             </div>
             <div class="admin-field">
               <label for="adminPrice">Price in USD (e.g. 5)</label>
-              <input id="adminPrice" placeholder="e.g. 5" />
+               <input id="adminPrice" placeholder="e.g. 5" />
             </div>
             <div class="admin-field">
               <label for="adminType">Type</label>
@@ -537,8 +585,7 @@
                   type="button"
                   onclick="clearPrivateQuestions()"
                   style="font-size: 0.75rem; padding: 0.25rem 0.6rem"
-                >
-                  🧹 Clear Private Questions
+                >                🧹 Clear Private Questions
                 </button>
               </div>
               <p
@@ -559,37 +606,45 @@
       </section>
     </main>
 
+    <footer>
+      <p>© <span id="year"></span> Curious Kids Q&amp;A Store.</p>
+    </footer>
 
     <script>
-      const STORE_KEY = 'curiousKidsStoreProducts';
-      const CART_KEY = 'curiousKidsCart';
-      const QUESTIONS_KEY = 'curiousKidsQuestions';
-      const ADMIN_CODE = 'CKAdmin2025';
+      // ----------------- CONSTANTS -----------------
+      const STORE_KEY = "curiousKidsStoreProducts";
+      const CART_KEY = "curiousKidsCart";
+      const QUESTIONS_KEY = "curiousKidsQuestions";
+      const ADMIN_CODE = "CKAdmin2025";
 
-      let currency = 'USD';
+      let currency = "USD";
       const currencyData = {
-        USD: { symbol: '$', rate: 1 },
-        EUR: { symbol: '€', rate: 0.9 },
-        GBP: { symbol: '£', rate: 0.8 },
-        NGN: { symbol: '₦', rate: 1500 },
+        USD: { symbol: "$", rate: 1 },
+        EUR: { symbol: "€", rate: 0.9 },
+        GBP: { symbol: "£", rate: 0.8 },
+        NGN: { symbol: "₦", rate: 1500 },
+        GHC: { symbol: "₵", rate: 12 }, // rough demo rate
       };
 
+      // ----------------- UTILITIES -----------------
+      document.getElementById("year").textContent = new Date().getFullYear();
+
       function escapeHtml(str) {
-        if (!str) return '';
+        if (!str) return "";
         return String(str).replace(
-          /[&<>"']/g,
+          /[&<>\"']/g,
           (ch) =>
             ({
-              '&': '&amp;',
-              '<': '&lt;',
-              '>': '&gt;',
-              '"': '&quot;',
-              "'": '&#39;',
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
             }[ch] || ch)
         );
       }
 
-      /* Store + Cart */
+      // ----------------- STORE PRODUCTS -----------------
       function loadStoreProducts() {
         try {
           const raw = localStorage.getItem(STORE_KEY);
@@ -600,53 +655,59 @@
           return null;
         }
       }
+
       function saveStoreProducts(list) {
         try {
           localStorage.setItem(STORE_KEY, JSON.stringify(list));
-        } catch {}
+        } catch (e) {
+          console.warn("Could not save store products:", e);
+        }
       }
+
       function defaultProducts() {
         return [
           {
             id: 1,
-            name: 'Curious Kids Bible Colouring Book',
+            name: "Curious Kids Bible Colouring Book",
             priceUSD: 5,
-            type: 'Digital Download',
-            tagline: 'Print-at-home colouring fun.',
-            category: 'Colouring Book',
+            type: "Digital Download",
+            tagline: "Print-at-home colouring fun.",
+            category: "Colouring Book",
           },
           {
             id: 2,
-            name: 'Noah’s Ark Story Colouring Pack',
+            name: "Noah’s Ark Story Colouring Pack",
             priceUSD: 4,
-            type: 'Digital Download',
-            tagline: 'Animals, rainbows and the ark.',
-            category: 'Bible Story',
+            type: "Digital Download",
+            tagline: "Animals, rainbows and the ark.",
+            category: "Bible Story",
           },
           {
             id: 3,
-            name: 'Curious Kids Logo T-Shirt',
+            name: "Curious Kids Logo T-Shirt",
             priceUSD: 12,
-            type: 'Physical Item',
-            tagline: 'Bright, fun and kid-friendly.',
-            category: 'Kids Shirt',
+            type: "Physical Item",
+            tagline: "Bright, fun and kid-friendly.",
+            category: "Kids Shirt",
           },
           {
             id: 4,
-            name: 'Sticker Sheet – Faith & Fun',
+            name: "Sticker Sheet – Faith & Fun",
             priceUSD: 3,
-            type: 'Physical Item',
-            tagline: 'Reward stickers for kids.',
-            category: 'Stickers',
+            type: "Physical Item",
+            tagline: "Reward stickers for kids.",
+            category: "Stickers",
           },
         ];
       }
+
       function getProducts() {
         let stored = loadStoreProducts();
         if (!stored) {
           stored = defaultProducts();
           saveStoreProducts(stored);
         } else {
+          // Backwards compatibility if older objects used price instead of priceUSD
           stored = stored.map((p) =>
             p.priceUSD == null && p.price != null
               ? { ...p, priceUSD: p.price }
@@ -656,6 +717,62 @@
         return stored;
       }
 
+      function formatPrice(usd) {
+        const cfg = currencyData[currency] || currencyData.USD;
+        const value = usd * cfg.rate;
+        if (["USD", "EUR", "GBP"].includes(currency)) {
+          return cfg.symbol + value.toFixed(2);
+        }
+        return cfg.symbol + Math.round(value);
+      }
+
+      function setCurrency(code) {
+        currency = code || "USD";
+        renderStore();
+        renderCart();
+      }
+
+      function renderStore() {
+        const grid = document.getElementById("storeGrid");
+        const adminList = document.getElementById("adminProductList");
+        const products = getProducts();
+        if (!grid) return;
+
+        const productCards = products
+          .map(
+            (p) => `
+          <article class="product-card">
+            <div class="product-type">${escapeHtml(p.type || "Item")}</div>
+            <div class="product-name">${escapeHtml(p.name)}</div>
+            <div class="product-tag">${escapeHtml(p.tagline || "")}</div>
+            <div class="product-tag" style="font-size:.7rem;opacity:.8;">
+              ${escapeHtml(p.category || "")}
+            </div>
+            <div class="product-price">
+              ${formatPrice(Number(p.priceUSD || 0))}
+            </div>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="addToCart('${escapeHtml(
+                p.name
+              ).replace(/'/g, "\\'")}', ${Number(p.priceUSD || 0)})"
+            >
+              ➕ Add to Cart
+            </button>
+          </article>
+        `
+          )
+          .join("");
+
+        grid.innerHTML = productCards;
+
+        if (adminList) {
+          adminList.innerHTML = productCards;
+        }
+      }
+
+      // ----------------- CART -----------------
       function loadCart() {
         try {
           const raw = localStorage.getItem(CART_KEY);
@@ -666,176 +783,167 @@
           return [];
         }
       }
+
       function saveCart(list) {
         try {
           localStorage.setItem(CART_KEY, JSON.stringify(list));
-        } catch {}
+        } catch (e) {
+          console.warn("Could not save cart:", e);
+        }
       }
+       function addToCart(name, priceUSD) {
+        const cart = loadCart();
+        const existing = cart.find((item) => item.name === name);
 
-      function formatPrice(usd) {
-        const c = currencyData[currency] || currencyData.USD;
-        const v = usd * c.rate;
-        if (['USD', 'EUR', 'GBP'].includes(currency))
-          return c.symbol + v.toFixed(2);
-        return c.symbol + Math.round(v);
-      }
+        if (existing) {
+          existing.quantity = (existing.quantity || 1) + 1;
+        } else {
+          cart.push({
+            name: name,
+            priceUSD: Number(priceUSD) || 0,
+            quantity: 1,
+          });
+        }
 
-      function renderStore() {
-        const grid = document.getElementById('storeGrid');
-        const adminList = document.getElementById('adminProductList');
-        const products = getProducts();
-        if (!grid) return;
-
-        const html = products
-          .map(
-            (p) => `
-      <article class="product-card">
-        <div class="product-type">${escapeHtml(p.type || 'Item')}</div>
-        <div class="product-name">${escapeHtml(p.name)}</div>
-        <div class="product-tag">${escapeHtml(p.tagline || '')}</div>
-        <div class="product-tag" style="font-size:.7rem;opacity:.8;">${escapeHtml(
-          p.category || ''
-        )}</div>
-        <div class="product-price">${formatPrice(Number(p.priceUSD || 0))}</div>
-        <button type="button" class="btn btn-primary" onclick="addToCart(${
-          p.id
-        })">🛒 Add to Cart</button>
-      </article>`
-          )
-          .join('');
-
-        grid.innerHTML =
-          html ||
-          '<p class="empty-state">No products yet. Use admin panel to add some.</p>';
-        if (adminList)
-          adminList.innerHTML =
-            html || '<p class="empty-state">No products yet.</p>';
+        saveCart(cart);
+        renderCart();
+        alert("Added to cart: " + name);
       }
 
       function renderCart() {
-        const itemsEl = document.getElementById('cartItems');
-        const totalEl = document.getElementById('cartTotal');
-        const navCount = document.getElementById('navCartCount');
-        if (!itemsEl || !totalEl || !navCount) return;
-        const cart = loadCart();
+        const items = loadCart();
+        const listEl = document.getElementById("cartItems");
+        const totalEl = document.getElementById("cartTotal");
+        const navCountEl = document.getElementById("navCartCount");
 
-        if (!cart.length) {
-          itemsEl.innerHTML = '<p class="empty-state">Cart is empty.</p>';
-          totalEl.textContent = '';
-          navCount.style.display = 'none';
-          return;
-        }
         let totalUsd = 0;
-        itemsEl.innerHTML = cart
-          .map((p) => {
-            const usd = Number(p.priceUSD || 0);
-            totalUsd += usd;
-            return `<div class="cart-item-row"><span>${escapeHtml(
-              p.name
-            )}</span><span>${formatPrice(usd)}</span></div>`;
-          })
-          .join('');
-        totalEl.textContent = 'Total: ' + formatPrice(totalUsd);
-        navCount.textContent = String(cart.length);
-        navCount.style.display = 'inline-block';
+        let totalQty = 0;
+
+        if (listEl) {
+          if (!items.length) {
+            listEl.innerHTML =
+              '<p class="empty-state" style="margin-top:0.4rem;">Your cart is empty.</p>';
+          } else {
+            listEl.innerHTML = items
+              .map((item) => {
+                const qty = item.quantity || 1;
+                const line = (item.priceUSD || 0) * qty;
+                totalUsd += line;
+                totalQty += qty;
+                return `
+                  <div class="cart-item-row">
+                    <span>${escapeHtml(item.name)} x ${qty}</span>
+                    <span>${formatPrice(line)}</span>
+                  </div>
+                `;
+              })
+              .join("");
+          }
+        }
+
+        if (totalEl) {
+          totalEl.textContent = "Total: " + formatPrice(totalUsd);
+        }
+
+        if (navCountEl) {
+          if (totalQty > 0) {
+            navCountEl.style.display = "inline-block";
+            navCountEl.textContent = String(totalQty);
+          } else {
+            navCountEl.style.display = "none";
+          }
+        }
       }
 
-      function addToCart(id) {
-        const product = getProducts().find((p) => p.id === id);
-        if (!product) return;
-        const cart = loadCart();
-        cart.push(product);
-        saveCart(cart);
-        renderCart();
-      }
       function clearCart() {
+        if (!confirm("Clear all items from cart on this device?")) return;
         saveCart([]);
         renderCart();
       }
-      function setCurrency(c) {
-        currency = c || 'USD';
-        renderStore();
-        renderCart();
-      }
-      function getCart() {
-    try {
-        return JSON.parse(localStorage.getItem(CART_KEY)) || [];
-    } catch (e) {
-        return [];
-    }
-}
-function goToPayment() {
-  const cart = getCart();
-  if (!cart || cart.length === 0) {
-    alert("Your cart is empty. Please add at least one item before proceeding.");
-    return;
-  }
-
-
-}
 
       function goToPayment() {
-  window.location.href = "payment.html";
-}
-
-
-      /* Admin: products */
-      function quickFillCategory(label) {
-        const input = document.getElementById('adminCategory');
-        if (!input) return;
-        if (!input.value) input.value = label;
-        else if (!input.value.includes(label)) input.value += ', ' + label;
+        const cart = loadCart();
+        if (!cart.length) {
+          alert("Your cart is empty. Please add something first.");
+          return;
+        }
+        window.location.href = "payment.html";
       }
 
-      function addProductFromAdmin() {
-        const name = document.getElementById('adminName').value.trim();
-        const priceStr = document.getElementById('adminPrice').value.trim();
-        const type = document.getElementById('adminType').value;
-        const tagline = document.getElementById('adminTagline').value.trim();
-        const category = document.getElementById('adminCategory').value.trim();
-        const image = document.getElementById('adminImage').value.trim();
-        const msg = document.getElementById('adminMessage');
-        msg.textContent = '';
-        msg.className = '';
+      // ----------------- ADMIN PANEL -----------------
+      function handleAdminLogoClick() {
+        const code = prompt("Admin access code:");
+        if (!code) return;
 
-        if (!name || !priceStr) {
-          msg.textContent = 'Please fill product name and price.';
-          msg.classList.add('message-error');
+        if (code === ADMIN_CODE) {
+          const section = document.getElementById("adminSection");
+          if (section) section.style.display = "block";
+        } else {
+          alert("Incorrect code.");
+        }
+      }
+
+      function quickFillCategory(text) {
+        const input = document.getElementById("adminCategory");
+        if (!input) return;
+        input.value = text;
+      }
+        function addProductFromAdmin() {
+        const nameEl = document.getElementById("adminName");
+        const priceEl = document.getElementById("adminPrice");
+        const typeEl = document.getElementById("adminType");
+        const taglineEl = document.getElementById("adminTagline");
+        const categoryEl = document.getElementById("adminCategory");
+        const imageEl = document.getElementById("adminImage");
+        const msgEl = document.getElementById("adminMessage");
+
+        const name = nameEl.value.trim();
+        const priceVal = Number(priceEl.value.trim());
+        const type = typeEl.value;
+        const tagline = taglineEl.value.trim();
+        const category = categoryEl.value.trim();
+        const imageUrl = imageEl.value.trim();
+
+        if (!name || !priceVal) {
+          if (msgEl) {
+            msgEl.className = "message-error";
+            msgEl.textContent = "Please enter at least a name and price.";
+          }
           return;
         }
-        const priceUSD = Number(priceStr);
-        if (Number.isNaN(priceUSD) || priceUSD <= 0) {
-          msg.textContent = 'Price must be a positive number in USD.';
-          msg.classList.add('message-error');
-          return;
+
+        let products = loadStoreProducts() || defaultProducts();
+
+        const existing = products.find((p) => p.name === name);
+        if (existing) {
+          existing.priceUSD = priceVal;
+          existing.type = type;
+          existing.tagline = tagline;
+          existing.category = category;
+          if (imageUrl) existing.imageUrl = imageUrl;
+        } else {
+          products.push({
+            id: Date.now(),
+            name,
+            priceUSD: priceVal,
+            type,
+            tagline,
+            category,
+            imageUrl: imageUrl || undefined,
+          });
         }
-        const products = getProducts();
-        const newId = products.length
-          ? Math.max(...products.map((p) => p.id || 0)) + 1
-          : 1;
-        products.push({
-          id: newId,
-          name,
-          priceUSD,
-          type,
-          tagline,
-          category,
-          image,
-        });
+
         saveStoreProducts(products);
         renderStore();
-        msg.textContent = 'Product saved!';
-        msg.classList.add('message-success');
 
-        document.getElementById('adminName').value = '';
-        document.getElementById('adminPrice').value = '';
-        document.getElementById('adminTagline').value = '';
-        document.getElementById('adminCategory').value = '';
-        document.getElementById('adminImage').value = '';
+        if (msgEl) {
+          msgEl.className = "message-success";
+          msgEl.textContent = "Product saved.";
+        }
       }
 
-      /* Admin: private questions */
-      function loadQuestions() {
+      // ----------------- PRIVATE QUESTIONS (simple view) -----------------
+      function loadPrivateQuestions() {
         try {
           const raw = localStorage.getItem(QUESTIONS_KEY);
           if (!raw) return [];
@@ -845,157 +953,56 @@ function goToPayment() {
           return [];
         }
       }
-      function saveQuestions(list) {
-        try {
-          localStorage.setItem(QUESTIONS_KEY, JSON.stringify(list));
-        } catch {}
-      }
 
       function renderPrivateQuestions() {
-        const container = document.getElementById('privateQuestionsList');
-        if (!container) return;
-        const all = loadQuestions();
-        const privates = all.filter((q) => q.isPrivate); // only private/consultation
-        if (!privates.length) {
-          container.innerHTML =
-            '<p class="empty-state">No private or consultation questions yet on this device.</p>';
+        const listEl = document.getElementById("privateQuestionsList");
+        if (!listEl) return;
+
+        const questions = loadPrivateQuestions().filter(
+          (q) => q && q.isPrivate
+        );
+
+        if (!questions.length) {
+          listEl.innerHTML =
+            '<p class="empty-state">No private or consultation questions stored on this device yet.</p>';
           return;
         }
-        container.innerHTML = privates
-          .slice()
-          .reverse()
-          .map((q) => {
-            const meta =
-              (q.who || 'User') +
-              (q.ageRange ? ' • ' + q.ageRange : '') +
-              (q.isConsultation ? ' • Adult consultation' : '');
-            const nick = q.nickname ? 'From: ' + escapeHtml(q.nickname) : '';
-            return `<div class="admin-question-item">
-        <div class="admin-question-meta">${escapeHtml(meta)}</div>
-        <div class="admin-question-text">${escapeHtml(
-          q.questionText || ''
-        )}</div>
-        ${
-          nick
-            ? `<div class="admin-question-meta">${escapeHtml(nick)}</div>`
-            : ''
-        }
-      </div>`;
-          })
-          .join('');
+
+        listEl.innerHTML = questions
+          .map(
+            (q) => `
+          <div class="admin-question-item">
+            <div class="admin-question-meta">
+              From: ${escapeHtml(q.childName || "Child")} • Age: ${
+              q.childAge || "?"
+            }
+            </div>
+            <div class="admin-question-text">
+              ${escapeHtml(q.question || "")}
+            </div>
+          </div>
+        `
+          )
+          .join("");
       }
 
-      // 🧹 Clear ONLY private/consultation questions (keep public)
       function clearPrivateQuestions() {
         if (
           !confirm(
-            'Clear all PRIVATE & consultation questions on this device? Public questions will be kept.'
+            "Clear all private/consultation questions stored on this device?"
           )
         )
           return;
-        const all = loadQuestions();
-        const keep = all.filter((q) => !q.isPrivate);
-        saveQuestions(keep);
+        localStorage.removeItem(QUESTIONS_KEY);
         renderPrivateQuestions();
       }
 
-      /* Admin unlock */
-      let adminClickCount = 0;
-      let adminClickTimer = null;
-      function handleAdminLogoClick() {
-        adminClickCount++;
-        if (adminClickTimer) clearTimeout(adminClickTimer);
-        adminClickTimer = setTimeout(() => {
-          adminClickCount = 0;
-        }, 800);
-
-        if (adminClickCount >= 3) {
-          adminClickCount = 0;
-          const code = prompt('Admin login: enter secret code');
-          if (code === ADMIN_CODE) {
-            const sec = document.getElementById('adminSection');
-            if (sec) sec.style.display = 'block';
-            renderPrivateQuestions();
-            alert('Admin panel unlocked on this page.');
-          } else if (code !== null) {
-            alert('Wrong code.');
-          }
-        }
-      }
-
-      document.addEventListener('DOMContentLoaded', () => {
-        const y = document.getElementById('year');
-        if (y) y.textContent = new Date().getFullYear();
+      // ----------------- INIT -----------------
+      document.addEventListener("DOMContentLoaded", function () {
         renderStore();
         renderCart();
+        renderPrivateQuestions();
       });
     </script>
-    <footer>
-  <p>
-    © <span id="year"></span> Curious Kids Q&amp;A.
-    All rights reserved.
-  </p>
-  <p style="margin-top:0.25rem;">
-    <a href="legal.html#terms">Terms of Service</a> ·
-    <a href="legal.html#privacy">Privacy Policy</a> ·
-    <a href="legal.html#cookies">Cookies</a>
-  </p>
-</footer>
-<script>
-  (function () {
-    const ADMIN_CODE = "CKADMIN2025";  
-    const logo = document.querySelector(".logo") || document.getElementById("logo");
-
-    if (!logo) return;
-
-    let clicks = 0;
-    let timer = null;
-
-    logo.addEventListener("click", () => {
-        clicks++;
-
-        if (timer) clearTimeout(timer);
-
-        // Reset tap counter after 2.5 seconds
-        timer = setTimeout(() => {
-            clicks = 0;
-        }, 2500);
-
-        // If tapped 5 times within 2.5 seconds → Ask for admin code
-        if (clicks >= 5) {
-            clicks = 0;
-            const code = prompt("Admin access code:");
-            if (code === ADMIN_CODE) {
-                window.location.href = "admin.html";
-            } else if (code) {
-                alert("Incorrect code.");
-            }
-        }
-    });
-})();
-
-/* ===========================================
-   🛒 CART STORAGE KEY
-=========================================
-
-/* ===========================================
-   📦 GET CART
-=========================================== */
-function getCart() {
-    try {
-        return JSON.parse(localStorage.getItem(CART_KEY)) || [];
-    } catch (e) {
-        return [];
-    }
-}
-
-
-
-</script>
-
-</body>
-</html>
-</script>
-
   </body>
 </html>
