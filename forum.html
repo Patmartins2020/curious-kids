@@ -744,6 +744,49 @@
       // BOOTSTRAP
       // ----------------------------
       document.addEventListener("DOMContentLoaded", setupAccessUI);
+     
+
+/* Triple-tap admin unlock for forum */
+(function () {
+  let clicks = 0;
+  let timer = null;
+
+  const logo = document.querySelector(".brand-logo");
+  if (!logo) return;
+
+  logo.addEventListener("click", () => {
+    clicks++;
+
+    if (timer) clearTimeout(timer);
+
+    // reset after 2.5 seconds
+    timer = setTimeout(() => {
+      clicks = 0;
+    }, 2500);
+
+    // 3 fast taps
+    if (clicks >= 3) {
+      clicks = 0;
+      const code = prompt("Admin access code:");
+
+      if (code === ADMIN_CODE) {
+        localStorage.setItem("forumUnlocked", "yes");
+        alert("Forum unlocked on this device.");
+        location.reload();
+      } else if (code) {
+        alert("Incorrect code.");
+      }
+    }
+  });
+})();
+
+/* Auto-unlock if stored */
+(function () {
+  const unlocked = localStorage.getItem("forumUnlocked");
+  if (unlocked === "yes") {
+    document.body.classList.add("forum-open");
+  }
+})();
     </script>
   </body>
 </html>
