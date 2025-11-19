@@ -414,20 +414,15 @@
             Cart is local to this device. Later you can connect this page to
             Paystack, Flutterwave, Stripe or other gateways.
           </p>
-          <div id="cartItems" class="store-cart-items"></div>
-          <div id="cartTotal" class="cart-total"></div>
-        <div class="cart-actions" style="margin-top: 0.5rem;">
-  
- <button class="btn btn-primary" type="button" onclick="goToPayment()">
-
+         <div class="cart-actions">
+  <button class="btn btn-primary" type="button" onclick="goToPayment()">
     ✅ Proceed to Payment
   </button>
-
-  <button id="clearCartButton" class="btn btn-ghost" type="button" onclick="clearCart()">
-    🗑 Clear Cart
+  <button class="btn btn-ghost" type="button" onclick="clearCart()">
+    🧹 Clear Cart
   </button>
-
 </div>
+
       </section>
 
       <!-- ADMIN SECTION: hidden until secret unlock -->
@@ -762,6 +757,23 @@
         renderStore();
         renderCart();
       }
+      function getCart() {
+    try {
+        return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+    } catch (e) {
+        return [];
+    }
+}
+function goToPayment() {
+  const cart = getCart();
+  if (!cart || cart.length === 0) {
+    alert("Your cart is empty. Please add at least one item before proceeding.");
+    return;
+  }
+
+
+}
+
       function goToPayment() {
   window.location.href = "payment.html";
 }
@@ -976,6 +988,8 @@ function getCart() {
         return [];
     }
 }
+
+
 </script>
 
 </body>
