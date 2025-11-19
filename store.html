@@ -416,15 +416,17 @@
           </p>
           <div id="cartItems" class="store-cart-items"></div>
           <div id="cartTotal" class="cart-total"></div>
-          <button
-            class="btn btn-ghost"
-            type="button"
-            onclick="clearCart()"
-            style="margin-top: 0.5rem"
-          >
-            🧹 Clear Cart
-          </button>
-        </div>
+        <div class="cart-actions" style="margin-top: 0.5rem;">
+  
+  <button id="checkoutButton" class="btn btn-primary" type="button">
+    ✅ Proceed to Payment
+  </button>
+
+  <button id="clearCartButton" class="btn btn-ghost" type="button" onclick="clearCart()">
+    🗑 Clear Cart
+  </button>
+
+</div>
       </section>
 
       <!-- ADMIN SECTION: hidden until secret unlock -->
@@ -924,33 +926,55 @@
 </footer>
 <script>
   (function () {
-    const ADMIN_CODE = "CKADMIN2025";
-    const logo = document.querySelector(".brand-logo");
+    const ADMIN_CODE = "CKADMIN2025";  
+    const logo = document.querySelector(".logo") || document.getElementById("logo");
+
     if (!logo) return;
 
     let clicks = 0;
     let timer = null;
 
     logo.addEventListener("click", () => {
-      clicks++;
-      if (timer) clearTimeout(timer);
+        clicks++;
 
-      // reset counter after 2.5 seconds
-      timer = setTimeout(() => {
-        clicks = 0;
-      }, 2500);
+        if (timer) clearTimeout(timer);
 
-      if (clicks >= 5) {
-        clicks = 0;
-        const code = prompt("Admin access code:");
-        if (code === ADMIN_CODE) {
-          window.location.href = "admin.html";
-        } else if (code) {
-          alert("Incorrect code.");
+        // Reset tap counter after 2.5 seconds
+        timer = setTimeout(() => {
+            clicks = 0;
+        }, 2500);
+
+        // If tapped 5 times within 2.5 seconds → Ask for admin code
+        if (clicks >= 5) {
+            clicks = 0;
+            const code = prompt("Admin access code:");
+            if (code === ADMIN_CODE) {
+                window.location.href = "admin.html";
+            } else if (code) {
+                alert("Incorrect code.");
+            }
         }
-      }
     });
-  })();
+})();
+
+/* ===========================================
+   🛒 CART STORAGE KEY
+=========================================
+
+/* ===========================================
+   📦 GET CART
+=========================================== */
+function getCart() {
+    try {
+        return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+    } catch (e) {
+        return [];
+    }
+}
+</script>
+
+</body>
+</html>
 </script>
 
   </body>
