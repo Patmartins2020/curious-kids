@@ -355,11 +355,14 @@
           grid-template-columns: minmax(0, 1fr);
         }
       }
-      @media (max-width: 800px) {
-        nav ul {
-          display: none;
-        }
-      }
+      @@media (max-width: 800px) {
+  nav ul {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: flex-end;
+    font-size: 0.8rem;
+  }
+}
     </style>
   </head>
   <body>
