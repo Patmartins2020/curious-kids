@@ -1,957 +1,868 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Curious Kids – Adult Forum</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --primary: #ff8a3d;
-      --primary-dark: #e46f22;
-      --secondary: #4d8fff;
-      --bg: #f7fbff;
-      --card-bg: #ffffff;
-      --text: #1f2933;
-      --muted: #6b7280;
-      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
-      --radius-lg: 18px;
-      --radius-sm: 12px;
-      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-    }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: var(--font-main);
-      background: radial-gradient(
-        circle at top,
-        #e0f2ff 0,
-        #f7fbff 45%,
-        #ffffff 100%
-      );
-      min-height: 100vh;
-      color: var(--text);
-    }
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    /* Header / Nav */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(247, 251, 255, 0.96);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-    }
-    .nav-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0.6rem 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .brand-logo {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: conic-gradient(
-        from 180deg,
-        #ff8a3d,
-        #ffd74d,
-        #4d8fff,
-        #ff8a3d
-      );
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-weight: 800;
-      font-size: 1.1rem;
-      cursor: pointer; /* used for admin unlock */
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
-    }
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.1;
-    }
-    .brand-text span:first-child {
-      font-weight: 800;
-      font-size: 1rem;
-      letter-spacing: 0.03em;
-    }
-    .brand-text span:last-child {
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 0.75rem;
-      font-size: 0.9rem;
-    }
-    nav a {
-      padding: 0.35rem 0.8rem;
-      border-radius: 999px;
-      color: #475569;
-      font-weight: 500;
-      transition: background 0.15s, color 0.15s, transform 0.1s;
-    }
-    nav a:hover {
-      background: rgba(77, 143, 255, 0.12);
-      color: #1d4ed8;
-      transform: translateY(-1px);
-    }
-    .nav-cta {
-      background: #1d4ed8;
-      color: #fff;
-      box-shadow: 0 3px 10px rgba(37, 99, 235, 0.4);
-    }
-
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 1.5rem 1rem 2.5rem;
-    }
-
-    .section-header {
-      margin-bottom: 1rem;
-    }
-    .section-header h1 {
-      font-size: 1.7rem;
-      margin-bottom: 0.2rem;
-    }
-    .section-header p {
-      font-size: 0.9rem;
-      color: var(--muted);
-      max-width: 46rem;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      padding: 1.1rem 1rem;
-      box-shadow: var(--shadow-soft);
-      border: 1px solid rgba(148, 163, 184, 0.18);
-    }
-
-    .forum-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.4fr);
-      gap: 1.2rem;
-      align-items: flex-start;
-    }
-
-    .hint {
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-
-    .badge-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.2rem;
-      padding: 0.1rem 0.5rem;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      background: rgba(59, 130, 246, 0.12);
-      color: #1d4ed8;
-      margin-left: 0.3rem;
-    }
-
-    /* Locked state */
-    #forumLocked {
-      margin-top: 1rem;
-    }
-    .locked-title {
-      font-size: 1.1rem;
-      margin-bottom: 0.35rem;
-    }
-
-    /* Threads list */
-    #threadsList {
-      margin-top: 0.4rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-    .thread-card {
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(148, 163, 184, 0.3);
-      padding: 0.8rem 0.8rem 0.7rem;
-      background: #ffffff;
-    }
-    .thread-header {
-      display: flex;
-      justify-content: space-between;
-      gap: 0.5rem;
-      margin-bottom: 0.2rem;
-    }
-    .thread-title {
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-    .thread-meta {
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-    .thread-body {
-      font-size: 0.85rem;
-      margin: 0.3rem 0 0.4rem;
-      white-space: pre-wrap;
-    }
-    .thread-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-    .thread-actions {
-      display: flex;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-      font-size: 0.8rem;
-    }
-    .thread-actions button {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: #f9fafb;
-      font-size: 0.75rem;
-      padding: 0.2rem 0.6rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.2rem;
-      cursor: pointer;
-    }
-    .thread-actions button:hover {
-      background: #e5f0ff;
-    }
-    .thread-counts {
-      font-size: 0.75rem;
-      color: #4b5563;
-    }
-
-    /* Replies */
-    .replies {
-      margin-top: 0.4rem;
-      border-top: 1px dashed rgba(148, 163, 184, 0.4);
-      padding-top: 0.4rem;
-    }
-    .reply-item {
-      font-size: 0.8rem;
-      margin-bottom: 0.3rem;
-    }
-    .reply-meta {
-      font-size: 0.7rem;
-      color: var(--muted);
-      margin-bottom: 0.05rem;
-    }
-    .reply-text {
-      white-space: pre-wrap;
-    }
-
-    .reply-form {
-      margin-top: 0.35rem;
-      display: none; /* toggled via JS */
-      gap: 0.35rem;
-      flex-direction: column;
-    }
-    .reply-form.visible {
-      display: flex;
-    }
-    .reply-form input,
-    .reply-form textarea,
-    .admin-field input,
-    .admin-field textarea {
-      width: 100%;
-      font-family: var(--font-main);
-      font-size: 0.8rem;
-      padding: 0.35rem 0.45rem;
-      border-radius: 8px;
-      border: 1px solid rgba(148, 163, 184, 0.8);
-      outline: none;
-    }
-    .reply-form textarea {
-      min-height: 52px;
-      resize: vertical;
-    }
-    .reply-form button {
-      align-self: flex-end;
-      border-radius: 999px;
-      border: none;
-      font-size: 0.75rem;
-      padding: 0.25rem 0.65rem;
-      cursor: pointer;
-      background: #1d4ed8;
-      color: #fff;
-    }
-
-    /* New topic form */
-    #newThreadCard h3 {
-      font-size: 1rem;
-      margin-bottom: 0.4rem;
-    }
-    .form-row {
-      margin-bottom: 0.55rem;
-      font-size: 0.82rem;
-    }
-    .form-row label {
-      display: block;
-      margin-bottom: 0.15rem;
-    }
-    .form-row input,
-    .form-row textarea,
-    .form-row select {
-      width: 100%;
-      font-family: var(--font-main);
-      font-size: 0.85rem;
-      padding: 0.45rem 0.6rem;
-      border-radius: 10px;
-      border: 1px solid rgba(148, 163, 184, 0.9);
-      outline: none;
-    }
-    .form-row textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    .btn-primary {
-      border-radius: 999px;
-      padding: 0.5rem 1.1rem;
-      border: none;
-      cursor: pointer;
-      background: var(--primary);
-      color: #fff;
-      font-size: 0.88rem;
-      font-weight: 600;
-      box-shadow: 0 5px 16px rgba(248, 113, 22, 0.5);
-    }
-    .btn-primary:hover {
-      background: var(--primary-dark);
-    }
-    .btn-ghost {
-      border-radius: 999px;
-      padding: 0.45rem 1rem;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      cursor: pointer;
-      background: #f9fafb;
-      font-size: 0.8rem;
-    }
-
-    .message-success {
-      color: #16a34a;
-      font-size: 0.78rem;
-      margin-top: 0.3rem;
-    }
-    .message-error {
-      color: #e11d48;
-      font-size: 0.78rem;
-      margin-top: 0.3rem;
-    }
-
-    /* Admin panel */
-    #adminPanel {
-      display: none;
-      margin-top: 1.4rem;
-      font-size: 0.82rem;
-    }
-    .admin-field {
-      margin-bottom: 0.55rem;
-    }
-
-    footer {
-      margin-top: 2.8rem;
-      padding: 1.2rem 1rem 1.8rem;
-      font-size: 0.75rem;
-      color: var(--muted);
-      border-top: 1px solid rgba(148, 163, 184, 0.25);
-      text-align: center;
-    }
-
-    @media (max-width: 900px) {
-      .forum-layout {
-        grid-template-columns: minmax(0, 1fr);
+  <head>
+    <meta charset="UTF-8" />
+    <title>Curious Kids – Adult Forum</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        --primary: #ff8a3d;
+        --primary-dark: #e46f22;
+        --secondary: #4d8fff;
+        --card-bg: #ffffff;
+        --bg: #f7fbff;
+        --text: #1f2933;
+        --muted: #6b7280;
+        --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+        --radius-lg: 18px;
+        --radius-sm: 10px;
+        --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
       }
-    }
-    @media (max-width: 800px) {
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: var(--font-main);
+        background: radial-gradient(
+          circle at top,
+          #e0f2ff 0,
+          #f7fbff 45%,
+          #ffffff 100%
+        );
+        color: var(--text);
+        min-height: 100vh;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(247, 251, 255, 0.96);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      }
+      .nav-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0.6rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .brand-logo {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: conic-gradient(
+          from 180deg,
+          #ff8a3d,
+          #ffd74d,
+          #4d8fff,
+          #ff8a3d
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 800;
+        font-size: 1.1rem;
+        cursor: pointer; /* admin unlock */
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+      }
+      .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+      }
+      .brand-text span:first-child {
+        font-weight: 800;
+        font-size: 1rem;
+        letter-spacing: 0.03em;
+      }
+      .brand-text span:last-child {
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
       nav ul {
-        display: none;
+        list-style: none;
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.9rem;
       }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="nav-inner">
-      <div class="brand">
-        <div class="brand-logo">CK</div>
-        <div class="brand-text">
-          <span>Curious Kids Q&A</span>
-          <span>Parents & Teachers Forum</span>
+      nav a {
+        padding: 0.35rem 0.8rem;
+        border-radius: 999px;
+        color: #475569;
+        font-weight: 500;
+        transition: background 0.15s, color 0.15s, transform 0.1s;
+      }
+      nav a:hover {
+        background: rgba(77, 143, 255, 0.12);
+        color: #1d4ed8;
+        transform: translateY(-1px);
+      }
+      .nav-cta {
+        background: #1d4ed8;
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(37, 99, 235, 0.4);
+      }
+
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem 2.5rem;
+      }
+
+      .page-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 2.4fr) minmax(0, 1.6fr);
+        gap: 1.5rem;
+        align-items: flex-start;
+      }
+
+      .section-header h1 {
+        font-size: 1.6rem;
+        margin-bottom: 0.25rem;
+      }
+      .section-header p {
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        padding: 1.1rem 1rem;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+      }
+
+      .thread-list-title {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+      }
+      .thread-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+      }
+      .thread-item {
+        padding: 0.7rem 0.6rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        background: #ffffff;
+      }
+      .thread-title {
+        font-weight: 600;
+        margin-bottom: 0.15rem;
+      }
+      .thread-meta {
+        font-size: 0.75rem;
+        color: #6b7280;
+        margin-bottom: 0.35rem;
+      }
+      .thread-body {
+        font-size: 0.85rem;
+        margin-bottom: 0.45rem;
+      }
+      .thread-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        align-items: center;
+      }
+      .reaction-btn {
+        cursor: pointer;
+        border: none;
+        background: transparent;
+        color: #4b5563;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.2rem;
+      }
+      .reaction-btn span {
+        font-size: 0.78rem;
+        opacity: 0.9;
+      }
+      .reaction-btn:hover {
+        text-decoration: underline;
+      }
+      .reply-link {
+        margin-left: auto;
+        font-size: 0.8rem;
+        color: #2563eb;
+        cursor: pointer;
+      }
+
+      .tip-box {
+        font-size: 0.85rem;
+        color: var(--muted);
+        background: #eff6ff;
+        border-radius: var(--radius-lg);
+        padding: 0.9rem 0.8rem;
+        border: 1px dashed rgba(129, 140, 248, 0.7);
+      }
+
+      .form-field {
+        margin-bottom: 0.65rem;
+        font-size: 0.85rem;
+      }
+      .form-field label {
+        display: block;
+        margin-bottom: 0.18rem;
+      }
+      .form-field input,
+      .form-field textarea {
+        width: 100%;
+        padding: 0.4rem 0.5rem;
+        border-radius: 0.5rem;
+        border: 1px solid rgba(148, 163, 184, 0.7);
+        font-family: inherit;
+        font-size: 0.85rem;
+      }
+      .form-field textarea {
+        min-height: 90px;
+        resize: vertical;
+      }
+
+      .btn {
+        border-radius: 999px;
+        padding: 0.5rem 1rem;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+        box-shadow: 0 5px 16px rgba(248, 113, 22, 0.5);
+      }
+      .btn-primary:hover {
+        background: var(--primary-dark);
+      }
+      .btn-ghost {
+        background: #f9fafb;
+        color: #1f2937;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+      }
+      .btn-xs {
+        padding: 0.25rem 0.6rem;
+        font-size: 0.75rem;
+      }
+
+      .message {
+        font-size: 0.8rem;
+        margin-top: 0.3rem;
+      }
+      .message-ok {
+        color: #16a34a;
+      }
+      .message-error {
+        color: #e11d48;
+      }
+
+      .empty-state {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      /* Admin section */
+      #adminSection {
+        display: none;
+        margin-top: 1.8rem;
+      }
+      .admin-threads {
+        margin-top: 0.7rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+      }
+      .admin-thread-row {
+        padding: 0.55rem 0.55rem;
+        border-radius: 0.6rem;
+        border: 1px solid rgba(148, 163, 184, 0.45);
+        background: #f9fafb;
+        display: flex;
+        justify-content: space-between;
+        gap: 0.6rem;
+        align-items: center;
+      }
+      .admin-thread-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+      .admin-thread-meta {
+        font-size: 0.75rem;
+        color: #6b7280;
+      }
+      .admin-thread-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+      }
+      .status-pill {
+        display: inline-block;
+        padding: 0.15rem 0.45rem;
+        border-radius: 999px;
+        font-size: 0.7rem;
+        margin-right: 0.25rem;
+      }
+      .status-visible {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .status-hidden {
+        background: #fee2e2;
+        color: #b91c1c;
+      }
+      .status-open {
+        background: #e0f2fe;
+        color: #075985;
+      }
+      .status-locked {
+        background: #fef9c3;
+        color: #92400e;
+      }
+
+      footer {
+        margin-top: 2.8rem;
+        padding: 1.2rem 1rem 1.8rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+        border-top: 1px solid rgba(148, 163, 184, 0.25);
+        text-align: center;
+      }
+
+      @media (max-width: 900px) {
+        .page-layout {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+      @media (max-width: 800px) {
+        nav ul {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="nav-inner">
+        <div class="brand">
+          <div class="brand-logo">CK</div>
+          <div class="brand-text">
+            <span>Curious Kids Q&A</span>
+            <span>Parents &amp; Teachers Forum</span>
+          </div>
         </div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="ask.html">Ask a Question</a></li>
+            <li><a href="questions.html">Question Wall</a></li>
+            <li><a href="store.html">Store</a></li>
+            <li><a href="parents.html">For Parents</a></li>
+            <li><a href="forum.html">Adult Forum</a></li>
+            <li><a href="legal.html">Legal</a></li>
+          </ul>
+        </nav>
       </div>
-      <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="ask.html">Ask a Question</a></li>
-          <li><a href="questions.html">Question Wall</a></li>
-          <li><a href="store.html">Store</a></li>
-          <li><a href="parents.html">For Parents</a></li>
-          <li><a href="forum.html" class="nav-cta">Adult Forum</a></li>
-          <li><a href="legal.html">Legal</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+    </header>
 
-  <main>
-    <section class="section-header">
-      <h1>
-        Adult Forum – Parents &amp; Teachers
-        <span class="badge-pill">Grown-ups only</span>
-      </h1>
-      <p>
-        A private space for parents, teachers and guardians to discuss children’s
-        questions, share wisdom and ask for counsel. This area will later be
-        accessible via subscription or one-time payment. For now, access is
-        unlocked on this device only (demo).
-      </p>
-    </section>
+    <main>
+      <section class="section-header" style="margin-bottom: 1rem">
+        <h1>Adult Forum – Parents &amp; Teachers</h1>
+        <p>
+          A private space for parents, teachers and guardians to discuss
+          children's questions, share wisdom and ask for counsel. This area will
+          later be accessible via subscription or one-time payment. For now,
+          access is unlocked on this device only (demo).
+        </p>
+      </section>
 
-    <!-- LOCKED STATE (shown when no access yet) -->
-    <section id="forumLocked" class="card">
-      <div class="locked-title">Forum Locked – Adults Only</div>
-      <p class="hint" style="margin-bottom: 0.6rem">
-        This grown-ups’ forum is separate from the kids’ question area. In the
-        real version, this section will open after payment (Paystack /
-        Flutterwave / Stripe). For now, you can simulate access on this device.
-      </p>
-      <button class="btn-primary" type="button" id="unlockDemoBtn">
-        🔓 I am an adult – Unlock on this device (demo)
-      </button>
-      <p class="hint" style="margin-top: 0.45rem">
-        Demo only: unlocking here does not charge money. Access is stored
-        locally in your browser.
-      </p>
-    </section>
-
-    <!-- REAL FORUM CONTENT (hidden until unlocked) -->
-    <section id="forumContent" class="forum-layout" style="display:none">
-      <!-- LEFT: THREADS -->
-      <div>
+      <section class="page-layout">
+        <!-- LEFT: Active topics -->
         <div class="card">
-          <h2 style="font-size: 1rem; margin-bottom: 0.3rem">
-            Active Topics
-          </h2>
-          <p class="hint">
-            Use this space to talk honestly about your child’s questions,
-            classroom situations, screen time, discipline, faith, and more.
+          <h2 class="thread-list-title">Active Topics</h2>
+          <p class="tip-box" style="margin-bottom: 0.7rem">
+            Use this space to talk honestly about your child's questions,
+            classroom situations, screen time, discipline, faith and more. Be
+            kind, be gentle, and remember that this is a space for
+            <strong>grown-ups only</strong>.
           </p>
-          <div id="threadsList"></div>
-          <div id="emptyThreads" class="hint" style="margin-top:0.7rem;display:none">
-            No topics yet. Be the first to ask something another adult is
-            secretly wondering.
-          </div>
+
+          <div id="threadList" class="thread-list" aria-live="polite"></div>
         </div>
-      </div>
 
-      <!-- RIGHT: NEW TOPIC FORM + ADMIN -->
-      <div>
-        <div id="newThreadCard" class="card">
-          <h3>Start a New Topic</h3>
-          <p class="hint" style="margin-bottom:0.5rem">
-            Your name can be first name only or a nickname if you prefer
-            privacy.
-          </p>
-
-          <div class="form-row">
-            <label for="authorName">Your name</label>
-            <input id="authorName" placeholder="e.g. Mum in Lagos, Teacher Ayo" />
-          </div>
-          <div class="form-row">
-            <label for="threadTitle">Topic title</label>
+        <!-- RIGHT: Start a new topic -->
+        <div class="card">
+          <h2 style="font-size: 1rem; margin-bottom: 0.4rem">
+            Start a New Topic
+          </h2>
+          <div class="form-field">
+            <label for="newName">Name / role</label>
             <input
-              id="threadTitle"
-              placeholder="e.g. How do I answer ‘Why did God create bad people?’"
+              id="newName"
+              placeholder="e.g. Mum in Lagos, Teacher Ada"
             />
           </div>
-          <div class="form-row">
-            <label for="threadBody">Explain the situation or question</label>
+          <div class="form-field">
+            <label for="newTitle">Topic title</label>
+            <input
+              id="newTitle"
+              placeholder="e.g. My 7-year-old says church is boring"
+            />
+          </div>
+          <div class="form-field">
+            <label for="newBody">What's happening?</label>
             <textarea
-              id="threadBody"
-              placeholder="Share the child’s exact question, their age, and any background. Other adults can then reply with gentle ideas."
+              id="newBody"
+              placeholder="Share the situation, what your child said or did, and what you are worried about."
             ></textarea>
           </div>
-
-          <button type="button" class="btn-primary" id="createThreadBtn">
-            ✍️ Post Topic
+          <button type="button" class="btn btn-primary" onclick="createThread()">
+            ✨ Post Topic (Local Demo)
           </button>
-          <div id="newThreadMessage"></div>
+          <div id="newThreadMessage" class="message"></div>
+
+          <div
+            style="
+              margin-top: 1rem;
+              font-size: 0.78rem;
+              color: #6b7280;
+              border-top: 1px dashed rgba(148, 163, 184, 0.5);
+              padding-top: 0.6rem;
+            "
+          >
+            For now, everything is stored on <strong>this device only</strong>.
+            Later this page can be connected to a real database and payment
+            system.
+          </div>
+        </div>
+      </section>
+
+      <!-- ADMIN SECTION: soft moderation (hide / lock / clear) -->
+      <section id="adminSection" class="card">
+        <h2 style="font-size: 1.05rem; margin-bottom: 0.4rem">
+          Admin Panel – Forum Moderation
+        </h2>
+        <p style="font-size: 0.8rem; color: #6b7280; margin-bottom: 0.5rem">
+          This panel is visible only after entering the secret admin code. Use
+          it to keep discussions kind, gentle and on-topic. You can
+          <strong>hide</strong> a topic (remove from public view),
+          <strong>lock</strong> a topic (no new replies), or
+          <strong>clear all</strong> topics from this device.
+        </p>
+
+        <div style="margin-bottom: 0.65rem">
+          <button
+            type="button"
+            class="btn btn-ghost btn-xs"
+            onclick="clearAllThreads()"
+          >
+            🧹 Clear ALL topics from this device (emergency)
+          </button>
         </div>
 
-        <!-- ADMIN PANEL: visible only after entering admin code -->
-        <div id="adminPanel" class="card">
-          <h3 style="font-size: 0.95rem; margin-bottom: 0.3rem">
-            Admin Tools – Forum Owner
-          </h3>
-          <p class="hint" style="margin-bottom:0.5rem">
-            Triple-tap the CK logo and enter your admin code
-            (<code>CKAdmin2025</code>) to reveal this panel. These tools are for
-            you only.
-          </p>
+        <h3 style="font-size: 0.95rem; margin-bottom: 0.4rem">
+          All Topics (including hidden)
+        </h3>
+        <div id="adminThreadList" class="admin-threads"></div>
+      </section>
+    </main>
 
-          <div class="admin-field">
-            <button type="button" class="btn-ghost" id="exportThreadsBtn">
-              📤 Export all topics (JSON download)
-            </button>
-          </div>
-          <div class="admin-field">
-            <button type="button" class="btn-ghost" id="clearThreadsBtn">
-              🧹 Clear all forum topics on this device
-            </button>
-          </div>
-          <div id="adminMessage"></div>
-        </div>
-      </div>
-    </section>
-  </main>
+    <footer>
+      <p>
+        © <span id="year"></span> Curious Kids Q&amp;A. A gentle space for
+        parents, teachers and guardians.
+      </p>
+    </footer>
 
-  <footer>
-    <p>
-      © <span id="year"></span> Curious Kids Q&A. Adult forum for parents,
-      teachers and guardians.
-    </p>
-  </footer>
+    <script>
+      // --------------------------
+      // CONSTANTS / KEYS
+      // --------------------------
+      const FORUM_THREADS_KEY = "curiousKidsForumThreads";
+      const ADMIN_CODE = "CKAdmin2025";
 
-  <script>
-    // ------------------------------------
-    // CONSTANTS / KEYS
-    // ------------------------------------
-    const FORUM_ACCESS_KEY = "curiousKidsForumAccess";
-    const FORUM_THREADS_KEY = "curiousKidsForumThreads";
-    const ADMIN_CODE = "CKAdmin2025";
-
-    // ------------------------------------
-    // UTILITIES
-    // ------------------------------------
-    function escapeHtml(str) {
-      if (!str) return "";
-      return String(str).replace(/[&<>"']/g, (ch) => (
-        {
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#39;",
-        }[ch] || ch
-      ));
-    }
-
-    function formatDate(d) {
-      try {
-        return new Date(d).toLocaleString();
-      } catch {
-        return "";
-      }
-    }
-
-    // ------------------------------------
-    // ACCESS CONTROL (PAYMENT LATER)
-    // ------------------------------------
-    function hasForumAccess() {
-      return localStorage.getItem(FORUM_ACCESS_KEY) === "true";
-    }
-
-    function grantForumAccessDemo() {
-      localStorage.setItem(FORUM_ACCESS_KEY, "true");
-    }
-
-    function updateForumVisibility() {
-      const locked = document.getElementById("forumLocked");
-      const content = document.getElementById("forumContent");
-
-      if (hasForumAccess()) {
-        if (locked) locked.style.display = "none";
-        if (content) content.style.display = "grid";
-      } else {
-        if (locked) locked.style.display = "block";
-        if (content) content.style.display = "none";
-      }
-    }
-
-    // ------------------------------------
-    // THREAD STORAGE
-    // ------------------------------------
-    function getThreads() {
-      try {
-        const raw = localStorage.getItem(FORUM_THREADS_KEY);
-        if (!raw) return [];
-        const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : [];
-      } catch {
-        return [];
-      }
-    }
-
-    function saveThreads(list) {
-      try {
-        localStorage.setItem(FORUM_THREADS_KEY, JSON.stringify(list));
-      } catch {
-        // ignore
-      }
-    }
-
-    function createDefaultThreadsIfEmpty() {
-      const existing = getThreads();
-      if (existing.length > 0) return existing;
-
-      const sample = [
-        {
-          id: Date.now(),
-          author: "Mum in Lagos",
-          title: "My 7-year-old says, ‘I don’t want to go to church’",
-          body:
-            "She says church is boring but she loves Bible cartoons at home. How do I keep her heart soft without forcing her in a harsh way?",
-          createdAt: new Date().toISOString(),
-          likes: 2,
-          dislikes: 0,
-          replies: [
-            {
-              author: "Teacher Ada",
-              text:
-                "I started with giving small ‘missions’ in church – like ‘count how many times the pastor mentions “Jesus” today’. It helps them listen playfully.",
-              createdAt: new Date().toISOString(),
-            },
-          ],
-        },
-      ];
-      saveThreads(sample);
-      return sample;
-    }
-
-    // ------------------------------------
-    // RENDERING
-    // ------------------------------------
-    function renderThreads() {
-      const threads = getThreads();
-      const container = document.getElementById("threadsList");
-      const empty = document.getElementById("emptyThreads");
-
-      if (!container) return;
-
-      container.innerHTML = "";
-      if (!threads.length) {
-        if (empty) empty.style.display = "block";
-        return;
-      }
-      if (empty) empty.style.display = "none";
-
-      threads
-        .slice()
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-        .forEach((t) => {
-          const wrapper = document.createElement("article");
-          wrapper.className = "thread-card";
-          wrapper.dataset.threadId = t.id;
-
-          wrapper.innerHTML = `
-            <div class="thread-header">
-              <div>
-                <div class="thread-title">${escapeHtml(t.title)}</div>
-                <div class="thread-meta">
-                  By ${escapeHtml(t.author || "Anonymous")} ·
-                  <span>${formatDate(t.createdAt)}</span>
-                </div>
-              </div>
-            </div>
-            <div class="thread-body">${escapeHtml(t.body)}</div>
-            <div class="thread-footer">
-              <div class="thread-actions">
-                <button type="button" data-action="like">
-                  👍 Like <span>(${t.likes || 0})</span>
-                </button>
-                <button type="button" data-action="dislike">
-                  👎 Not-like <span>(${t.dislikes || 0})</span>
-                </button>
-                <button type="button" data-action="toggle-reply">
-                  💬 Reply
-                </button>
-              </div>
-              <div class="thread-counts">
-                ${t.replies && t.replies.length
-                  ? `${t.replies.length} repl${
-                      t.replies.length === 1 ? "y" : "ies"
-                    }`
-                  : "No replies yet"}
-              </div>
-            </div>
-            <div class="replies">
-              <div class="reply-list">
-                ${
-                  (t.replies || [])
-                    .map(
-                      (r) => `
-                      <div class="reply-item">
-                        <div class="reply-meta">
-                          ${escapeHtml(r.author || "Reply")} ·
-                          <span>${formatDate(r.createdAt)}</span>
-                        </div>
-                        <div class="reply-text">${escapeHtml(r.text)}</div>
-                      </div>
-                    `
-                    )
-                    .join("") || ""
-                }
-              </div>
-              <div class="reply-form" data-reply-form>
-                <input type="text" placeholder="Your name (optional)" data-reply-author />
-                <textarea placeholder="Write a gentle, helpful reply..." data-reply-text></textarea>
-                <button type="button" data-reply-submit>Send Reply</button>
-              </div>
-            </div>
-          `;
-
-          container.appendChild(wrapper);
-        });
-    }
-
-    // ------------------------------------
-    // THREAD ACTIONS (LIKE / REPLY)
-    // ------------------------------------
-    function handleThreadClick(event) {
-      const btn = event.target.closest("button");
-      if (!btn) return;
-
-      const card = event.target.closest(".thread-card");
-      if (!card) return;
-
-      const threadId = card.dataset.threadId;
-      if (!threadId) return;
-
-      const action = btn.dataset.action;
-      if (!action) return;
-
-      if (action === "like" || action === "dislike") {
-        const threads = getThreads();
-        const t = threads.find((x) => String(x.id) === String(threadId));
-        if (!t) return;
-        if (action === "like") {
-          t.likes = (t.likes || 0) + 1;
-        } else {
-          t.dislikes = (t.dislikes || 0) + 1;
-        }
-        saveThreads(threads);
-        renderThreads();
-        return;
-      }
-
-      if (action === "toggle-reply") {
-        const form = card.querySelector("[data-reply-form]");
-        if (form) form.classList.toggle("visible");
-        return;
-      }
-
-      if (btn.dataset.replySubmit !== undefined || btn.getAttribute("data-reply-submit") !== null) {
-        // handled below in dedicated listener (just in case)
-        return;
-      }
-    }
-
-    function handleReplySubmitClick(event) {
-      const submitBtn = event.target.closest("[data-reply-submit]");
-      if (!submitBtn) return;
-
-      const card = event.target.closest(".thread-card");
-      if (!card) return;
-
-      const threadId = card.dataset.threadId;
-      const form = card.querySelector("[data-reply-form]");
-      if (!form) return;
-
-      const authorInput = form.querySelector("[data-reply-author]");
-      const textArea = form.querySelector("[data-reply-text]");
-      const author = (authorInput && authorInput.value.trim()) || "Adult";
-      const text = textArea && textArea.value.trim();
-
-      if (!text) {
-        alert("Please type a reply before sending.");
-        return;
-      }
-
-      const threads = getThreads();
-      const t = threads.find((x) => String(x.id) === String(threadId));
-      if (!t) return;
-
-      if (!Array.isArray(t.replies)) t.replies = [];
-      t.replies.push({
-        author,
-        text,
-        createdAt: new Date().toISOString(),
-      });
-
-      saveThreads(threads);
-      renderThreads();
-    }
-
-    // ------------------------------------
-    // NEW TOPIC CREATION
-    // ------------------------------------
-    function handleCreateThread() {
-      const nameEl = document.getElementById("authorName");
-      const titleEl = document.getElementById("threadTitle");
-      const bodyEl = document.getElementById("threadBody");
-      const messageEl = document.getElementById("newThreadMessage");
-
-      const author = (nameEl.value || "").trim() || "Adult";
-      const title = (titleEl.value || "").trim();
-      const body = (bodyEl.value || "").trim();
-
-      messageEl.textContent = "";
-      messageEl.className = "";
-
-      if (!title || !body) {
-        messageEl.textContent = "Please add a topic title and some details.";
-        messageEl.className = "message-error";
-        return;
-      }
-
-      const threads = getThreads();
-      threads.push({
-        id: Date.now() + Math.random(),
-        author,
-        title,
-        body,
-        createdAt: new Date().toISOString(),
-        likes: 0,
-        dislikes: 0,
-        replies: [],
-      });
-      saveThreads(threads);
-      renderThreads();
-
-      nameEl.value = "";
-      titleEl.value = "";
-      bodyEl.value = "";
-
-      messageEl.textContent = "Topic posted. Thank you for sharing.";
-      messageEl.className = "message-success";
-    }
-
-    // ------------------------------------
-    // ADMIN UTILITIES
-    // ------------------------------------
-    function showAdminPanel() {
-      const panel = document.getElementById("adminPanel");
-      if (panel) panel.style.display = "block";
-    }
-
-    function handleAdminExport() {
-      const threads = getThreads();
-      const blob = new Blob([JSON.stringify(threads, null, 2)], {
-        type: "application/json",
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "curious-kids-adult-forum-threads.json";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-
-    function handleAdminClear() {
-      if (!confirm("Clear all adult forum topics on this device?")) return;
-      saveThreads([]);
-      renderThreads();
-      const adminMsg = document.getElementById("adminMessage");
-      if (adminMsg) {
-        adminMsg.textContent = "All topics cleared on this device.";
-        adminMsg.className = "message-success";
-      }
-    }
-
-    // ------------------------------------
-    // ADMIN UNLOCK VIA TRIPLE-TAP LOGO
-    // ------------------------------------
-    (function adminUnlockSetup() {
-      let clicks = 0;
-      let timer = null;
-
-      const logo = document.querySelector(".brand-logo");
-      if (!logo) return;
-
-      logo.addEventListener("click", () => {
-        clicks++;
-        if (timer) clearTimeout(timer);
-
-        // Reset after 2.5 seconds
-        timer = setTimeout(() => {
-          clicks = 0;
-        }, 2500);
-
-        if (clicks >= 3) {
-          clicks = 0;
-          const code = prompt("Admin access code:");
-          if (code === ADMIN_CODE) {
-            alert("Admin panel unlocked on this device.");
-            showAdminPanel();
-          } else if (code) {
-            alert("Incorrect code.");
-          }
-        }
-      });
-    })();
-
-    // ------------------------------------
-    // BOOTSTRAP
-    // ------------------------------------
-    document.addEventListener("DOMContentLoaded", () => {
       const yearEl = document.getElementById("year");
       if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-      // Ensure there is at least one sample thread the first time
-      createDefaultThreadsIfEmpty();
-      renderThreads();
-      updateForumVisibility();
+      // --------------------------
+      // UTIL
+      // --------------------------
+      function escapeHtml(str) {
+        if (!str) return "";
+        return String(str).replace(
+          /[&<>\"']/g,
+          (ch) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            }[ch] || ch)
+        );
+      }
 
-      const unlockBtn = document.getElementById("unlockDemoBtn");
-      if (unlockBtn) {
-        unlockBtn.addEventListener("click", () => {
-          grantForumAccessDemo();
-          updateForumVisibility();
+      // --------------------------
+      // THREAD STORAGE
+      // --------------------------
+      function loadThreads() {
+        try {
+          const raw = localStorage.getItem(FORUM_THREADS_KEY);
+          if (!raw) return null;
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed : null;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function saveThreads(list) {
+        try {
+          localStorage.setItem(FORUM_THREADS_KEY, JSON.stringify(list));
+        } catch (e) {}
+      }
+
+      function defaultThreads() {
+        const now = new Date().toLocaleString();
+        return [
+          {
+            id: "t1",
+            author: "Mum in Lagos",
+            title: "My 7-year-old says, \"I don\u2019t want to go to church\"",
+            body:
+              "She says church is boring but she loves Bible cartoons at home. How do I keep her heart soft without forcing her in a harsh way?",
+            createdAt: now,
+            likes: 2,
+            dislikes: 0,
+            replies: [
+              {
+                author: "Teacher Ada",
+                text:
+                  "I started giving small 'missions' in church for my pupils. It helps them listen playfully.",
+              },
+            ],
+            hidden: false,
+            locked: false,
+          },
+          {
+            id: "t2",
+            author: "Dad in Abuja",
+            title: "Screens before bed are making mornings hard",
+            body:
+              "My 10-year-old loves Bible games and cartoons on the tablet, but if I let him watch in the evening he struggles to sleep and wakes up grumpy.",
+            createdAt: now,
+            likes: 1,
+            dislikes: 0,
+            replies: [],
+            hidden: false,
+            locked: false,
+          },
+        ];
+      }
+
+      function getThreads() {
+        let threads = loadThreads();
+        if (!threads) {
+          threads = defaultThreads();
+          saveThreads(threads);
+        }
+
+        // Ensure new flags exist
+        threads.forEach((t) => {
+          if (typeof t.hidden === "undefined") t.hidden = false;
+          if (typeof t.locked === "undefined") t.locked = false;
+          if (typeof t.likes === "undefined") t.likes = 0;
+          if (typeof t.dislikes === "undefined") t.dislikes = 0;
+          if (!Array.isArray(t.replies)) t.replies = [];
+        });
+
+        return threads;
+      }
+
+      // --------------------------
+      // RENDER: PUBLIC LIST
+      // --------------------------
+      function renderThreads() {
+        const container = document.getElementById("threadList");
+        if (!container) return;
+
+        const threads = getThreads();
+        const visibleThreads = threads.filter((t) => !t.hidden);
+
+        if (!visibleThreads.length) {
+          container.innerHTML =
+            '<p class="empty-state">No topics yet on this device. Be the first to start one.</p>';
+          return;
+        }
+
+        container.innerHTML = visibleThreads
+          .map((t) => {
+            const likeCount = t.likes || 0;
+            const dislikeCount = t.dislikes || 0;
+            const replyCount = (t.replies || []).length;
+            const lockedLabel = t.locked ? " · Locked (no new replies)" : "";
+
+            return `
+          <article class="thread-item">
+            <div class="thread-title">${escapeHtml(t.title)}</div>
+            <div class="thread-meta">
+              By ${escapeHtml(t.author || "Anonymous")} ·
+              ${escapeHtml(t.createdAt || "")}
+              ${lockedLabel}
+            </div>
+            <div class="thread-body">
+              ${escapeHtml(t.body)}
+            </div>
+            <div class="thread-actions">
+              <button class="reaction-btn" type="button"
+                onclick="reactToThread('${t.id}','like')">
+                👍 <span>Like (${likeCount})</span>
+              </button>
+              <button class="reaction-btn" type="button"
+                onclick="reactToThread('${t.id}','dislike')">
+                👎 <span>Not like (${dislikeCount})</span>
+              </button>
+              <span class="thread-meta" style="margin-left: 0.35rem;">
+                · Replies: ${replyCount}
+              </span>
+              <span class="reply-link"
+                onclick="alert('Reply form will be added later. For now, this is a read-only demo.')">
+                Reply
+              </span>
+            </div>
+          </article>
+        `;
+          })
+          .join("");
+      }
+
+      // --------------------------
+      // PUBLIC: LIKE / DISLIKE
+      // --------------------------
+      function reactToThread(id, type) {
+        const threads = getThreads();
+        const t = threads.find((x) => x.id === id);
+        if (!t) return;
+
+        if (type === "like") {
+          t.likes = (t.likes || 0) + 1;
+        } else if (type === "dislike") {
+          t.dislikes = (t.dislikes || 0) + 1;
+        }
+
+        saveThreads(threads);
+        renderThreads();
+        renderAdminThreads();
+      }
+
+      // --------------------------
+      // PUBLIC: CREATE NEW THREAD
+      // --------------------------
+      function createThread() {
+        const nameEl = document.getElementById("newName");
+        const titleEl = document.getElementById("newTitle");
+        const bodyEl = document.getElementById("newBody");
+        const msgEl = document.getElementById("newThreadMessage");
+        if (!nameEl || !titleEl || !bodyEl || !msgEl) return;
+
+        const author = (nameEl.value || "").trim();
+        const title = (titleEl.value || "").trim();
+        const body = (bodyEl.value || "").trim();
+
+        msgEl.textContent = "";
+        msgEl.className = "message";
+
+        if (!title || !body) {
+          msgEl.textContent = "Please add a topic title and some details.";
+          msgEl.classList.add("message-error");
+          return;
+        }
+
+        const threads = getThreads();
+        const newThread = {
+          id: "t" + Date.now(),
+          author: author || "Anonymous parent",
+          title,
+          body,
+          createdAt: new Date().toLocaleString(),
+          likes: 0,
+          dislikes: 0,
+          replies: [],
+          hidden: false,
+          locked: false,
+        };
+
+        threads.unshift(newThread);
+        saveThreads(threads);
+        renderThreads();
+        renderAdminThreads();
+
+        nameEl.value = "";
+        titleEl.value = "";
+        bodyEl.value = "";
+
+        msgEl.textContent =
+          "Topic posted on this device (demo only, not shared online).";
+        msgEl.classList.add("message-ok");
+      }
+
+      // --------------------------
+      // ADMIN: RENDER ALL THREADS
+      // --------------------------
+      function renderAdminThreads() {
+        const listEl = document.getElementById("adminThreadList");
+        if (!listEl) return;
+
+        const threads = getThreads();
+        if (!threads.length) {
+          listEl.innerHTML =
+            '<p class="empty-state">No topics found on this device.</p>';
+          return;
+        }
+
+        listEl.innerHTML = threads
+          .map((t) => {
+            const statusVisible = t.hidden ? "Hidden" : "Visible";
+            const statusLocked = t.locked ? "Locked" : "Open";
+            const likeCount = t.likes || 0;
+            const dislikeCount = t.dislikes || 0;
+
+            return `
+          <div class="admin-thread-row">
+            <div>
+              <div class="admin-thread-title">${escapeHtml(t.title)}</div>
+              <div class="admin-thread-meta">
+                <span class="status-pill ${
+                  t.hidden ? "status-hidden" : "status-visible"
+                }">
+                  ${statusVisible}
+                </span>
+                <span class="status-pill ${
+                  t.locked ? "status-locked" : "status-open"
+                }">
+                  ${statusLocked}
+                </span>
+                Likes: ${likeCount} · Not like: ${dislikeCount}
+              </div>
+            </div>
+            <div class="admin-thread-actions">
+              <button
+                type="button"
+                class="btn btn-ghost btn-xs"
+                onclick="toggleHideThread('${t.id}')"
+              >
+                ${t.hidden ? "👁 Unhide" : "🫥 Hide"}
+              </button>
+              <button
+                type="button"
+                class="btn btn-ghost btn-xs"
+                onclick="toggleLockThread('${t.id}')"
+              >
+                ${t.locked ? "🔓 Unlock" : "🔒 Lock"}
+              </button>
+            </div>
+          </div>
+        `;
+          })
+          .join("");
+      }
+
+      function toggleHideThread(id) {
+        const threads = getThreads();
+        const t = threads.find((x) => x.id === id);
+        if (!t) return;
+        t.hidden = !t.hidden;
+        saveThreads(threads);
+        renderThreads();
+        renderAdminThreads();
+      }
+
+      function toggleLockThread(id) {
+        const threads = getThreads();
+        const t = threads.find((x) => x.id === id);
+        if (!t) return;
+        t.locked = !t.locked;
+        saveThreads(threads);
+        renderThreads();
+        renderAdminThreads();
+      }
+
+      function clearAllThreads() {
+        if (
+          !confirm(
+            "Clear ALL topics from this device? This cannot be undone (demo)."
+          )
+        ) {
+          return;
+        }
+        saveThreads([]);
+        renderThreads();
+        renderAdminThreads();
+      }
+
+      // --------------------------
+      // ADMIN UNLOCK (triple-tap logo)
+      // --------------------------
+      function setupAdminUnlock() {
+        const logo = document.querySelector(".brand-logo");
+        const adminSection = document.getElementById("adminSection");
+        if (!logo || !adminSection) return;
+
+        let clicks = 0;
+        let timer = null;
+
+        logo.addEventListener("click", () => {
+          clicks++;
+          if (timer) clearTimeout(timer);
+
+          timer = setTimeout(() => {
+            clicks = 0;
+          }, 1800); // 1.8s window for triple-tap
+
+          if (clicks >= 3) {
+            clicks = 0;
+            const code = prompt("Admin access code:");
+            if (code === ADMIN_CODE) {
+              adminSection.style.display = "block";
+              alert(
+                "Admin panel unlocked on this device. Use it gently and prayerfully."
+              );
+            } else if (code) {
+              alert("Incorrect code.");
+            }
+          }
         });
       }
 
-      const createBtn = document.getElementById("createThreadBtn");
-      if (createBtn) createBtn.addEventListener("click", handleCreateThread);
-
-      const threadsList = document.getElementById("threadsList");
-      if (threadsList) {
-        threadsList.addEventListener("click", handleThreadClick);
-        threadsList.addEventListener("click", handleReplySubmitClick);
-      }
-
-      const exportBtn = document.getElementById("exportThreadsBtn");
-      if (exportBtn) exportBtn.addEventListener("click", handleAdminExport);
-
-      const clearBtn = document.getElementById("clearThreadsBtn");
-      if (clearBtn) clearBtn.addEventListener("click", handleAdminClear);
-    });
-  </script>
-</body>
+      // --------------------------
+      // BOOTSTRAP
+      // --------------------------
+      document.addEventListener("DOMContentLoaded", () => {
+        renderThreads();
+        renderAdminThreads();
+        setupAdminUnlock();
+      });
+    </script>
+  </body>
 </html>
