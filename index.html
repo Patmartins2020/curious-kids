@@ -344,6 +344,38 @@
   font-size: 0.95rem;
   opacity: 0.9;
 }
+/* Hide hamburger on desktop */
+.nav-toggle {
+  display: none;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: #fff;     /* adjust if needed */
+  cursor: pointer;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+
+  /* Show hamburger on mobile */
+  .nav-toggle {
+    display: block;
+  }
+
+  /* Hide nav menu until opened */
+  nav ul {
+    display: none;
+    flex-direction: column;
+    background: #10b981;   /* your green color */
+    margin: 0;
+    padding: 1rem;
+  }
+
+  /* Show nav when opened */
+  nav.open ul {
+    display: flex;
+  }
+}
     </style>
     <link rel="manifest" href="manifest.webmanifest" />
 
@@ -384,6 +416,7 @@
             <span>Ask big questions. Get gentle answers.</span>
           </div>
         </div>
+        <button class="nav-toggle" aria-label="Toggle Menu">☰</button>
         <nav>
           <ul>
             <li><a href="index.html">Home</a></li>
@@ -545,6 +578,12 @@
     }
   });
       
+    const toggleBtn = document.querySelector('.nav-toggle');
+  const nav = document.querySelector('nav');
+
+  toggleBtn.addEventListener('click', () => {
+    nav.classList.toggle('open');
+  });
     </script>
    
 
