@@ -1130,6 +1130,23 @@ nav a:hover {
     }
   });
 })();
+// Mobile navbar toggle for store.html
+(function () {
+  const toggle = document.getElementById("navToggle");
+  const links = document.getElementById("navLinks");
+  if (!toggle || !links) return;
+
+  toggle.addEventListener("click", () => {
+    links.classList.toggle("open");
+  });
+
+  // Close menu when a link is tapped (mobile)
+  links.addEventListener("click", (event) => {
+    if (event.target.tagName.toLowerCase() === "a") {
+      links.classList.remove("open");
+    }
+  });
+})();
     </script>
   </body>
 </html>
