@@ -1006,6 +1006,14 @@
         renderCart();
         renderPrivateQuestions();
       });
+      const toggleBtn = document.querySelector('.nav-toggle');
+  const navMenu = document.querySelector('nav');
+
+  if (toggleBtn && navMenu) {
+    toggleBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('open');
+    });
+  }
     </script>
   </body>
 </html>
