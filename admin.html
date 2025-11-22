@@ -313,21 +313,117 @@
         border-radius: 14px;
       }
     }
+    /* Header container */
+.ck-header {
+  background: #10b981; /* Curious Kids green */
+  color: #fff;
+  padding: 0.75rem 1rem;
+}
+
+/* Inner layout */
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Brand section */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.brand-text span {
+  display: block;
+  font-size: 0.8rem;
+}
+
+/* DEFAULT NAV (desktop) */
+nav ul {
+  display: flex;
+  gap: 1rem;
+  padding: 0;
+  margin: 0.75rem 0 0 0;
+  list-style: none;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-cta {
+  background: #fff;
+  color: #10b981;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+/* MOBILE STYLES */
+.nav-toggle {
+  display: none;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  nav ul {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    background: #10b981;
+    padding: 1rem;
+  }
+
+  nav.open ul {
+    display: flex;
+  }
+
+  .nav-toggle {
+    display: block;
+  }
+}
   </style>
 </head>
 <body>
-  <header>
-    <div class="nav-inner">
-      <div class="brand">
-        <div class="brand-logo">CK</div>
-        <div class="brand-text">
-          <span>Curious Kids Admin</span>
-          <span>Private dashboard – not for children.</span>
-        </div>
+ <header class="ck-header">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-logo">CK</div>
+      <div class="brand-text">
+        <span>Curious Kids Q&A</span>
+        <span>Privte Dashboard - Admin Only.</span>
       </div>
-      <div class="nav-tag">Internal Use Only</div>
     </div>
-  </header>
+
+    <!-- MOBILE MENU BUTTON -->
+    <button class="nav-toggle" aria-label="Toggle Menu">☰</button>
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="ask.html">Ask a Question</a></li>
+      <li><a href="questions.html">Question Wall</a></li>
+      <li><a href="store.html">Store</a></li>
+      <li><a href="parents.html">For Parents</a></li>
+      <li><a href="forum.html">Adult Forum</a></li>
+      <li><a href="legal.html">Legal</a></li>
+      <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
+    </ul>
+  </nav>
+</header>
 
   <main>
     <!-- STORE MANAGER -->
@@ -663,6 +759,14 @@
       new Date().getFullYear().toString();
     renderProducts();
     renderConsults();
+     const toggleBtn = document.querySelector('.nav-toggle');
+  const navMenu = document.querySelector('nav');
+
+  if (toggleBtn && navMenu) {
+    toggleBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('open');
+    });
+  }
   </script>
 </body>
 </html>
