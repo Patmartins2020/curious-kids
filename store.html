@@ -629,6 +629,21 @@
   max-height: 180px;
   overflow-y: auto;
 }
+.uncle-pat-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 0;
+  background: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.uncle-pat-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
     </style>
   </head>
 
@@ -1423,7 +1438,9 @@
     <!-- Uncle Pat Mascot Widget -->
 <div class="uncle-pat-widget" id="unclePatWidget">
   <div class="uncle-pat-bear">
-    <div class="uncle-pat-avatar">UP</div>
+   <div class="uncle-pat-avatar">
+  <img src="icons/uncle-pat.png" alt="Uncle Pat" />
+</div>
     <div class="uncle-pat-flag">
       Uncle Pat helps you<br>with your homework
     </div>
