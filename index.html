@@ -1,677 +1,587 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Curious Kids Q&A – Home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      :root {
-        --primary: #ff8a3d;
-        --primary-dark: #e46f22;
-        --bg: #f7fbff;
-        --card-bg: #ffffff;
-        --text: #1f2933;
-        --muted: #6b7280;
-        --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
-        --radius-lg: 20px;
-        --font-main: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-          sans-serif;
-      }
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      body {
-        font-family: var(--font-main);
-        background: radial-gradient(
-          circle at top,
-          #e0f2ff 0,
-          #f7fbff 45%,
-          #ffffff 100%
-        );
-        min-height: 100vh;
-        color: var(--text);
-      }
-      a {
-        text-decoration: none;
-        color: inherit;
-      }
-      header {
-        position: sticky;
-        top: 0;
-        z-index: 50;
-        background: rgba(247, 251, 255, 0.96);
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-      }
-      .nav-inner {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 0.6rem 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-      }
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-      .brand-logo {
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        background: conic-gradient(
-          from 180deg,
-          #ff8a3d,
-          #ffd74d,
-          #4d8fff,
-          #ff8a3d
-        );
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-weight: 800;
-        font-size: 1.1rem;
-        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
-        cursor: pointer;
-      }
-      .brand-text {
-        display: flex;
-        flex-direction: column;
-        line-height: 1.1;
-      }
-      .brand-text span:first-child {
-        font-weight: 800;
-        font-size: 1rem;
-        letter-spacing: 0.03em;
-      }
-      .brand-text span:last-child {
-        font-size: 0.75rem;
-        color: var(--muted);
-      }
-      nav ul {
-        list-style: none;
-        display: flex;
-        gap: 0.75rem;
-        font-size: 0.9rem;
-      }
-      nav a {
-        padding: 0.35rem 0.8rem;
-        border-radius: 999px;
-        color: #475569;
-        font-weight: 500;
-        transition: background 0.15s, color 0.15s, transform 0.1s;
-      }
-      nav a:hover {
-        background: rgba(77, 143, 255, 0.12);
-        color: #1d4ed8;
-        transform: translateY(-1px);
-      }
-      .nav-cta {
-        background: #1d4ed8;
-        color: #fff;
-        box-shadow: 0 3px 10px rgba(37, 99, 235, 0.4);
-      }
-      main {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 1.5rem 1rem 2.5rem;
-      }
-      .hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
-        gap: 2rem;
-        align-items: center;
-        padding: 1.6rem 1.3rem;
-        margin-top: 0.8rem;
-        border-radius: 24px;
-        background: linear-gradient(135deg, #fff7eb, #e0f2ff);
-        box-shadow: var(--shadow-soft);
-      }
-      .hero h1 {
-        font-size: clamp(1.9rem, 3vw, 2.3rem);
-        line-height: 1.2;
-        margin-bottom: 0.6rem;
-      }
-      .hero h1 span {
-        background: linear-gradient(90deg, #f97316, #ea580c, #ca8a04);
-        background-clip: text;
-        -webkit-background-clip: text;
-        color: transparent;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <title>Curious Kids Q&A – Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-      .hero p {
-        font-size: 0.97rem;
-        color: var(--muted);
-        max-width: 35rem;
+  <!-- PWA / Icons -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#ff8a3d" />
+  <link rel="icon" type="image/png" href="icons/favicon.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+  <style>
+    :root{
+      --primary:#ff8a3d;
+      --primary-dark:#e46f22;
+      --bg:#f7fbff;
+      --card-bg:#ffffff;
+      --text:#1f2933;
+      --muted:#6b7280;
+      --shadow-soft:0 10px 25px rgba(15,23,42,0.08);
+      --radius-lg:20px;
+      --font-main:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+
+    body{
+      font-family:var(--font-main);
+      background:radial-gradient(circle at top,#e0f2ff 0,#f7fbff 45%,#ffffff 100%);
+      min-height:100vh;
+      color:var(--text);
+    }
+    a{text-decoration:none;color:inherit;}
+
+    /* ------------ SHARED HEADER + NAVBAR ------------ */
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:#16a34a;
+      color:#f9fafb;
+      border-bottom:1px solid rgba(15,23,42,0.15);
+      box-shadow:0 10px 25px rgba(15,23,42,0.18);
+    }
+    .nav-inner{
+      max-width:1100px;
+      margin:0 auto;
+      padding:0.6rem 1rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:0.6rem;
+    }
+    .brand-logo{
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      background:conic-gradient(
+        from 180deg,
+        #ff8a3d,
+        #ffd74d,
+        #4d8fff,
+        #16a34a,
+        #ff8a3d
+      );
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#ffffff;
+      font-weight:800;
+      font-size:1.1rem;
+      cursor:pointer;
+      box-shadow:0 4px 14px rgba(15,23,42,0.35);
+    }
+    .brand-text{
+      display:flex;
+      flex-direction:column;
+      line-height:1.1;
+    }
+    .brand-text span:first-child{
+      font-weight:800;
+      font-size:1rem;
+      letter-spacing:0.03em;
+    }
+    .brand-text span:last-child{
+      font-size:0.75rem;
+      color:rgba(226,232,240,0.9);
+    }
+
+    nav ul{
+      list-style:none;
+      display:flex;
+      gap:0.75rem;
+      font-size:0.9rem;
+      align-items:center;
+    }
+    nav a{
+      padding:0.35rem 0.8rem;
+      border-radius:999px;
+      color:#e5e7eb;
+      font-weight:500;
+      transition:background 0.15s,color 0.15s,transform 0.1s;
+    }
+    nav a:hover{
+      background:rgba(255,255,255,0.16);
+      color:#ffffff;
+      transform:translateY(-1px);
+    }
+    .nav-cta{
+      background:#ffffff;
+      color:#0f172a;
+      box-shadow:0 3px 10px rgba(15,23,42,0.35);
+    }
+
+    /* Hamburger (mobile) */
+    .nav-toggle{
+      display:none;
+      border:none;
+      background:transparent;
+      cursor:pointer;
+      padding:0.25rem;
+    }
+    .nav-toggle span{
+      display:block;
+      width:22px;
+      height:2px;
+      background:#ffffff;
+      margin:4px 0;
+      border-radius:999px;
+    }
+
+    @media(max-width:800px){
+      .nav-toggle{display:inline-flex;}
+
+      nav{
+        position:relative;
       }
-      .hero-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        margin-top: 0.9rem;
+      nav ul{
+        position:absolute;
+        top:44px;
+        right:0.6rem;
+        flex-direction:column;
+        align-items:flex-end;
+        background:rgba(15,23,42,0.98); /* dark drop-down */
+        padding:0.6rem 0.9rem;
+        border-radius:12px;
+        box-shadow:0 10px 25px rgba(15,23,42,0.4);
+        display:none;
       }
-      .btn {
-        border-radius: 999px;
-        padding: 0.65rem 1.4rem;
-        border: none;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 0.9rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        transition: transform 0.1s, box-shadow 0.1s, background 0.15s;
+      nav ul.open{
+        display:flex;
       }
-      .btn-primary {
-        background: var(--primary);
-        color: #fff;
-        box-shadow: 0 5px 16px rgba(248, 113, 22, 0.5);
+      nav a{
+        width:100%;
+        text-align:right;
       }
-      .btn-primary:hover {
-        background: var(--primary-dark);
-        transform: translateY(-1px);
+    }/* ---------------- MAIN LAYOUT ---------------- */
+    main{
+      max-width:1100px;
+      margin:0 auto;
+      padding:1.5rem 1rem 2.5rem;
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(0,1.1fr);
+      gap:2rem;
+      align-items:center;
+      padding:1.6rem 1.3rem;
+      margin-top:0.8rem;
+      border-radius:24px;
+      background:linear-gradient(135deg,#fff7eb,#e0f2ff);
+      box-shadow:var(--shadow-soft);
+    }
+    .hero h1{
+      font-size:clamp(1.9rem,3vw,2.3rem);
+      line-height:1.2;
+      margin-bottom:0.6rem;
+    }
+    .hero h1 span{
+      background:linear-gradient(90deg,#f97316,#ea580c,#ca8a04);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .hero p{
+      font-size:0.97rem;
+      color:var(--muted);
+      max-width:35rem;
+    }
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:0.75rem;
+      margin-top:0.9rem;
+    }
+    .btn{
+      border-radius:999px;
+      padding:0.65rem 1.4rem;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      font-size:0.9rem;
+      display:inline-flex;
+      align-items:center;
+      gap:0.4rem;
+      transition:transform 0.1s,box-shadow 0.1s,background 0.15s;
+    }
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 5px 16px rgba(248,113,22,0.5);
+    }
+    .btn-primary:hover{
+      background:var(--primary-dark);
+      transform:translateY(-1px);
+    }
+    .btn-ghost{
+      background:rgba(255,255,255,0.9);
+      color:#1d4ed8;
+      border:1px solid rgba(148,163,184,0.4);
+    }
+    .btn-ghost:hover{
+      background:#eff6ff;
+    }
+    .hero-note{
+      margin-top:0.6rem;
+      font-size:0.8rem;
+      color:var(--muted);
+    }
+
+    .hero-side-card{
+      background:rgba(255,255,255,0.95);
+      border-radius:18px;
+      padding:1rem;
+      box-shadow:0 12px 25px rgba(15,23,42,0.14);
+      font-size:0.9rem;
+    }
+    .hero-side-card h2{
+      font-size:1.05rem;
+      margin-bottom:0.35rem;
+    }
+    .hero-side-card ul{
+      padding-left:1.1rem;
+      color:var(--muted);
+      margin:0.35rem 0;
+      font-size:0.86rem;
+    }
+
+    .card-row{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:1rem;
+      margin-top:2.2rem;
+    }
+    .card{
+      background:var(--card-bg);
+      border-radius:var(--radius-lg);
+      padding:1.1rem 1rem;
+      box-shadow:var(--shadow-soft);
+      border:1px solid rgba(148,163,184,0.18);
+      font-size:0.9rem;
+    }
+    .card h2{
+      font-size:1.1rem;
+      margin-bottom:0.4rem;
+    }
+    .card p{
+      color:var(--muted);
+      margin-bottom:0.5rem;
+    }
+    .card a.card-link{
+      font-size:0.86rem;
+      color:#1d4ed8;
+      font-weight:600;
+    }
+
+    footer{
+      margin-top:2.8rem;
+      padding:1.2rem 1rem 1.8rem;
+      font-size:0.75rem;
+      color:var(--muted);
+      border-top:1px solid rgba(148,163,184,0.25);
+      text-align:center;
+    }
+
+    @media(max-width:800px){
+      .hero{
+        grid-template-columns:minmax(0,1fr);
       }
-      .btn-ghost {
-        background: rgba(255, 255, 255, 0.9);
-        color: #1d4ed8;
-        border: 1px solid rgba(148, 163, 184, 0.4);
-      }
-      .btn-ghost:hover {
-        background: #eff6ff;
-      }
-      .hero-note {
-        margin-top: 0.6rem;
-        font-size: 0.8rem;
-        color: var(--muted);
-      }
-      .card-row {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 1rem;
-        margin-top: 2.2rem;
-      }
-      .card {
-        background: var(--card-bg);
-        border-radius: var(--radius-lg);
-        padding: 1.1rem 1rem;
-        box-shadow: var(--shadow-soft);
-        border: 1px solid rgba(148, 163, 184, 0.18);
-        font-size: 0.9rem;
-      }
-      .card h2 {
-        font-size: 1.1rem;
-        margin-bottom: 0.4rem;
-      }
-      .card p {
-        color: var(--muted);
-        margin-bottom: 0.5rem;
-      }
-      footer {
-        margin-top: 2.8rem;
-        padding: 1.2rem 1rem 1.8rem;
-        font-size: 0.75rem;
-        color: var(--muted);
-        border-top: 1px solid rgba(148, 163, 184, 0.25);
-        text-align: center;
-      }
-      @media (max-width: 800px) {
-        .hero {
-          grid-template-columns: minmax(0, 1fr);
-        }
-        nav ul {
-          display: none;
-        }
-      }
- /* In-app splash screen */
-/* In-app splash screen */
-#splash-screen {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at top, #e0f2ff, #ffffff);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  text-align: center;
-  color: #4a2800;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  animation: splashFadeIn 0.8s ease-out both;
-}
+    }
+       /* ------------ SPLASH SCREEN ------------ */
+    #splash-screen{
+      position:fixed;
+      inset:0;
+      background:radial-gradient(circle at top,#e0f2ff,#ffffff);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      text-align:center;
+      color:#4a2800;
+      font-family:var(--font-main);
+      opacity:1;
+      transform:translateY(0);
+      transition:opacity 0.6s ease-out,transform 0.6s ease-out;
+      animation:splashFadeIn 0.8s ease-out both;
+    }
+    #splash-screen.hidden{
+      opacity:0;
+      transform:translateY(-12px);
+      pointer-events:none;
+    }
+    .splash-logo{
+      width:144px;
+      height:144px;
+      border-radius:32px;
+      box-shadow:0 20px 40px rgba(0,0,0,0.2);
+      margin-bottom:1rem;
+      animation:logoBounce 1.3s ease-in-out infinite;
+      transform-origin:center bottom;
+    }
+    .splash-caption{
+      margin-top:0.2rem;
+      font-size:0.95rem;
+      opacity:0.9;
+      display:inline-flex;
+      align-items:center;
+      gap:0.3rem;
+    }
+    .splash-dots span{
+      display:inline-block;
+      width:0.22rem;
+      height:0.22rem;
+      border-radius:999px;
+      background:#4a2800;
+      opacity:0.2;
+      margin:0 1px;
+      animation:dotsBlink 1.2s infinite ease-in-out;
+    }
+    .splash-dots span:nth-child(2){animation-delay:0.15s;}
+    .splash-dots span:nth-child(3){animation-delay:0.3s;}
 
-#splash-screen.hidden {
-  opacity: 0;
-  transform: translateY(-12px);
-  pointer-events: none;
-}
+    @keyframes splashFadeIn{
+      0%{opacity:0;transform:translateY(10px);}
+      100%{opacity:1;transform:translateY(0);}
+    }
+    @keyframes logoBounce{
+      0%,100%{transform:translateY(0);}
+      40%{transform:translateY(-6px);}
+      60%{transform:translateY(-2px);}
+    }
+    @keyframes dotsBlink{
+      0%,80%,100%{opacity:0.2;transform:translateY(0);}
+      40%{opacity:1;transform:translateY(-2px);}
+    }
 
-/* Bouncing logo */
-.splash-logo {
-  width: 144px;
-  height: 144px;
-  border-radius: 32px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-  margin-bottom: 1rem;
-  animation: logoBounce 1.3s ease-in-out infinite;
-  transform-origin: center bottom;
-}
+    /* App root fade-in after splash */
+    #app-root{
+      opacity:0;
+      transition:opacity 0.35s ease-out;
+    }
+    body.splash-done #app-root{
+      opacity:1;
+    }
+  </style>
+</head>
+<body>
 
-/* Caption + loading dots */
-.splash-caption {
-  margin-top: 0.2rem;
-  font-size: 0.95rem;
-  opacity: 0.9;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.splash-dots span {
-  display: inline-block;
-  width: 0.22rem;
-  height: 0.22rem;
-  border-radius: 999px;
-  background: #4a2800;
-  opacity: 0.2;
-  margin: 0 1px;
-  animation: dotsBlink 1.2s infinite ease-in-out;
-}
-
-.splash-dots span:nth-child(2) {
-  animation-delay: 0.15s;
-}
-.splash-dots span:nth-child(3) {
-  animation-delay: 0.3s;
-}
-
-/* Animations */
-@keyframes splashFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes logoBounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-6px);
-  }
-  60% {
-    transform: translateY(-2px);
-  }
-}
-
-@keyframes dotsBlink {
-  0%, 80%, 100% {
-    opacity: 0.2;
-    transform: translateY(0);
-  }
-  40% {
-    opacity: 1;
-    transform: translateY(-2px);
-  }
-}
-#splash-screen img {
-  width: 144px;
-  height: 144px;
-  border-radius: 32px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-  margin-bottom: 1rem;
-}
-
-#splash-screen h1 {
-  font-size: 1.6rem;
-  margin: 0.2rem 0;
-}
-
-#splash-screen p {
-  margin: 0;
-  font-size: 0.95rem;
-  opacity: 0.9;
-}
-/* Hide hamburger on desktop */
-.nav-toggle {
-  display: none;
-  font-size: 1.8rem;
-  background: none;
-  border: none;
-  color: #fff;     /* adjust if needed */
-  cursor: pointer;
-}
-
-/* Mobile styles */
-@media (max-width: 768px) {
-
-  /* Show hamburger on mobile */
-  .nav-toggle {
-    display: block;
-  }
-
-  /* Hide nav menu until opened */
-  nav ul {
-    display: none;
-    flex-direction: column;
-    background: #10b981;   /* your green color */
-    margin: 0;
-    padding: 1rem;
-  }
-
-  /* Show nav when opened */
-  nav.open ul {
-    display: flex;
-  }
-}
-/* Header container */
-.ck-header {
-  background: #10b981; /* Curious Kids green */
-  color: #fff;
-  padding: 0.75rem 1rem;
-}
-
-/* Inner layout */
-.nav-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Brand section */
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.brand-logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-.brand-text span {
-  display: block;
-  font-size: 0.8rem;
-}
-
-/* DEFAULT NAV (desktop) */
-nav ul {
-  display: flex;
-  gap: 1rem;
-  padding: 0;
-  margin: 0.75rem 0 0 0;
-  list-style: none;
-}
-
-nav a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.nav-cta {
-  background: #fff;
-  color: #10b981;
-  padding: 6px 10px;
-  border-radius: 5px;
-  font-weight: bold;
-}
-
-/* MOBILE STYLES */
-.nav-toggle {
-  display: none;
-  font-size: 2rem;
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-}
-
-@media (max-width: 768px) {
-  nav ul {
-    display: none;
-    flex-direction: column;
-    gap: 0;
-    background: #10b981;
-    padding: 1rem;
-  }
-
-  nav.open ul {
-    display: flex;
-  }
-
-  .nav-toggle {
-    display: block;
-  }
-}
-    </style>
-    <link rel="manifest" href="manifest.webmanifest" />
-
-    <meta name="theme-color" content="#ff8a3d" />
-<!-- PWA Manifest -->
-<link rel="manifest" href="manifest.webmanifest">
-
-<!-- Theme Color -->
-<meta name="theme-color" content="#ff8a3d" />
-
-<!-- Favicon (browser tab icon) -->
-<link rel="icon" type="image/png" href="icons/favicon.png">
-
-<!-- iOS Home Screen Icon -->
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-  </head>
-  <body>
-    <!-- In-app splash screen -->
+<!-- SPLASH SCREEN -->
 <div id="splash-screen">
   <img class="splash-logo" src="icons/logo.png" alt="Curious Kids logo" />
   <h1>Curious Kids</h1>
   <p class="splash-caption">
-    A safe place where kids can ask Big & Curious questions
+    A safe place where kids can ask big &amp; curious questions
     <span class="splash-dots">
       <span></span><span></span><span></span>
     </span>
   </p>
 </div>
 
-<!-- App root: all main content goes here -->
+<!-- MAIN APP CONTENT -->
 <div id="app-root">
-   <header class="ck-header">
-  <div class="nav-inner">
-    <div class="brand">
-      <div class="brand-logo">CK</div>
-      <div class="brand-text">
-        <span>Curious Kids Q&A</span>
-        <span>Ask big questions. Get gentle answers.</span>
+  <header>
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-logo">CK</div>
+        <div class="brand-text">
+          <span>Curious Kids Q&amp;A</span>
+          <span>Ask big questions. Get gentle answers.</span>
+        </div>
       </div>
+
+      <!-- mobile hamburger -->
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav>
+          <ul id="navLinks">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="ask.html">Ask a Question</a></li>
+          <li><a href="questions.html">Question Wall</a></li>
+          <li><a href="store.html">Store</a></li>
+          <li><a href="parents.html">For Parents</a></li>
+          <li><a href="forum.html">Adult Forum</a></li>
+          <li><a href="legal.html">Legal</a></li>
+          <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
+        </ul>
+      </nav>
     </div>
+  </header>
 
-    <!-- MOBILE MENU BUTTON -->
-    <button class="nav-toggle" aria-label="Toggle Menu">☰</button>
-  </div>
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <h1>
+          Big questions. <span>Gentle answers.</span>
+        </h1>
+        <p>
+          Curious Kids Q&amp;A is a child-safe space where kids can ask honest
+          questions about God, life, feelings and the world. Parents and
+          teachers can join in too — always with kindness and care.
+        </p>
 
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="ask.html">Ask a Question</a></li>
-      <li><a href="questions.html">Question Wall</a></li>
-      <li><a href="store.html">Store</a></li>
-      <li><a href="parents.html">For Parents</a></li>
-      <li><a href="forum.html">Adult Forum</a></li>
-      <li><a href="legal.html">Legal</a></li>
-      <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
-    </ul>
-  </nav>
-</header>
-    <main>
-      <section class="hero">
-        <div>
-          <h1>
-            A safe place where <span>curious kids</span> can ask any question.
-          </h1>
-          <p>
-            Funny, serious, confusing or big — no question is too small for God.
-            Children and parents can ask freely, and answers are given with
-            truth, kindness, and care.
-          </p>
-          <div class="hero-actions">
-            <a href="ask.html" class="btn btn-primary">✨ Ask a Question</a>
-            <a href="questions.html" class="btn btn-ghost"
-              >👀 View Question Wall</a
-            >
-          </div>
-          <p class="hero-note">
-            No surnames, no phone numbers, no contact details — just honest
-            questions and gentle answers.
-          </p>
+        <div class="hero-actions">
+          <a href="ask.html" class="btn btn-primary">🚀 Ask a Question</a>
+          <a href="questions.html" class="btn btn-ghost">🔍 View Question Wall</a>
         </div>
-        <div>
-          <!-- simple chalkboard graphic text – static -->
-          <div
-            style="
-              background: #020617;
-              border-radius: 20px;
-              padding: 1rem;
-              color: #e5e7eb;
-              box-shadow: 0 15px 30px rgba(15, 23, 42, 0.4);
-            "
-          >
-            <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                font-size: 0.85rem;
-                margin-bottom: 0.4rem;
-              "
-            >
-              <span>Today’s Big Question</span>
-              <span style="font-size: 0.7rem; opacity: 0.8"
-                >Curious Kids Class</span
-              >
-            </div>
-            <p style="font-size: 0.9rem; margin-bottom: 0.6rem">
-              🤔 “Miss, where is God? Is He in heaven or inside our toilet? My
-              dad always knocks and says, ‘God, are you still inside?’”
-            </p>
-            <p style="font-size: 0.8rem; opacity: 0.8">
-              God is everywhere — and He loves honest questions. 💛
-            </p>
-          </div>
-        </div>
-      </section>
 
-      <section class="card-row">
-        <article class="card">
-          <h2>Ask a Question</h2>
-          <p>
-            Kids, parents and teachers can send in questions about God, life,
-            feelings and more.
-          </p>
-          <a href="ask.html" class="btn btn-primary">✍️ Go to Ask Page</a>
-        </article>
-        <article class="card">
-          <h2>Curious Kids Store</h2>
-          <p>
-            Colouring books, Bible story printables, shirts and more. USD first,
-            with other currencies as options.
-          </p>
-          <a href="store.html" class="btn btn-ghost">🛒 Visit Store</a>
-        </article>
-        <article class="card">
-          <h2>For Parents & Legal</h2>
-          <p>
-            Read our simple Terms, child-safety notes and privacy summaries
-            written in clear language.
-          </p>
-          <a href="parents.html" class="btn btn-ghost">👨‍👩‍👧 For Parents</a>
-        </article>
-      </section>
-    </main>
+        <p class="hero-note">
+          No surnames, phone numbers or contact details. Just first-name
+          nicknames and gentle answers.
+        </p>
+      </div>
 
-    <footer>
-      <p>
-        © <span id="year"></span> Curious Kids Q&amp;A. A kid-friendly question
-        &amp; answer platform.
-      </p>
-    </footer>
+      <div class="hero-side-card">
+        <h2>For Parents &amp; Teachers</h2>
+        <p>
+          You stay in the loop. Kids can ask from home, school or church,
+          while adults keep an eye on what’s being asked.
+        </p>
+        <ul>
+          <li>Preview questions together before sending.</li>
+          <li>Private questions stay off the public wall.</li>
+          <li>Adult forum for deeper parent / teacher conversations.</li>
+        </ul>
+        <a href="parents.html" class="card-link">Read the Parents Guide →</a>
+      </div>
+    </section>
 
-    <script>
-      const y = document.getElementById('year');
-      if (y) y.textContent = new Date().getFullYear();
-    </script>
-    <script>
-      (function () {
-        const ADMIN_CODE = 'CKADMIN2025';
-        const logo = document.querySelector('.brand-logo');
-        if (!logo) return;
+    <!-- FEATURE CARDS -->
+    <section class="card-row">
+      <article class="card">
+        <h2>Ask a Question</h2>
+        <p>
+          Kids, parents and teachers can ask anything respectfully — about God,
+          feelings, school, friendships and growing up.
+        </p>
+        <a href="ask.html" class="card-link">Go to Ask Page →</a>
+      </article>
 
-        let clicks = 0;
-        let timer = null;
+      <article class="card">
+        <h2>Question Wall</h2>
+        <p>
+          See public questions asked from this browser. Private and adult
+          consultation questions are never shown on the wall.
+        </p>
+        <a href="questions.html" class="card-link">Open Question Wall →</a>
+      </article>
 
-        logo.addEventListener('click', () => {
-          clicks++;
-          if (timer) clearTimeout(timer);
+      <article class="card">
+        <h2>Parents &amp; Adult Forum</h2>
+        <p>
+          A gentle space for parents, teachers and guardians to talk about
+          children’s big questions and worries.
+        </p>
+        <a href="forum.html" class="card-link">Visit Adult Forum →</a>
+      </article>
 
-          // reset counter after 2.5 seconds
-          timer = setTimeout(() => {
-            clicks = 0;
-          }, 2500);
+      <article class="card">
+        <h2>Curious Kids Store</h2>
+        <p>
+          Browse kid-friendly colouring books, printable stories and other
+          resources that support curious faith and gentle answers.
+        </p>
+        <a href="store.html" class="card-link">Browse Store →</a>
+      </article>
+    </section>
+  </main>
+ <footer>
+    <p>
+      © <span id="year"></span> Curious Kids Q&amp;A.
+      All rights reserved.
+    </p>
+    <p style="margin-top:0.25rem;">
+      <a href="legal.html#terms">Terms of Service</a> ·
+      <a href="legal.html#privacy">Privacy Policy</a> ·
+      <a href="legal.html#cookies">Cookies</a>
+    </p>
+  </footer>
+</div>
 
-          if (clicks >= 5) {
-            clicks = 0;
-            const code = prompt('Admin access code:');
-            if (code === ADMIN_CODE) {
-              window.location.href = 'admin.html';
-            } else if (code) {
-              alert('Incorrect code.');
-            }
-          }
-        });
-      })();
-
-      window.addEventListener("load", function () {
-    // Handle splash screen fade + removal
+<script>
+  // Splash behaviour
+  (function () {
     const splash = document.getElementById("splash-screen");
-    if (splash) {
-      // Give time for the CSS animation to finish (900ms + a little buffer)
-      setTimeout(function () {
-        splash.style.display = "none";
-      }, 3500); // matches 2.00 delay + 0.9s animation
+    const body = document.body;
+
+    function hideSplash() {
+      if (!splash) return;
+      splash.classList.add("hidden");
+      body.classList.add("splash-done");
     }
 
-    // Register service worker for PWA behavior
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("/sw.js")
-        .catch(function (err) {
-          console.log("SW registration failed:", err);
-        });
-    }
-  });
-      
- 
-   const toggleBtn = document.querySelector('.nav-toggle');
-  const navMenu = document.querySelector('nav');
-
-  if (toggleBtn && navMenu) {
-    toggleBtn.addEventListener('click', () => {
-      navMenu.classList.toggle('open');
+    // small delay so animation is visible
+    window.addEventListener("load", () => {
+      setTimeout(hideSplash, 1500);
     });
-  }
-    </script>
-   
+  })();
 
-  </body>
+  // Footer year
+  (function () {
+    const y = document.getElementById("year");
+    if (y) y.textContent = new Date().getFullYear();
+  })();
+
+  // Admin unlock (5 taps on logo)
+  (function () {
+    const ADMIN_CODE = "CKADMIN2025";
+    const logo = document.querySelector(".brand-logo");
+    if (!logo) return;
+
+    let clicks = 0;
+    let timer = null;
+
+    logo.addEventListener("click", () => {
+      clicks++;
+      if (timer) clearTimeout(timer);
+
+      timer = setTimeout(() => { clicks = 0; }, 2500);
+
+      if (clicks >= 5) {
+        clicks = 0;
+        const code = prompt("Admin access code:");
+        if (code === ADMIN_CODE) {
+          window.location.href = "admin.html";
+        } else if (code) {
+          alert("Incorrect code.");
+        }
+      }
+    });
+  })();
+
+  // Mobile nav toggle
+  (function () {
+    const toggle = document.getElementById("navToggle");
+    const links = document.getElementById("navLinks");
+    if (!toggle || !links) return;
+
+    toggle.addEventListener("click", () => {
+      links.classList.toggle("open");
+    });
+
+    links.addEventListener("click", (event) => {
+      if (event.target.tagName.toLowerCase() === "a") {
+        links.classList.remove("open");
+      }
+    });
+  })();
+
+  // Optional: register service worker if you have sw.js
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  }
+</script>
+
+</body>
 </html>
