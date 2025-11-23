@@ -6,63 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root{
-      --card-bg:#ffffff;--bg:#f7fbff;--text:#1f2933;--muted:#6b7280;
+      --card-bg:#ffffff;
+      --bg:#f7fbff;
+      --text:#1f2933;
+      --muted:#6b7280;
       --shadow-soft:0 10px 25px rgba(15,23,42,0.08);
       --radius-lg:18px;
       --font-main:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     }
     *{box-sizing:border-box;margin:0;padding:0;}
+
     body{
       font-family:var(--font-main);
       background:radial-gradient(circle at top,#e0f2ff 0,#f7fbff 45%,#ffffff 100%);
-      color:var(--text);min-height:100vh;
+      color:var(--text);
+      min-height:100vh;
     }
     a{text-decoration:none;color:inherit;}
-
-    main{
-      max-width:1100px;margin:0 auto;padding:1.5rem 1rem 2.5rem;
-    }
-    .section-header{margin-bottom:.9rem;}
-    .section-header h1{font-size:1.5rem;margin-bottom:.25rem;}
-    .section-header p{font-size:.9rem;color:var(--muted);}
-    .card{
-      background:var(--card-bg);border-radius:var(--radius-lg);
-      padding:1.1rem 1rem;box-shadow:var(--shadow-soft);
-      border:1px solid rgba(148,163,184,0.18);
-    }
-
-    .question-card{
-      background:#fff;border-radius:var(--radius-lg);
-      border:1px solid rgba(148,163,184,.25);
-      padding:.8rem .85rem .75rem;margin-bottom:.7rem;
-      box-shadow:0 4px 12px rgba(15,23,42,.04);
-      font-size:.85rem;
-    }
-    .question-category{
-      font-size:.7rem;padding:.15rem .5rem;border-radius:999px;
-      background:rgba(59,130,246,.08);color:#1d4ed8;font-weight:600;
-    }
-    .question-meta{font-size:.7rem;color:var(--muted);}
-    .question-text{margin:.2rem 0 .3rem;}
-    .question-nickname{font-size:.74rem;color:#6b7280;}
-    .question-status{
-      display:inline-flex;align-items:center;gap:.25rem;
-      margin-top:.2rem;font-size:.7rem;
-      padding:.15rem .45rem;border-radius:999px;
-      background:rgba(234,179,8,.08);color:#854d0e;
-    }
-    .question-status::before{content:"•";}
-    .empty-state{
-      font-size:.85rem;color:var(--muted);
-      background:#eff6ff;border-radius:var(--radius-lg);
-      padding:.9rem .8rem;border:1px dashed rgba(129,140,248,.7);
-    }
-
-    footer{
-      margin-top:2.8rem;padding:1.2rem 1rem 1.8rem;
-      font-size:.75rem;color:var(--muted);
-      border-top:1px solid rgba(148,163,184,0.25);text-align:center;
-    }
 
     /* HEADER + NAVBAR (same style as store.html / ask.html) */
     header {
@@ -109,7 +69,7 @@
       color: #ffffff;
       font-weight: 800;
       font-size: 1.1rem;
-      cursor: pointer;
+      cursor: pointer; /* admin unlock */
       box-shadow: 0 4px 14px rgba(15, 23, 42, 0.35);
     }
 
@@ -135,7 +95,7 @@
       display: flex;
       gap: 0.75rem;
       font-size: 0.9rem;
-         align-items: center;
+      align-items: center;
     }
 
     nav a {
@@ -193,18 +153,15 @@
         right: 0.6rem;
         flex-direction: column;
         align-items: flex-end;
-        background: rgba(15, 23, 42, 0.98); /* dark dropdown like store.html */
+        background: rgba(15, 23, 42, 0.98); /* black-style dropdown */
         padding: 0.6rem 0.9rem;
         border-radius: 12px;
         box-shadow: 0 10px 25px rgba(15, 23, 42, 0.4);
         display: none; /* hidden by default */
       }
 
-      /* show menu when either nav OR ul has .open
-         (covers all pages, even with older CSS) */
-      nav ul.open,
-      nav.open ul {
-        display: flex;
+      nav ul.open {
+        display: flex; /* show when toggled */
       }
 
       nav a {
@@ -212,6 +169,74 @@
         width: 100%;
         text-align: right;
       }
+    }
+    /* MAIN CONTENT */
+    main{
+      max-width:1100px;
+      margin:0 auto;
+      padding:1.5rem 1rem 2.5rem;
+    }
+
+    .section-header{margin-bottom:.9rem;}
+    .section-header h1{font-size:1.5rem;margin-bottom:.25rem;}
+    .section-header p{font-size:.9rem;color:var(--muted);}
+
+    .card{
+      background:var(--card-bg);
+      border-radius:var(--radius-lg);
+      padding:1.1rem 1rem;
+      box-shadow:var(--shadow-soft);
+      border:1px solid rgba(148,163,184,0.18);
+    }
+
+    .question-card{
+      background:#fff;
+      border-radius:var(--radius-lg);
+      border:1px solid rgba(148,163,184,.25);
+      padding:.8rem .85rem .75rem;
+      margin-bottom:.7rem;
+      box-shadow:0 4px 12px rgba(15,23,42,.04);
+      font-size:.85rem;
+    }
+    .question-category{
+      font-size:.7rem;
+      padding:.15rem .5rem;
+      border-radius:999px;
+      background:rgba(59,130,246,.08);
+      color:#1d4ed8;
+      font-weight:600;
+    }
+    .question-meta{font-size:.7rem;color:var(--muted);}
+    .question-text{margin:.2rem 0 .3rem;}
+    .question-nickname{font-size:.74rem;color:#6b7280;}
+    .question-status{
+      display:inline-flex;
+      align-items:center;
+      gap:.25rem;
+      margin-top:.2rem;
+      font-size:.7rem;
+      padding:.15rem .45rem;
+      border-radius:999px;
+      background:rgba(234,179,8,.08);
+      color:#854d0e;
+    }
+    .question-status::before{content:"•";}
+    .empty-state{
+      font-size:.85rem;
+      color:var(--muted);
+      background:#eff6ff;
+      border-radius:var(--radius-lg);
+      padding:.9rem .8rem;
+      border:1px dashed rgba(129,140,248,.7);
+    }
+
+    footer{
+      margin-top:2.8rem;
+      padding:1.2rem 1rem 1.8rem;
+      font-size:.75rem;
+      color:var(--muted);
+      border-top:1px solid rgba(148,163,184,0.25);
+      text-align:center;
     }
   </style>
 </head>
@@ -260,12 +285,13 @@
       This wall shows only <strong>public questions</strong> asked from this browser.
       Private and adult consultation questions are kept hidden and never displayed here.
     </p>
-  </section>
+      </section>
 
   <section class="card">
     <div id="questionsList" aria-live="polite"></div>
   </section>
 </main>
+
 <footer>
   <p>
     © <span id="year"></span> Curious Kids Q&amp;A.
@@ -280,14 +306,15 @@
 
 <script>
   const STORAGE_KEY = "curiousKidsQuestions";
-  const ADMIN_CODE = "CKAdmin2025"; // change if you like
+  const ADMIN_CODE = "CKADMIN2025";
 
   function escapeHtml(str){
     if(!str) return "";
     return String(str).replace(/[&<>"']/g,ch =>
-      ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]||ch)
+      ({"&":"&amp;","<":"&lt;","~":"&gt;","\"":"&quot;","'":"&#39;"}[ch]||ch)
     );
   }
+
   function loadQuestions(){
     try{
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -296,6 +323,7 @@
       return Array.isArray(parsed)?parsed:[];
     }catch{return [];}
   }
+
   function saveQuestions(list){
     try{localStorage.setItem(STORAGE_KEY,JSON.stringify(list));}catch{}
   }
@@ -304,7 +332,6 @@
     const container=document.getElementById("questionsList");
     if(!container) return;
     const all = loadQuestions();
-    // ✅ ONLY non-private questions here
     const publicQs = all.filter(q => !q.isPrivate);
 
     if(!publicQs.length){
@@ -330,11 +357,11 @@
     }).join("");
   }
 
-  // 🧹 Admin-only: Clear ONLY public questions (keep private/consultation)
+  // Optional: clear only public questions (keeps private ones)
   function clearPublicQuestions(){
     if(!confirm("Clear all PUBLIC questions on this device? Private questions will be kept.")) return;
     const all = loadQuestions();
-    const keep = all.filter(q => q.isPrivate); // keep only private
+    const keep = all.filter(q => q.isPrivate);
     saveQuestions(keep);
     renderQuestions();
   }
@@ -345,9 +372,8 @@
     renderQuestions();
   });
 
-  // 🔐 Admin access to admin.html via 5-click on logo
+  // Admin access to admin.html via 5-click on logo
   (function () {
-    const ADMIN_CODE_LOCAL = "CKADMIN2025";
     const logo = document.querySelector(".brand-logo");
     if (!logo) return;
 
@@ -357,7 +383,7 @@
     logo.addEventListener("click", () => {
       clicks++;
       if (timer) clearTimeout(timer);
-     // reset counter after 2.5 seconds
+          // reset counter after 2.5 seconds
       timer = setTimeout(() => {
         clicks = 0;
       }, 2500);
@@ -365,7 +391,7 @@
       if (clicks >= 5) {
         clicks = 0;
         const code = prompt("Admin access code:");
-        if (code === ADMIN_CODE_LOCAL) {
+        if (code === ADMIN_CODE) {
           window.location.href = "admin.html";
         } else if (code) {
           alert("Incorrect code.");
@@ -374,23 +400,20 @@
     });
   })();
 
-  // 🌐 Mobile nav toggle – add .open to BOTH nav and ul
+  // Mobile nav toggle
   (function () {
     const toggle = document.getElementById("navToggle");
     const links = document.getElementById("navLinks");
-    const nav = document.querySelector("header nav");
-    if (!toggle || !links || !nav) return;
+    if (!toggle || !links) return;
 
     toggle.addEventListener("click", () => {
       links.classList.toggle("open");
-      nav.classList.toggle("open");
     });
 
-    // Close menu after clicking a link
+    // Close after clicking a menu link
     links.addEventListener("click", (event) => {
       if (event.target.tagName.toLowerCase() === "a") {
         links.classList.remove("open");
-        nav.classList.remove("open");
       }
     });
   })();
