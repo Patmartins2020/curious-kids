@@ -168,6 +168,7 @@
       }
       /* Header container */
 /* HEADER + NAVBAR (same as store.html) */
+
 header {
   position: sticky;
   top: 0;
@@ -279,7 +280,7 @@ nav a:hover {
   border-radius: 999px;
 }
 
-/* Mobile dropdown behaviour */
+/* Mobile nav behaviour */
 @media (max-width: 800px) {
   .nav-toggle {
     display: inline-flex;
@@ -312,7 +313,6 @@ nav a:hover {
     text-align: right;
   }
 }
-
 .nav-cta {
   background: #fff;
   color: #10b981;
@@ -351,32 +351,40 @@ nav a:hover {
     </style>
   </head>
   <body>
-   <header class="ck-header">
+   <header>
   <div class="nav-inner">
     <div class="brand">
       <div class="brand-logo">CK</div>
       <div class="brand-text">
-        <span>Curious Kids Q&A</span>
+        <span>Curious Kids Q&amp;A</span>
         <span>Ask big questions. Get gentle answers.</span>
       </div>
     </div>
 
-    <!-- MOBILE MENU BUTTON -->
-    <button class="nav-toggle" aria-label="Toggle Menu">☰</button>
-  </div>
+    <!-- Mobile hamburger -->
+    <button
+      class="nav-toggle"
+      id="navToggle"
+      aria-label="Toggle navigation menu"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="ask.html">Ask a Question</a></li>
-      <li><a href="questions.html">Question Wall</a></li>
-      <li><a href="store.html">Store</a></li>
-      <li><a href="parents.html">For Parents</a></li>
-      <li><a href="forum.html">Adult Forum</a></li>
-      <li><a href="legal.html">Legal</a></li>
-      <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
-    </ul>
-  </nav>
+    <nav>
+      <ul id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ask.html">Ask a Question</a></li>
+        <li><a href="questions.html">Question Wall</a></li>
+        <li><a href="store.html">Store</a></li>
+        <li><a href="parents.html">For Parents</a></li>
+        <li><a href="forum.html">Adult Forum</a></li>
+        <li><a href="legal.html">Legal</a></li>
+        <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
+      </ul>
+    </nav>
+  </div>
 </header>
     <main>
       <section class="card section-header">
