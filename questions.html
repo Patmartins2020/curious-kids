@@ -18,7 +18,8 @@
       color:var(--text);min-height:100vh;
     }
     a{text-decoration:none;color:inherit;}
-      main{
+
+    main{
       max-width:1100px;margin:0 auto;padding:1.5rem 1rem 2.5rem;
     }
     .section-header{margin-bottom:.9rem;}
@@ -63,7 +64,7 @@
       border-top:1px solid rgba(148,163,184,0.25);text-align:center;
     }
 
-    /* HEADER + NAVBAR (same as ask.html / store.html) */
+    /* HEADER + NAVBAR (same style as store.html / ask.html) */
     header {
       position: sticky;
       top: 0;
@@ -134,7 +135,7 @@
       display: flex;
       gap: 0.75rem;
       font-size: 0.9rem;
-        align-items: center;
+         align-items: center;
     }
 
     nav a {
@@ -192,15 +193,18 @@
         right: 0.6rem;
         flex-direction: column;
         align-items: flex-end;
-        background: rgba(15, 23, 42, 0.98);
+        background: rgba(15, 23, 42, 0.98); /* dark dropdown like store.html */
         padding: 0.6rem 0.9rem;
         border-radius: 12px;
         box-shadow: 0 10px 25px rgba(15, 23, 42, 0.4);
         display: none; /* hidden by default */
       }
 
-      nav ul.open {
-        display: flex; /* show when toggled */
+      /* show menu when either nav OR ul has .open
+         (covers all pages, even with older CSS) */
+      nav ul.open,
+      nav.open ul {
+        display: flex;
       }
 
       nav a {
@@ -262,14 +266,13 @@
     <div id="questionsList" aria-live="polite"></div>
   </section>
 </main>
-
 <footer>
   <p>
     © <span id="year"></span> Curious Kids Q&amp;A.
     All rights reserved.
   </p>
   <p style="margin-top:0.25rem;">
-      <a href="legal.html#terms">Terms of Service</a> ·
+    <a href="legal.html#terms">Terms of Service</a> ·
     <a href="legal.html#privacy">Privacy Policy</a> ·
     <a href="legal.html#cookies">Cookies</a>
   </p>
@@ -342,9 +345,9 @@
     renderQuestions();
   });
 
-  // 🔐 Admin access to admin.html via 5-click on logo (same pattern as other pages)
+  // 🔐 Admin access to admin.html via 5-click on logo
   (function () {
-    const ADMIN_CODE = "CKADMIN2025";
+    const ADMIN_CODE_LOCAL = "CKADMIN2025";
     const logo = document.querySelector(".brand-logo");
     if (!logo) return;
 
@@ -354,15 +357,15 @@
     logo.addEventListener("click", () => {
       clicks++;
       if (timer) clearTimeout(timer);
-
-      // reset counter after 2.5 seconds
+     // reset counter after 2.5 seconds
       timer = setTimeout(() => {
         clicks = 0;
       }, 2500);
-         if (clicks >= 5) {
+
+      if (clicks >= 5) {
         clicks = 0;
         const code = prompt("Admin access code:");
-        if (code === ADMIN_CODE) {
+        if (code === ADMIN_CODE_LOCAL) {
           window.location.href = "admin.html";
         } else if (code) {
           alert("Incorrect code.");
@@ -371,19 +374,23 @@
     });
   })();
 
-  // 🌐 Mobile nav toggle (same as ask.html / store.html)
+  // 🌐 Mobile nav toggle – add .open to BOTH nav and ul
   (function () {
     const toggle = document.getElementById("navToggle");
     const links = document.getElementById("navLinks");
-    if (!toggle || !links) return;
+    const nav = document.querySelector("header nav");
+    if (!toggle || !links || !nav) return;
 
     toggle.addEventListener("click", () => {
       links.classList.toggle("open");
+      nav.classList.toggle("open");
     });
 
+    // Close menu after clicking a link
     links.addEventListener("click", (event) => {
       if (event.target.tagName.toLowerCase() === "a") {
         links.classList.remove("open");
+        nav.classList.remove("open");
       }
     });
   })();
