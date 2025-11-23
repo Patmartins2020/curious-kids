@@ -182,7 +182,7 @@ nav a {
 </head>
 <body>
 <header>
-<header class="ck-header">
+<header>
   <div class="nav-inner">
     <div class="brand">
       <div class="brand-logo">CK</div>
@@ -192,22 +192,30 @@ nav a {
       </div>
     </div>
 
-    <!-- MOBILE MENU BUTTON -->
-    <button class="nav-toggle" aria-label="Toggle Menu">☰</button>
-  </div>
+    <!-- Mobile hamburger -->
+    <button
+      class="nav-toggle"
+      id="navToggle"
+      aria-label="Toggle navigation menu"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="ask.html">Ask a Question</a></li>
-      <li><a href="questions.html">Question Wall</a></li>
-      <li><a href="store.html">Store</a></li>
-      <li><a href="parents.html">For Parents</a></li>
-      <li><a href="forum.html">Adult Forum</a></li>
-      <li><a href="legal.html">Legal</a></li>
-      <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
-    </ul>
-  </nav>
+    <nav>
+      <ul id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ask.html">Ask a Question</a></li>
+        <li><a href="questions.html">Question Wall</a></li>
+        <li><a href="store.html">Store</a></li>
+        <li><a href="parents.html">For Parents</a></li>
+        <li><a href="forum.html">Adult Forum</a></li>
+        <li><a href="legal.html">Legal</a></li>
+        <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
+      </ul>
+    </nav>
+  </div>
 </header>
 
 
