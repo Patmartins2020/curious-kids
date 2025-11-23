@@ -18,37 +18,9 @@
       color:var(--text);min-height:100vh;
     }
     a{text-decoration:none;color:inherit;}
-    header{
-      position:sticky;top:0;z-index:50;
-      background:rgba(247,251,255,0.96);
-      backdrop-filter:blur(10px);
-      border-bottom:1px solid rgba(148,163,184,0.2);
+      main{
+      max-width:1100px;margin:0 auto;padding:1.5rem 1rem 2.5rem;
     }
-    .nav-inner{
-      max-width:1100px;margin:0 auto;padding:.6rem 1rem;
-      display:flex;align-items:center;justify-content:space-between;gap:1rem;
-    }
-    .brand{display:flex;align-items:center;gap:0.5rem;}
-    .brand-logo{
-      width:34px;height:34px;border-radius:50%;
-      background:conic-gradient(from 180deg,#ff8a3d,#ffd74d,#4d8fff,#ff8a3d);
-      display:flex;align-items:center;justify-content:center;
-      color:#fff;font-weight:800;font-size:1.1rem;
-      cursor:pointer; /* admin unlock */
-      box-shadow:0 4px 12px rgba(15,23,42,0.15);
-    }
-    .brand-text{display:flex;flex-direction:column;line-height:1.1;}
-    .brand-text span:first-child{font-weight:800;font-size:1rem;letter-spacing:.03em;}
-    .brand-text span:last-child{font-size:.75rem;color:var(--muted);}
-    nav ul{list-style:none;display:flex;gap:.75rem;font-size:.9rem;}
-    nav a{
-      padding:.35rem .8rem;border-radius:999px;
-      color:#475569;font-weight:500;
-      transition:background .15s,color .15s,transform .1s;
-    }
-    nav a:hover{background:rgba(77,143,255,.12);color:#1d4ed8;transform:translateY(-1px);}
-    .nav-cta{background:#1d4ed8;color:#fff;box-shadow:0 3px 10px rgba(37,99,235,.4);}
-    main{max-width:1100px;margin:0 auto;padding:1.5rem 1rem 2.5rem;}
     .section-header{margin-bottom:.9rem;}
     .section-header h1{font-size:1.5rem;margin-bottom:.25rem;}
     .section-header p{font-size:.9rem;color:var(--muted);}
@@ -57,27 +29,6 @@
       padding:1.1rem 1rem;box-shadow:var(--shadow-soft);
       border:1px solid rgba(148,163,184,0.18);
     }
-    .admin-controls{
-      display:none;
-      margin-bottom:.7rem;
-      font-size:.8rem;
-      padding:.5rem .6rem;
-      border-radius:999px;
-      background:#fef3c7;
-      border:1px solid #facc15;
-      color:#854d0e;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:.5rem;
-    }
-    .admin-controls button{
-      border:none;border-radius:999px;
-      padding:.25rem .7rem;font-size:.75rem;
-      cursor:pointer;
-      background:#dc2626;color:#fff;
-    }
-    .admin-controls button:hover{background:#b91c1c;}
 
     .question-card{
       background:#fff;border-radius:var(--radius-lg);
@@ -105,98 +56,164 @@
       background:#eff6ff;border-radius:var(--radius-lg);
       padding:.9rem .8rem;border:1px dashed rgba(129,140,248,.7);
     }
+
     footer{
       margin-top:2.8rem;padding:1.2rem 1rem 1.8rem;
       font-size:.75rem;color:var(--muted);
       border-top:1px solid rgba(148,163,184,0.25);text-align:center;
     }
-    @media(max-width:800px){nav ul{display:none;}}
-    /* Header container */
-.ck-header {
-  background: #16a34a;; /* Curious Kids green */
-  color: #fff;
-  padding: 0.75rem 1rem;
-}
 
-/* Inner layout */
-.nav-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    /* HEADER + NAVBAR (same as ask.html / store.html) */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #16a34a;
+      color: #f9fafb;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.15);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+    }
 
-/* Brand section */
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
 
-.brand-logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-}
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
 
-.brand-text span {
-  display: block;
-  font-size: 0.8rem;
-}
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 180deg,
+        #ff8a3d,
+        #ffd74d,
+        #4d8fff,
+        #16a34a,
+        #ff8a3d
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.35);
+    }
 
-/* DEFAULT NAV (desktop) */
-nav ul {
-  display: flex;
-  gap: 1rem;
-  padding: 0;
-  margin: 0.75rem 0 0 0;
-  list-style: none;
-}
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
 
-nav a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 500;
-}
+    .brand-text span:first-child {
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: 0.03em;
+    }
 
-.nav-cta {
-  background: #fff;
-  color: #10b981;
-  padding: 6px 10px;
-  border-radius: 5px;
-  font-weight: bold;
-}
+    .brand-text span:last-child {
+      font-size: 0.75rem;
+      color: rgba(226, 232, 240, 0.9);
+    }
 
-/* MOBILE STYLES */
-.nav-toggle {
-  display: none;
-  font-size: 2rem;
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-}
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+        align-items: center;
+    }
 
-@media (max-width: 768px) {
-  nav ul {
-    display: none;
-    flex-direction: column;
-    gap: 0;
-    background: #10b981;
-    padding: 1rem;
-  }
+    nav a {
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      color: #e5e7eb;
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s, transform 0.1s;
+      text-decoration: none;
+    }
 
-  nav.open ul {
-    display: flex;
-  }
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.16);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
 
-  .nav-toggle {
-    display: block;
-  }
-}
+    .nav-cta {
+      background: #ffffff;
+      color: #0f172a;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.35);
+    }
+
+    /* Hamburger button (mobile) */
+    .nav-toggle {
+      display: none;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 0.25rem;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #ffffff;
+      margin: 4px 0;
+      border-radius: 999px;
+    }
+
+    /* Mobile nav behaviour */
+    @media (max-width: 800px) {
+      .nav-toggle {
+        display: inline-flex;
+      }
+
+      nav {
+        position: relative;
+      }
+
+      nav ul {
+        position: absolute;
+        top: 44px;
+        right: 0.6rem;
+        flex-direction: column;
+        align-items: flex-end;
+        background: rgba(15, 23, 42, 0.98);
+        padding: 0.6rem 0.9rem;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.4);
+        display: none; /* hidden by default */
+      }
+
+      nav ul.open {
+        display: flex; /* show when toggled */
+      }
+
+      nav a {
+        display: block;
+        width: 100%;
+        text-align: right;
+      }
+    }
   </style>
 </head>
 <body>
+
 <header>
-  <header class="ck-header">
   <div class="nav-inner">
     <div class="brand">
       <div class="brand-logo">CK</div>
@@ -206,23 +223,32 @@ nav a {
       </div>
     </div>
 
-    <!-- MOBILE MENU BUTTON -->
-    <button class="nav-toggle" aria-label="Toggle Menu">☰</button>
-  </div>
+    <!-- Mobile hamburger -->
+    <button
+      class="nav-toggle"
+      id="navToggle"
+      aria-label="Toggle navigation menu"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="ask.html">Ask a Question</a></li>
-      <li><a href="questions.html">Question Wall</a></li>
-      <li><a href="store.html">Store</a></li>
-      <li><a href="parents.html">For Parents</a></li>
-      <li><a href="forum.html">Adult Forum</a></li>
-      <li><a href="legal.html">Legal</a></li>
-      <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
-    </ul>
-  </nav>
+    <nav>
+      <ul id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ask.html">Ask a Question</a></li>
+        <li><a href="questions.html">Question Wall</a></li>
+        <li><a href="store.html">Store</a></li>
+        <li><a href="parents.html">For Parents</a></li>
+        <li><a href="forum.html">Adult Forum</a></li>
+        <li><a href="legal.html">Legal</a></li>
+        <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
+      </ul>
+    </nav>
+  </div>
 </header>
+
 <main>
   <section class="section-header">
     <h1>Question Wall</h1>
@@ -232,14 +258,22 @@ nav a {
     </p>
   </section>
 
-  
-
   <section class="card">
     <div id="questionsList" aria-live="polite"></div>
   </section>
 </main>
 
-
+<footer>
+  <p>
+    © <span id="year"></span> Curious Kids Q&amp;A.
+    All rights reserved.
+  </p>
+  <p style="margin-top:0.25rem;">
+      <a href="legal.html#terms">Terms of Service</a> ·
+    <a href="legal.html#privacy">Privacy Policy</a> ·
+    <a href="legal.html#cookies">Cookies</a>
+  </p>
+</footer>
 
 <script>
   const STORAGE_KEY = "curiousKidsQuestions";
@@ -287,7 +321,7 @@ nav a {
           <span class="question-meta">${meta}</span>
         </header>
         <p class="question-text">${escapeHtml(q.questionText)}</p>
-        ${nickname ? `<p class="question-nickname">${nickname}</p>` : ""}
+        ${nickname ? <p class="question-nickname">${nickname}</p> : ""}
         <span class="question-status">Waiting for answer</span>
       </article>`;
     }).join("");
@@ -302,45 +336,13 @@ nav a {
     renderQuestions();
   }
 
-  // 🔐 Hidden admin unlock via triple-click on CK logo
-  let adminClickCount = 0;
-  let adminClickTimer = null;
-  function handleAdminLogoClick(){
-    adminClickCount++;
-    if(adminClickTimer) clearTimeout(adminClickTimer);
-    adminClickTimer = setTimeout(()=>{adminClickCount=0;},800);
-
-    if(adminClickCount >= 3){
-      adminClickCount = 0;
-      const code = prompt("Admin login: enter secret code");
-      if(code === ADMIN_CODE){
-        const bar = document.getElementById("adminControls");
-        if(bar) bar.style.display = "flex";
-        alert("Admin tools unlocked on this page.");
-      }else if(code !== null){
-        alert("Wrong code.");
-      }
-    }
-  }
-
   document.addEventListener("DOMContentLoaded",()=>{
     const y=document.getElementById("year");
     if(y) y.textContent=new Date().getFullYear();
     renderQuestions();
   });
-</script>
-<footer>
-  <p>
-    © <span id="year"></span> Curious Kids Q&amp;A.
-    All rights reserved.
-  </p>
-  <p style="margin-top:0.25rem;">
-    <a href="legal.html#terms">Terms of Service</a> ·
-    <a href="legal.html#privacy">Privacy Policy</a> ·
-    <a href="legal.html#cookies">Cookies</a>
-  </p>
-</footer>
-<script>
+
+  // 🔐 Admin access to admin.html via 5-click on logo (same pattern as other pages)
   (function () {
     const ADMIN_CODE = "CKADMIN2025";
     const logo = document.querySelector(".brand-logo");
@@ -357,8 +359,7 @@ nav a {
       timer = setTimeout(() => {
         clicks = 0;
       }, 2500);
-
-      if (clicks >= 5) {
+         if (clicks >= 5) {
         clicks = 0;
         const code = prompt("Admin access code:");
         if (code === ADMIN_CODE) {
@@ -369,16 +370,24 @@ nav a {
       }
     });
   })();
-    const toggleBtn = document.querySelector('.nav-toggle');
-  const navMenu = document.querySelector('nav');
 
-  if (toggleBtn && navMenu) {
-    toggleBtn.addEventListener('click', () => {
-      navMenu.classList.toggle('open');
+  // 🌐 Mobile nav toggle (same as ask.html / store.html)
+  (function () {
+    const toggle = document.getElementById("navToggle");
+    const links = document.getElementById("navLinks");
+    if (!toggle || !links) return;
+
+    toggle.addEventListener("click", () => {
+      links.classList.toggle("open");
     });
-  }
+
+    links.addEventListener("click", (event) => {
+      if (event.target.tagName.toLowerCase() === "a") {
+        links.classList.remove("open");
+      }
+    });
+  })();
 </script>
 
 </body>
 </html>
-
