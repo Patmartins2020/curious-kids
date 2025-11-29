@@ -23,8 +23,8 @@
       min-height:100vh;
     }
     a{text-decoration:none;color:inherit;}
+   /* HEADER + NAVBAR (same shared style as ask.html) */
 
-    /* HEADER + NAVBAR (same style as store.html / ask.html) */
     header {
       position: sticky;
       top: 0;
@@ -137,7 +137,7 @@
       border-radius: 999px;
     }
 
-    /* Mobile nav behaviour */
+    /* Mobile nav behaviour (same as ask.html) */
     @media (max-width: 800px) {
       .nav-toggle {
         display: inline-flex;
@@ -169,7 +169,8 @@
         width: 100%;
         text-align: right;
       }
-    }
+          }
+
     /* MAIN CONTENT */
     main{
       max-width:1100px;
@@ -284,8 +285,8 @@
     <p>
       This wall shows only <strong>public questions</strong> asked from this browser.
       Private and adult consultation questions are kept hidden and never displayed here.
-    </p>
-      </section>
+          </p>
+  </section>
 
   <section class="card">
     <div id="questionsList" aria-live="polite"></div>
@@ -311,7 +312,7 @@
   function escapeHtml(str){
     if(!str) return "";
     return String(str).replace(/[&<>"']/g,ch =>
-      ({"&":"&amp;","<":"&lt;","~":"&gt;","\"":"&quot;","'":"&#39;"}[ch]||ch)
+      ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]||ch)
     );
   }
 
@@ -383,7 +384,7 @@
     logo.addEventListener("click", () => {
       clicks++;
       if (timer) clearTimeout(timer);
-          // reset counter after 2.5 seconds
+         // reset counter after 2.5 seconds
       timer = setTimeout(() => {
         clicks = 0;
       }, 2500);
@@ -400,7 +401,7 @@
     });
   })();
 
-  // Mobile nav toggle
+  // Mobile nav toggle (same as ask.html)
   (function () {
     const toggle = document.getElementById("navToggle");
     const links = document.getElementById("navLinks");
