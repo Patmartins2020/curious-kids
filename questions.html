@@ -23,7 +23,8 @@
       min-height:100vh;
     }
     a{text-decoration:none;color:inherit;}
-   /* HEADER + NAVBAR (same shared style as ask.html) */
+
+    /* HEADER + NAVBAR (same shared style as ask.html) */
 
     header {
       position: sticky;
@@ -169,7 +170,7 @@
         width: 100%;
         text-align: right;
       }
-          }
+    }
 
     /* MAIN CONTENT */
     main{
@@ -285,7 +286,7 @@
     <p>
       This wall shows only <strong>public questions</strong> asked from this browser.
       Private and adult consultation questions are kept hidden and never displayed here.
-          </p>
+    </p>
   </section>
 
   <section class="card">
@@ -384,7 +385,7 @@
     logo.addEventListener("click", () => {
       clicks++;
       if (timer) clearTimeout(timer);
-         // reset counter after 2.5 seconds
+      // reset counter after 2.5 seconds
       timer = setTimeout(() => {
         clicks = 0;
       }, 2500);
