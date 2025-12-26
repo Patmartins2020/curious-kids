@@ -26,18 +26,15 @@
 
     a{text-decoration:none;color:#1d4ed8;}
 
-    /* -----------------------------
-       SHARED HEADER + NAVBAR STYLE
-       (same as store.html / ask.html)
-    ------------------------------ */
-    header {
+    /* =========================
+       HEADER + NAV (MATCH index.html)
+       ========================= */
+    .ck-header {
       position: sticky;
       top: 0;
       z-index: 50;
-      background: #16a34a;
-      color: #f9fafb;
-      border-bottom: 1px solid rgba(15, 23, 42, 0.15);
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+      background: #10b981; /* Curious Kids green */
+      color: #ffffff;
     }
 
     .nav-inner {
@@ -53,29 +50,28 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
     }
 
     .brand-logo {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       background: conic-gradient(
         from 180deg,
         #ff8a3d,
         #ffd74d,
         #4d8fff,
-        #16a34a,
         #ff8a3d
       );
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #ffffff;
+      color: #fff;
       font-weight: 800;
       font-size: 1.1rem;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.35);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+      cursor: pointer; /* admin unlock */
     }
 
     .brand-text {
@@ -92,90 +88,102 @@
 
     .brand-text span:last-child {
       font-size: 0.75rem;
-      color: rgba(226,232,240,0.9);
+      color: rgba(255,255,255,0.85);
     }
 
-    nav ul {
+    /* Desktop nav */
+    .main-nav ul {
       list-style: none;
       display: flex;
       gap: 0.75rem;
       font-size: 0.9rem;
-      align-items: center;
     }
 
-    nav a {
+    .main-nav a {
       padding: 0.35rem 0.8rem;
       border-radius: 999px;
-      color: #e5e7eb;
       font-weight: 500;
-      transition: background 0.15s, color 0.15s;
+      color: #e5fdf4;
+      transition: background 0.15s, color 0.15s, transform 0.1s;
       text-decoration:none;
     }
 
-    nav a:hover {
-      background: rgba(255,255,255,0.16);
+    .main-nav a:hover {
+      background: rgba(255,255,255,0.14);
       color: #ffffff;
+      transform: translateY(-1px);
     }
 
     .nav-cta {
       background:#ffffff;
-      color:#0f172a;
-      box-shadow:0 3px 10px rgba(15,23,42,0.35);
+      color:#10b981 !important;
+      box-shadow:0 3px 10px rgba(15,118,110,0.4);
+      text-align:center;
     }
 
-    /* Hamburger button (mobile) */
+    /* Mobile toggle – dash style */
     .nav-toggle {
       display: none;
+      font-size: 2rem;
+      background: none;
       border: none;
-      background: transparent;
+      color: #ffffff;
       cursor: pointer;
-      padding: 0.25rem;
-    }
-
-    .nav-toggle span {
-      display:block;
-      width:22px;
-      height:2px;
-      background:#ffffff;
-      margin:4px 0;
-      border-radius:999px;
+      line-height: 1;
     }
 
     /* Mobile dropdown menu */
-    @media (max-width: 800px) {
+    @media (max-width: 768px) {
       .nav-toggle {
-        display:inline-flex;
+        display:block;
       }
 
-      nav {
-        position:relative;
+      .nav-inner {
+        position: relative;
       }
 
-      nav ul {
+      .main-nav {
         position:absolute;
-        top:44px;
-        right:0.6rem;
-        flex-direction:column;
-        align-items:flex-end;
-        background:rgba(15,23,42,0.98); /* DARK menu like store.html */
-        padding:0.6rem 0.9rem;
-        border-radius:12px;
-        box-shadow:0 10px 25px rgba(15,23,42,0.4);
+        top:calc(100% + 0.4rem);
+        right:1rem;
         display:none;
+        background:rgba(3,7,18,0.96); /* very dark like index.html */
+        padding:0.4rem 0.5rem 0.6rem;
+        border-radius:18px;
+        box-shadow:0 18px 40px rgba(15,23,42,0.6);
+        min-width:210px;
       }
 
-      nav ul.open {
-        display:flex;
+      .main-nav ul {
+        flex-direction:column;
+        gap:0.15rem;
+        padding:0;
+        margin:0;
       }
 
-      nav a {
+      .main-nav a {
         width:100%;
-        text-align:right;
+        text-align:left;
+        padding:0.6rem 0.75rem;
+        color:#ffffff;
+      }
+
+      .main-nav a:hover {
+        background:rgba(255,255,255,0.12);
+        transform:none;
+      }
+
+      .main-nav.open {
+        display:block;
+      }
+
+      .nav-cta {
+        margin-top:0.25rem;
       }
     }
 
     /* ------------------- MAIN CONTENT ------------------- */
-main{
+    main{
       max-width:1100px;
       margin:0 auto;
       padding:1.5rem 1rem 2.5rem;
@@ -208,37 +216,36 @@ main{
 </head>
 <body>
 
-<!-- NAVBAR -->
-<header>
+<!-- NAVBAR (index.html style) -->
+<header class="ck-header">
   <div class="nav-inner">
     <div class="brand">
       <div class="brand-logo">CK</div>
       <div class="brand-text">
-        <span>Curious Kids Q&A</span>
+        <span>Curious Kids Q&amp;A</span>
         <span>Ask big questions. Get gentle answers.</span>
       </div>
     </div>
 
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
-    </button>
-
-    <nav>
-      <ul id="navLinks">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="ask.html">Ask a Question</a></li>
-        <li><a href="questions.html">Question Wall</a></li>
-        <li><a href="store.html">Store</a></li>
-        <li><a href="parents.html">For Parents</a></li>
-        <li><a href="forum.html">Adult Forum</a></li>
-        <li><a href="legal.html">Legal</a></li>
-        <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
-      </ul>
-    </nav>
+    <!-- Mobile dash button -->
+    <button class="nav-toggle" aria-label="Toggle menu">━</button>
   </div>
+
+  <nav class="main-nav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="ask.html">Ask a Question</a></li>
+      <li><a href="questions.html">Question Wall</a></li>
+      <li><a href="store.html">Store</a></li>
+      <li><a href="parents.html">For Parents</a></li>
+      <li><a href="forum.html">Adult Forum</a></li>
+      <li><a href="legal.html">Legal</a></li>
+      <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
+    </ul>
+  </nav>
 </header>
 
-<!-- LEGAL CONTENT (unchanged, restored) -->
+<!-- LEGAL CONTENT -->
 <main>
   <section class="card" id="terms">
     <h1>Terms of Service</h1>
@@ -309,7 +316,7 @@ main{
   const y = document.getElementById("year");
   if (y) y.textContent = new Date().getFullYear();
 
-  // admin tap on logo
+  // admin tap on logo -> admin.html
   (function () {
     const ADMIN_CODE = "CKADMIN2025";
     const logo = document.querySelector(".brand-logo");
@@ -336,20 +343,14 @@ main{
     });
   })();
 
-  // mobile nav toggle
+  // mobile nav toggle (same behaviour as index.html)
   (function () {
-    const toggle = document.getElementById("navToggle");
-    const links = document.getElementById("navLinks");
-    if (!toggle || !links) return;
+    const toggleBtn = document.querySelector(".nav-toggle");
+    const mainNav = document.querySelector(".main-nav");
+    if (!toggleBtn || !mainNav) return;
 
-    toggle.addEventListener("click", () => {
-      links.classList.toggle("open");
-    });
-
-    links.addEventListener("click", (event) => {
-      if (event.target.tagName.toLowerCase() === "a") {
-        links.classList.remove("open");
-      }
+    toggleBtn.addEventListener("click", () => {
+      mainNav.classList.toggle("open");
     });
   })();
 </script>
