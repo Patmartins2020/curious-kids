@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>Curious Kids – Question Wall</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <style>
     :root{
       --card-bg:#ffffff;
@@ -15,7 +14,6 @@
       --radius-lg:18px;
       --font-main:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     }
-
     *{box-sizing:border-box;margin:0;padding:0;}
 
     body{
@@ -24,18 +22,18 @@
       color:var(--text);
       min-height:100vh;
     }
-
     a{text-decoration:none;color:inherit;}
 
-    /* =========================
-       HEADER + NAV (MATCH index.html)
-       ========================= */
-    .ck-header {
+    /* HEADER + NAVBAR (same shared style as ask.html) */
+
+    header {
       position: sticky;
       top: 0;
       z-index: 50;
-      background: #10b981; /* same green as index.html */
-      color: #ffffff;
+      background: #16a34a;
+      color: #f9fafb;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.15);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
     }
 
     .nav-inner {
@@ -51,28 +49,29 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
     }
 
     .brand-logo {
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background: conic-gradient(
         from 180deg,
         #ff8a3d,
         #ffd74d,
         #4d8fff,
+        #16a34a,
         #ff8a3d
       );
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
+      color: #ffffff;
       font-weight: 800;
       font-size: 1.1rem;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
       cursor: pointer; /* admin unlock */
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.35);
     }
 
     .brand-text {
@@ -89,102 +88,91 @@
 
     .brand-text span:last-child {
       font-size: 0.75rem;
-      color: rgba(255, 255, 255, 0.85);
+      color: rgba(226, 232, 240, 0.9);
     }
 
-    /* Desktop nav */
-    .main-nav ul {
+    nav ul {
       list-style: none;
       display: flex;
       gap: 0.75rem;
       font-size: 0.9rem;
+      align-items: center;
     }
 
-    .main-nav a {
+    nav a {
       padding: 0.35rem 0.8rem;
       border-radius: 999px;
+      color: #e5e7eb;
       font-weight: 500;
-      color: #e5fdf4;
       transition: background 0.15s, color 0.15s, transform 0.1s;
+      text-decoration: none;
     }
 
-    .main-nav a:hover {
-      background: rgba(255, 255, 255, 0.14);
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.16);
       color: #ffffff;
       transform: translateY(-1px);
     }
 
     .nav-cta {
       background: #ffffff;
-      color: #10b981 !important;
-      box-shadow: 0 3px 10px rgba(15, 118, 110, 0.4);
-      text-align: center;
+      color: #0f172a;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.35);
     }
 
-    /* Mobile toggle – dash style (same as index.html) */
+    /* Hamburger button (mobile) */
     .nav-toggle {
       display: none;
-      font-size: 2rem;
-      background: none;
       border: none;
-      color: #ffffff;
+      background: transparent;
       cursor: pointer;
-      line-height: 1;
+      padding: 0.25rem;
     }
 
-    /* Mobile dropdown behaviour */
-    @media (max-width: 768px) {
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #ffffff;
+      margin: 4px 0;
+      border-radius: 999px;
+    }
+
+    /* Mobile nav behaviour (same as ask.html) */
+    @media (max-width: 800px) {
       .nav-toggle {
-        display: block;
+        display: inline-flex;
       }
 
-      .nav-inner {
+      nav {
         position: relative;
       }
 
-      .main-nav {
+      nav ul {
         position: absolute;
-        right: 1rem;
-        top: calc(100% + 0.4rem);
-        display: none;
-        background: rgba(3, 7, 18, 0.96); /* very dark dropdown */
-        border-radius: 18px;
-        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.6);
-        padding: 0.4rem 0.5rem 0.6rem;
-        min-width: 210px;
-      }
-
-      .main-nav ul {
+        top: 44px;
+        right: 0.6rem;
         flex-direction: column;
-        gap: 0.15rem;
-        padding: 0;
-        margin: 0;
+        align-items: flex-end;
+        background: rgba(15, 23, 42, 0.98); /* black-style dropdown */
+        padding: 0.6rem 0.9rem;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.4);
+        display: none; /* hidden by default */
       }
 
-      .main-nav a {
+      nav ul.open {
+        display: flex; /* show when toggled */
+      }
+
+      nav a {
         display: block;
-        padding: 0.6rem 0.75rem;
-        color: #ffffff;
-        border-radius: 999px;
-      }
-
-      .main-nav a:hover {
-        background: rgba(255, 255, 255, 0.12);
-        transform: none;
-      }
-
-      .main-nav.open {
-        display: block;
-      }
-
-      .nav-cta {
-        margin-top: 0.25rem;
+        width: 100%;
+        text-align: right;
       }
     }
 
-    /* =========================
-       MAIN CONTENT
-       ========================= */
+    /* MAIN CONTENT */
     main{
       max-width:1100px;
       margin:0 auto;
@@ -235,6 +223,7 @@
       color:#854d0e;
     }
     .question-status::before{content:"•";}
+
     .empty-state{
       font-size:.85rem;
       color:var(--muted);
@@ -242,6 +231,101 @@
       border-radius:var(--radius-lg);
       padding:.9rem .8rem;
       border:1px dashed rgba(129,140,248,.7);
+    }
+
+    /* ANSWERS BELOW EACH QUESTION */
+
+    .answers-container{
+      margin-top:0.6rem;
+      padding-top:0.6rem;
+      border-top:1px dashed rgba(148,163,184,0.6);
+    }
+
+    .answers-title{
+      font-size:0.8rem;
+      font-weight:600;
+      color:#4b5563;
+      margin-bottom:0.25rem;
+    }
+
+    .answer-item{
+      border-radius:10px;
+      border:1px solid rgba(148,163,184,0.3);
+      padding:0.45rem 0.5rem;
+      margin-bottom:0.35rem;
+      background:#f9fafb;
+    }
+
+    .answer-meta{
+      font-size:0.7rem;
+      color:#6b7280;
+      margin-bottom:0.15rem;
+    }
+
+    .answer-body{
+      font-size:0.82rem;
+      color:#111827;
+    }
+
+    .answer-empty{
+      font-size:0.8rem;
+      color:var(--muted);
+      margin-bottom:0.4rem;
+    }
+
+    .answer-form{
+      margin-top:0.4rem;
+      padding-top:0.4rem;
+      border-top:1px solid rgba(209,213,219,0.8);
+      font-size:0.78rem;
+    }
+
+    .answer-form label{
+      display:block;
+      margin-bottom:0.25rem;
+    }
+
+    .answer-form span{
+      display:block;
+      margin-bottom:0.05rem;
+      color:#4b5563;
+      font-size:0.75rem;
+      font-weight:500;
+    }
+
+    .answer-form input,
+    .answer-form textarea{
+      width:100%;
+      border-radius:10px;
+      border:1px solid rgba(148,163,184,0.9);
+      padding:0.35rem 0.5rem;
+      font-size:0.8rem;
+      font-family:inherit;
+      background:#f9fafb;
+      resize:vertical;
+    }
+
+    .answer-button{
+      margin-top:0.35rem;
+      border-radius:999px;
+      border:none;
+      padding:0.4rem 0.9rem;
+      font-size:0.78rem;
+      font-weight:600;
+      cursor:pointer;
+      background:#ff8a3d;
+      color:#ffffff;
+      box-shadow:0 4px 10px rgba(248,113,22,0.45);
+    }
+
+    .answer-button:hover{
+      background:#e46f22;
+    }
+
+    .answer-hint{
+      margin-top:0.2rem;
+      font-size:0.7rem;
+      color:var(--muted);
     }
 
     footer{
@@ -256,7 +340,7 @@
 </head>
 <body>
 
-<header class="ck-header">
+<header>
   <div class="nav-inner">
     <div class="brand">
       <div class="brand-logo">CK</div>
@@ -266,22 +350,30 @@
       </div>
     </div>
 
-    <!-- MOBILE MENU BUTTON (dash) -->
-    <button class="nav-toggle" aria-label="Toggle Menu">━</button>
-  </div>
+    <!-- Mobile hamburger -->
+    <button
+      class="nav-toggle"
+      id="navToggle"
+      aria-label="Toggle navigation menu"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-  <nav class="main-nav">
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="ask.html">Ask a Question</a></li>
-      <li><a href="questions.html">Question Wall</a></li>
-      <li><a href="store.html">Store</a></li>
-      <li><a href="parents.html">For Parents</a></li>
-      <li><a href="forum.html">Adult Forum</a></li>
-      <li><a href="legal.html">Legal</a></li>
-      <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
-    </ul>
-  </nav>
+    <nav>
+      <ul id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ask.html">Ask a Question</a></li>
+        <li><a href="questions.html">Question Wall</a></li>
+        <li><a href="store.html">Store</a></li>
+        <li><a href="parents.html">For Parents</a></li>
+        <li><a href="forum.html">Adult Forum</a></li>
+        <li><a href="legal.html">Legal</a></li>
+        <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
+      </ul>
+    </nav>
+  </div>
 </header>
 
 <main>
@@ -290,6 +382,7 @@
     <p>
       This wall shows only <strong>public questions</strong> asked from this browser.
       Private and adult consultation questions are kept hidden and never displayed here.
+      Adults and teachers can add gentle answers below each question (local demo).
     </p>
   </section>
 
@@ -317,7 +410,7 @@
   function escapeHtml(str){
     if(!str) return "";
     return String(str).replace(/[&<>"']/g,ch =>
-      ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]||ch)
+      ({"&":"&amp;","<":"&lt;","&gt;":">","\"":"&quot;","'":"&#39;"}[ch] || ch)
     );
   }
 
@@ -340,16 +433,35 @@
     const all = loadQuestions();
     const publicQs = all.filter(q => !q.isPrivate);
 
+    // ensure answers array exists
+    publicQs.forEach(q => {
+      if (!Array.isArray(q.answers)) q.answers = [];
+    });
+
     if(!publicQs.length){
       container.innerHTML =
         '<p class="empty-state">No public questions on this device yet. Be the first to ask on the Ask page!</p>';
       return;
     }
 
-    container.innerHTML = publicQs.slice().reverse().map(q=>{
+    container.innerHTML = publicQs.map((q,index)=>{
       const nickname = q.nickname ? "From: "+escapeHtml(q.nickname) : "";
       const meta = escapeHtml(q.who || "Kid") + " • " +
                    escapeHtml(q.ageRange || "Age not said");
+      const answers = q.answers || [];
+
+      const answersHtml = answers.length
+        ? answers.map(a => `
+          <div class="answer-item">
+            <div class="answer-meta">
+              ${escapeHtml(a.author || "Adult helper")}
+              ${a.createdAt ? " · " + escapeHtml(new Date(a.createdAt).toLocaleString()) : ""}
+            </div>
+            <div class="answer-body">${escapeHtml(a.body || "")}</div>
+          </div>
+        `).join("")
+        : `<p class="answer-empty">No answers yet. You can be the first to answer kindly.</p>`;
+
       return `
       <article class="question-card">
         <header style="display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;">
@@ -359,8 +471,75 @@
         <p class="question-text">${escapeHtml(q.questionText)}</p>
         ${nickname ? `<p class="question-nickname">${nickname}</p>` : ""}
         <span class="question-status">Waiting for answer</span>
+
+        <div class="answers-container">
+          <h3 class="answers-title">Answers</h3>
+          ${answersHtml}
+          <div class="answer-form">
+            <label>
+              <span>Your name or role (optional)</span>
+              <input type="text" id="answerName-${index}" maxlength="40"
+                     placeholder="e.g. Mum in Lagos, Teacher Ada" />
+            </label>
+            <label>
+              <span>Your answer</span>
+              <textarea id="answerBody-${index}" rows="3"
+                placeholder="Write a short, kind answer suitable for a child."></textarea>
+            </label>
+            <button type="button" class="answer-button" onclick="submitAnswer(${index})">
+              ✨ Post Answer (local demo)
+            </button>
+            <p class="answer-hint">
+              Please be gentle and do not share phone numbers, email addresses or links.
+            </p>
+          </div>
+        </div>
       </article>`;
     }).join("");
+
+    // save any structural changes (like added answers array)
+    saveQuestions(all);
+  }
+
+  // Called when an adult posts an answer under a question
+  function submitAnswer(publicIndex){
+    const all = loadQuestions();
+    const publicQs = all.filter(q => !q.isPrivate);
+    if (publicIndex < 0 || publicIndex >= publicQs.length) return;
+
+    const q = publicQs[publicIndex];
+    if (!Array.isArray(q.answers)) q.answers = [];
+
+    const nameInput = document.getElementById(`answerName-${publicIndex}`);
+    const bodyInput = document.getElementById(`answerBody-${publicIndex}`);
+    if (!bodyInput) return;
+
+    const author = (nameInput && nameInput.value ? nameInput.value.trim() : "");
+    const body = bodyInput.value.trim();
+
+    if (body.length < 5){
+      alert("Please write a bit more so your answer is helpful.");
+      return;
+    }
+
+    const lower = body.toLowerCase();
+    if (lower.includes("@") || lower.includes("http")){
+      alert("Please do not include email addresses or links in your answer.");
+      return;
+    }
+
+    q.answers.push({
+      author: author || "Adult helper",
+      body,
+      createdAt: new Date().toISOString()
+    });
+
+    saveQuestions(all);
+
+    if (nameInput) nameInput.value = "";
+    bodyInput.value = "";
+
+    renderQuestions();
   }
 
   // Optional: clear only public questions (keeps private ones)
@@ -378,7 +557,7 @@
     renderQuestions();
   });
 
-  // Admin access to admin.html via 5-click on logo (same behaviour)
+  // Admin access to admin.html via 5-click on logo
   (function () {
     const logo = document.querySelector(".brand-logo");
     if (!logo) return;
@@ -406,15 +585,21 @@
     });
   })();
 
-  // Mobile nav toggle – exactly like index.html
+  // Mobile nav toggle (same as ask.html)
   (function () {
-    const toggleBtn = document.querySelector(".nav-toggle");
-    const mainNav = document.querySelector(".main-nav");
+    const toggle = document.getElementById("navToggle");
+    const links = document.getElementById("navLinks");
+    if (!toggle || !links) return;
 
-    if (!toggleBtn || !mainNav) return;
+    toggle.addEventListener("click", () => {
+      links.classList.toggle("open");
+    });
 
-    toggleBtn.addEventListener("click", () => {
-      mainNav.classList.toggle("open");
+    // Close after clicking a menu link
+    links.addEventListener("click", (event) => {
+      if (event.target.tagName.toLowerCase() === "a") {
+        links.classList.remove("open");
+      }
     });
   })();
 </script>
