@@ -163,7 +163,7 @@
         align-items: center;
         padding: 1.6rem 1.3rem;
         margin-top: 0.8rem;
-          border-radius: 24px;
+        border-radius: 24px;
         background: linear-gradient(135deg, #fff7eb, #e0f2ff);
         box-shadow: var(--shadow-soft);
       }
@@ -260,6 +260,44 @@
         margin-bottom: 0.5rem;
       }
 
+      /* =========================
+         ADS PLACEHOLDER
+         ========================= */
+      .ads-banner {
+        margin-top: 2.4rem;
+        padding: 0.9rem 1rem;
+        border-radius: 18px;
+        background: #fef3c7; /* soft amber */
+        border: 1px dashed #f59e0b;
+        box-shadow: var(--shadow-soft);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        font-size: 0.85rem;
+        color: #92400e;
+        flex-wrap: wrap;
+      }
+
+      .ads-banner-title {
+        font-weight: 700;
+        margin-bottom: 0.15rem;
+      }
+
+      .ads-banner p {
+        margin: 0;
+        font-size: 0.83rem;
+      }
+
+      .ads-size-tag {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.6rem;
+        border-radius: 999px;
+        border: 1px solid rgba(217, 119, 6, 0.6);
+        background: rgba(255, 251, 235, 0.9);
+        white-space: nowrap;
+      }
+
       footer {
         margin-top: 2.8rem;
         padding: 1.2rem 1rem 1.8rem;
@@ -287,7 +325,7 @@
           sans-serif;
         opacity: 1;
         transform: translateY(0);
-           transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         animation: splashFadeIn 0.8s ease-out both;
       }
 
@@ -426,7 +464,7 @@
           padding: 0;
           margin: 0;
         }
-  .main-nav a {
+        .main-nav a {
           display: block;
           padding: 0.6rem 0.75rem;
           color: #ffffff;
@@ -523,7 +561,7 @@
             <!-- Chalkboard graphic -->
             <div
               style="
-                 background: #020617;
+                background: #020617;
                 border-radius: 20px;
                 padding: 1rem;
                 color: #e5e7eb;
@@ -580,6 +618,20 @@
             <a href="parents.html" class="btn btn-ghost">👨‍👩‍👧 For Parents</a>
           </article>
         </section>
+
+        <!-- Small ads placeholder just above the footer -->
+        <section class="ads-banner">
+          <div>
+            <div class="ads-banner-title">Ad space – family-friendly only</div>
+            <p>
+              Placeholder for a small sponsor banner. In the future, you can
+              show simple, child-safe adverts here with no tracking.
+            </p>
+          </div>
+          <div class="ads-size-tag">
+            300 × 100 px
+          </div>
+        </section>
       </main>
 
       <footer>
@@ -616,7 +668,7 @@
             clicks = 0;
             const code = prompt("Admin access code:");
             if (code === ADMIN_CODE) {
-                 window.location.href = "admin.html";
+              window.location.href = "admin.html";
             } else if (code) {
               alert("Incorrect code.");
             }
