@@ -1,608 +1,656 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Curious Kids – Question Wall</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root{
-      --card-bg:#ffffff;
-      --bg:#f7fbff;
-      --text:#1f2933;
-      --muted:#6b7280;
-      --shadow-soft:0 10px 25px rgba(15,23,42,0.08);
-      --radius-lg:18px;
-      --font-main:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    }
-    *{box-sizing:border-box;margin:0;padding:0;}
+  <head>
+    <meta charset="UTF-8" />
+    <title>Curious Kids Q&A – Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    body{
-      font-family:var(--font-main);
-      background:radial-gradient(circle at top,#e0f2ff 0,#f7fbff 45%,#ffffff 100%);
-      color:var(--text);
-      min-height:100vh;
-    }
-    a{text-decoration:none;color:inherit;}
-
-    /* HEADER + NAVBAR (same shared style as ask.html) */
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: #16a34a;
-      color: #f9fafb;
-      border-bottom: 1px solid rgba(15, 23, 42, 0.15);
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
-    }
-
-    .nav-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0.6rem 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .brand-logo {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: conic-gradient(
-        from 180deg,
-        #ff8a3d,
-        #ffd74d,
-        #4d8fff,
-        #16a34a,
-        #ff8a3d
-      );
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-      font-weight: 800;
-      font-size: 1.1rem;
-      cursor: pointer; /* admin unlock */
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.35);
-    }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.1;
-    }
-
-    .brand-text span:first-child {
-      font-weight: 800;
-      font-size: 1rem;
-      letter-spacing: 0.03em;
-    }
-
-    .brand-text span:last-child {
-      font-size: 0.75rem;
-      color: rgba(226, 232, 240, 0.9);
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 0.75rem;
-      font-size: 0.9rem;
-      align-items: center;
-    }
-
-    nav a {
-      padding: 0.35rem 0.8rem;
-      border-radius: 999px;
-      color: #e5e7eb;
-      font-weight: 500;
-      transition: background 0.15s, color 0.15s, transform 0.1s;
-      text-decoration: none;
-    }
-
-    nav a:hover {
-      background: rgba(255, 255, 255, 0.16);
-      color: #ffffff;
-      transform: translateY(-1px);
-    }
-
-    .nav-cta {
-      background: #ffffff;
-      color: #0f172a;
-      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.35);
-    }
-
-    /* Hamburger button (mobile) */
-    .nav-toggle {
-      display: none;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      padding: 0.25rem;
-    }
-
-    .nav-toggle span {
-      display: block;
-      width: 22px;
-      height: 2px;
-      background: #ffffff;
-      margin: 4px 0;
-      border-radius: 999px;
-    }
-
-    /* Mobile nav behaviour (same as ask.html) */
-    @media (max-width: 800px) {
-      .nav-toggle {
-        display: inline-flex;
+    <style>
+      :root {
+        --primary: #ff8a3d;
+        --primary-dark: #e46f22;
+        --bg: #f7fbff;
+        --card-bg: #ffffff;
+        --text: #1f2933;
+        --muted: #6b7280;
+        --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+        --radius-lg: 20px;
+        --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
       }
 
-      nav {
-        position: relative;
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
 
-      nav ul {
-        position: absolute;
-        top: 44px;
-        right: 0.6rem;
+      body {
+        font-family: var(--font-main);
+        background: radial-gradient(
+          circle at top,
+          #e0f2ff 0,
+          #f7fbff 45%,
+          #ffffff 100%
+        );
+        min-height: 100vh;
+        color: var(--text);
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem 2.5rem;
+      }
+
+      /* =========================
+         HEADER + NAV (MATCH OTHER PAGES)
+         ========================= */
+      .ck-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: #10b981; /* Curious Kids green */
+        color: #ffffff;
+      }
+
+      .nav-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0.6rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .brand-logo {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: conic-gradient(
+          from 180deg,
+          #ff8a3d,
+          #ffd74d,
+          #4d8fff,
+          #ff8a3d
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 800;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+        cursor: pointer;
+      }
+
+      .brand-text {
+        display: flex;
         flex-direction: column;
-        align-items: flex-end;
-        background: rgba(15, 23, 42, 0.98); /* black-style dropdown */
-        padding: 0.6rem 0.9rem;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.4);
-        display: none; /* hidden by default */
+        line-height: 1.1;
       }
 
-      nav ul.open {
-        display: flex; /* show when toggled */
+      .brand-text span:first-child {
+        font-weight: 800;
+        font-size: 1rem;
+        letter-spacing: 0.03em;
       }
 
-      nav a {
-        display: block;
-        width: 100%;
-        text-align: right;
+      .brand-text span:last-child {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.85);
       }
-    }
 
-    /* MAIN CONTENT */
-    main{
-      max-width:1100px;
-      margin:0 auto;
-      padding:1.5rem 1rem 2.5rem;
-    }
+      /* Desktop nav */
+      .main-nav ul {
+        list-style: none;
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.9rem;
+      }
 
-    .section-header{margin-bottom:.9rem;}
-    .section-header h1{font-size:1.5rem;margin-bottom:.25rem;}
-    .section-header p{font-size:.9rem;color:var(--muted);}
+      .main-nav a {
+        padding: 0.35rem 0.8rem;
+        border-radius: 999px;
+        font-weight: 500;
+        color: #e5fdf4;
+        transition: background 0.15s, color 0.15s, transform 0.1s;
+      }
 
-    .card{
-      background:var(--card-bg);
-      border-radius:var(--radius-lg);
-      padding:1.1rem 1rem;
-      box-shadow:var(--shadow-soft);
-      border:1px solid rgba(148,163,184,0.18);
-    }
+      .main-nav a:hover {
+        background: rgba(255, 255, 255, 0.14);
+        color: #ffffff;
+        transform: translateY(-1px);
+      }
 
-    .question-card{
-      background:#fff;
-      border-radius:var(--radius-lg);
-      border:1px solid rgba(148,163,184,.25);
-      padding:.8rem .85rem .75rem;
-      margin-bottom:.7rem;
-      box-shadow:0 4px 12px rgba(15,23,42,.04);
-      font-size:.85rem;
-    }
-    .question-category{
-      font-size:.7rem;
-      padding:.15rem .5rem;
-      border-radius:999px;
-      background:rgba(59,130,246,.08);
-      color:#1d4ed8;
-      font-weight:600;
-    }
-    .question-meta{font-size:.7rem;color:var(--muted);}
-    .question-text{margin:.2rem 0 .3rem;}
-    .question-nickname{font-size:.74rem;color:#6b7280;}
-    .question-status{
-      display:inline-flex;
-      align-items:center;
-      gap:.25rem;
-      margin-top:.2rem;
-      font-size:.7rem;
-      padding:.15rem .45rem;
-      border-radius:999px;
-      background:rgba(234,179,8,.08);
-      color:#854d0e;
-    }
-    .question-status::before{content:"•";}
+      .nav-cta {
+        background: #ffffff;
+        color: #10b981 !important;
+        box-shadow: 0 3px 10px rgba(15, 118, 110, 0.4);
+        text-align: center;
+      }
 
-    .empty-state{
-      font-size:.85rem;
-      color:var(--muted);
-      background:#eff6ff;
-      border-radius:var(--radius-lg);
-      padding:.9rem .8rem;
-      border:1px dashed rgba(129,140,248,.7);
-    }
+      /* Mobile toggle – dash style */
+      .nav-toggle {
+        display: none;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        color: #ffffff;
+        cursor: pointer;
+        line-height: 1;
+      }
 
-    /* ANSWERS BELOW EACH QUESTION */
+      /* =========================
+         HERO + CARDS
+         ========================= */
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+        gap: 2rem;
+        align-items: center;
+        padding: 1.6rem 1.3rem;
+        margin-top: 0.8rem;
+          border-radius: 24px;
+        background: linear-gradient(135deg, #fff7eb, #e0f2ff);
+        box-shadow: var(--shadow-soft);
+      }
 
-    .answers-container{
-      margin-top:0.6rem;
-      padding-top:0.6rem;
-      border-top:1px dashed rgba(148,163,184,0.6);
-    }
+      .hero h1 {
+        font-size: clamp(1.9rem, 3vw, 2.3rem);
+        line-height: 1.2;
+        margin-bottom: 0.6rem;
+      }
 
-    .answers-title{
-      font-size:0.8rem;
-      font-weight:600;
-      color:#4b5563;
-      margin-bottom:0.25rem;
-    }
+      .hero h1 span {
+        background: linear-gradient(90deg, #f97316, #ea580c, #ca8a04);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+      }
 
-    .answer-item{
-      border-radius:10px;
-      border:1px solid rgba(148,163,184,0.3);
-      padding:0.45rem 0.5rem;
-      margin-bottom:0.35rem;
-      background:#f9fafb;
-    }
+      .hero p {
+        font-size: 0.97rem;
+        color: var(--muted);
+        max-width: 35rem;
+      }
 
-    .answer-meta{
-      font-size:0.7rem;
-      color:#6b7280;
-      margin-bottom:0.15rem;
-    }
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 0.9rem;
+      }
 
-    .answer-body{
-      font-size:0.82rem;
-      color:#111827;
-    }
+      .btn {
+        border-radius: 999px;
+        padding: 0.65rem 1.4rem;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        transition: transform 0.1s, box-shadow 0.1s, background 0.15s;
+      }
 
-    .answer-empty{
-      font-size:0.8rem;
-      color:var(--muted);
-      margin-bottom:0.4rem;
-    }
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+        box-shadow: 0 5px 16px rgba(248, 113, 22, 0.5);
+      }
 
-    .answer-form{
-      margin-top:0.4rem;
-      padding-top:0.4rem;
-      border-top:1px solid rgba(209,213,219,0.8);
-      font-size:0.78rem;
-    }
+      .btn-primary:hover {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+      }
 
-    .answer-form label{
-      display:block;
-      margin-bottom:0.25rem;
-    }
+      .btn-ghost {
+        background: rgba(255, 255, 255, 0.9);
+        color: #1d4ed8;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+      }
 
-    .answer-form span{
-      display:block;
-      margin-bottom:0.05rem;
-      color:#4b5563;
-      font-size:0.75rem;
-      font-weight:500;
-    }
+      .btn-ghost:hover {
+        background: #eff6ff;
+      }
 
-    .answer-form input,
-    .answer-form textarea{
-      width:100%;
-      border-radius:10px;
-      border:1px solid rgba(148,163,184,0.9);
-      padding:0.35rem 0.5rem;
-      font-size:0.8rem;
-      font-family:inherit;
-      background:#f9fafb;
-      resize:vertical;
-    }
+      .hero-note {
+        margin-top: 0.6rem;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
 
-    .answer-button{
-      margin-top:0.35rem;
-      border-radius:999px;
-      border:none;
-      padding:0.4rem 0.9rem;
-      font-size:0.78rem;
-      font-weight:600;
-      cursor:pointer;
-      background:#ff8a3d;
-      color:#ffffff;
-      box-shadow:0 4px 10px rgba(248,113,22,0.45);
-    }
+      .card-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1rem;
+        margin-top: 2.2rem;
+      }
 
-    .answer-button:hover{
-      background:#e46f22;
-    }
+      .card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        padding: 1.1rem 1rem;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        font-size: 0.9rem;
+      }
 
-    .answer-hint{
-      margin-top:0.2rem;
-      font-size:0.7rem;
-      color:var(--muted);
-    }
+      .card h2 {
+        font-size: 1.1rem;
+        margin-bottom: 0.4rem;
+      }
 
-    footer{
-      margin-top:2.8rem;
-      padding:1.2rem 1rem 1.8rem;
-      font-size:.75rem;
-      color:var(--muted);
-      border-top:1px solid rgba(148,163,184,0.25);
-      text-align:center;
-    }
-  </style>
-</head>
-<body>
+      .card p {
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+      }
 
-<header>
-  <div class="nav-inner">
-    <div class="brand">
-      <div class="brand-logo">CK</div>
-      <div class="brand-text">
-        <span>Curious Kids Q&A</span>
-        <span>Ask big questions. Get gentle answers.</span>
-      </div>
-    </div>
+      footer {
+        margin-top: 2.8rem;
+        padding: 1.2rem 1rem 1.8rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+        border-top: 1px solid rgba(148, 163, 184, 0.25);
+        text-align: center;
+      }
 
-    <!-- Mobile hamburger -->
-    <button
-      class="nav-toggle"
-      id="navToggle"
-      aria-label="Toggle navigation menu"
-    >
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+      /* =========================
+         SPLASH SCREEN
+         ========================= */
+      #splash-screen {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle at top, #e0f2ff, #ffffff);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        text-align: center;
+        color: #4a2800;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        opacity: 1;
+        transform: translateY(0);
+           transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        animation: splashFadeIn 0.8s ease-out both;
+      }
 
-    <nav>
-      <ul id="navLinks">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="ask.html">Ask a Question</a></li>
-        <li><a href="questions.html">Question Wall</a></li>
-        <li><a href="store.html">Store</a></li>
-        <li><a href="parents.html">For Parents</a></li>
-        <li><a href="forum.html">Adult Forum</a></li>
-        <li><a href="legal.html">Legal</a></li>
-        <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
+      #splash-screen.hidden {
+        opacity: 0;
+        transform: translateY(-12px);
+        pointer-events: none;
+      }
 
-<main>
-  <section class="section-header">
-    <h1>Question Wall</h1>
-    <p>
-      This wall shows only <strong>public questions</strong> asked from this browser.
-      Private and adult consultation questions are kept hidden and never displayed here.
-      Adults and teachers can add gentle answers below each question (local demo).
-    </p>
-  </section>
+      .splash-logo {
+        width: 144px;
+        height: 144px;
+        border-radius: 32px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        margin-bottom: 1rem;
+        animation: logoBounce 1.3s ease-in-out infinite;
+        transform-origin: center bottom;
+      }
 
-  <section class="card">
-    <div id="questionsList" aria-live="polite"></div>
-  </section>
-</main>
+      #splash-screen h1 {
+        font-size: 1.6rem;
+        margin: 0.2rem 0;
+      }
 
-<footer>
-  <p>
-    © <span id="year"></span> Curious Kids Q&amp;A.
-    All rights reserved.
-  </p>
-  <p style="margin-top:0.25rem;">
-    <a href="legal.html#terms">Terms of Service</a> ·
-    <a href="legal.html#privacy">Privacy Policy</a> ·
-    <a href="legal.html#cookies">Cookies</a>
-  </p>
-</footer>
+      #splash-screen p {
+        margin: 0;
+        font-size: 0.95rem;
+        opacity: 0.9;
+      }
 
-<script>
-  const STORAGE_KEY = "curiousKidsQuestions";
-  const ADMIN_CODE = "CKADMIN2025";
+      .splash-caption {
+        margin-top: 0.2rem;
+        font-size: 0.95rem;
+        opacity: 0.9;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
 
-  function escapeHtml(str){
-    if(!str) return "";
-    return String(str).replace(/[&<>"']/g,ch =>
-      ({"&":"&amp;","<":"&lt;","&gt;":">","\"":"&quot;","'":"&#39;"}[ch] || ch)
-    );
-  }
+      .splash-dots span {
+        display: inline-block;
+        width: 0.22rem;
+        height: 0.22rem;
+        border-radius: 999px;
+        background: #4a2800;
+        opacity: 0.2;
+        margin: 0 1px;
+        animation: dotsBlink 1.2s infinite ease-in-out;
+      }
 
-  function loadQuestions(){
-    try{
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if(!raw) return [];
-      const parsed = JSON.parse(raw);
-      return Array.isArray(parsed)?parsed:[];
-    }catch{return [];}
-  }
+      .splash-dots span:nth-child(2) {
+        animation-delay: 0.15s;
+      }
+      .splash-dots span:nth-child(3) {
+        animation-delay: 0.3s;
+      }
 
-  function saveQuestions(list){
-    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(list));}catch{}
-  }
-
-  function renderQuestions(){
-    const container=document.getElementById("questionsList");
-    if(!container) return;
-    const all = loadQuestions();
-    const publicQs = all.filter(q => !q.isPrivate);
-
-    // ensure answers array exists
-    publicQs.forEach(q => {
-      if (!Array.isArray(q.answers)) q.answers = [];
-    });
-
-    if(!publicQs.length){
-      container.innerHTML =
-        '<p class="empty-state">No public questions on this device yet. Be the first to ask on the Ask page!</p>';
-      return;
-    }
-
-    container.innerHTML = publicQs.map((q,index)=>{
-      const nickname = q.nickname ? "From: "+escapeHtml(q.nickname) : "";
-      const meta = escapeHtml(q.who || "Kid") + " • " +
-                   escapeHtml(q.ageRange || "Age not said");
-      const answers = q.answers || [];
-
-      const answersHtml = answers.length
-        ? answers.map(a => `
-          <div class="answer-item">
-            <div class="answer-meta">
-              ${escapeHtml(a.author || "Adult helper")}
-              ${a.createdAt ? " · " + escapeHtml(new Date(a.createdAt).toLocaleString()) : ""}
-            </div>
-            <div class="answer-body">${escapeHtml(a.body || "")}</div>
-          </div>
-        `).join("")
-        : `<p class="answer-empty">No answers yet. You can be the first to answer kindly.</p>`;
-
-      return `
-      <article class="question-card">
-        <header style="display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;">
-          <span class="question-category">${escapeHtml(q.category || "Question")}</span>
-          <span class="question-meta">${meta}</span>
-        </header>
-        <p class="question-text">${escapeHtml(q.questionText)}</p>
-        ${nickname ? `<p class="question-nickname">${nickname}</p>` : ""}
-        <span class="question-status">Waiting for answer</span>
-
-        <div class="answers-container">
-          <h3 class="answers-title">Answers</h3>
-          ${answersHtml}
-          <div class="answer-form">
-            <label>
-              <span>Your name or role (optional)</span>
-              <input type="text" id="answerName-${index}" maxlength="40"
-                     placeholder="e.g. Mum in Lagos, Teacher Ada" />
-            </label>
-            <label>
-              <span>Your answer</span>
-              <textarea id="answerBody-${index}" rows="3"
-                placeholder="Write a short, kind answer suitable for a child."></textarea>
-            </label>
-            <button type="button" class="answer-button" onclick="submitAnswer(${index})">
-              ✨ Post Answer (local demo)
-            </button>
-            <p class="answer-hint">
-              Please be gentle and do not share phone numbers, email addresses or links.
-            </p>
-          </div>
-        </div>
-      </article>`;
-    }).join("");
-
-    // save any structural changes (like added answers array)
-    saveQuestions(all);
-  }
-
-  // Called when an adult posts an answer under a question
-  function submitAnswer(publicIndex){
-    const all = loadQuestions();
-    const publicQs = all.filter(q => !q.isPrivate);
-    if (publicIndex < 0 || publicIndex >= publicQs.length) return;
-
-    const q = publicQs[publicIndex];
-    if (!Array.isArray(q.answers)) q.answers = [];
-
-    const nameInput = document.getElementById(`answerName-${publicIndex}`);
-    const bodyInput = document.getElementById(`answerBody-${publicIndex}`);
-    if (!bodyInput) return;
-
-    const author = (nameInput && nameInput.value ? nameInput.value.trim() : "");
-    const body = bodyInput.value.trim();
-
-    if (body.length < 5){
-      alert("Please write a bit more so your answer is helpful.");
-      return;
-    }
-
-    const lower = body.toLowerCase();
-    if (lower.includes("@") || lower.includes("http")){
-      alert("Please do not include email addresses or links in your answer.");
-      return;
-    }
-
-    q.answers.push({
-      author: author || "Adult helper",
-      body,
-      createdAt: new Date().toISOString()
-    });
-
-    saveQuestions(all);
-
-    if (nameInput) nameInput.value = "";
-    bodyInput.value = "";
-
-    renderQuestions();
-  }
-
-  // Optional: clear only public questions (keeps private ones)
-  function clearPublicQuestions(){
-    if(!confirm("Clear all PUBLIC questions on this device? Private questions will be kept.")) return;
-    const all = loadQuestions();
-    const keep = all.filter(q => q.isPrivate);
-    saveQuestions(keep);
-    renderQuestions();
-  }
-
-  document.addEventListener("DOMContentLoaded",()=>{
-    const y=document.getElementById("year");
-    if(y) y.textContent=new Date().getFullYear();
-    renderQuestions();
-  });
-
-  // Admin access to admin.html via 5-click on logo
-  (function () {
-    const logo = document.querySelector(".brand-logo");
-    if (!logo) return;
-
-    let clicks = 0;
-    let timer = null;
-
-    logo.addEventListener("click", () => {
-      clicks++;
-      if (timer) clearTimeout(timer);
-      // reset counter after 2.5 seconds
-      timer = setTimeout(() => {
-        clicks = 0;
-      }, 2500);
-
-      if (clicks >= 5) {
-        clicks = 0;
-        const code = prompt("Admin access code:");
-        if (code === ADMIN_CODE) {
-          window.location.href = "admin.html";
-        } else if (code) {
-          alert("Incorrect code.");
+      @keyframes splashFadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
         }
       }
-    });
-  })();
 
-  // Mobile nav toggle (same as ask.html)
-  (function () {
-    const toggle = document.getElementById("navToggle");
-    const links = document.getElementById("navLinks");
-    if (!toggle || !links) return;
-
-    toggle.addEventListener("click", () => {
-      links.classList.toggle("open");
-    });
-
-    // Close after clicking a menu link
-    links.addEventListener("click", (event) => {
-      if (event.target.tagName.toLowerCase() === "a") {
-        links.classList.remove("open");
+      @keyframes logoBounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-6px);
+        }
+        60% {
+          transform: translateY(-2px);
+        }
       }
-    });
-  })();
-</script>
 
-</body>
+      @keyframes dotsBlink {
+        0%,
+        80%,
+        100% {
+          opacity: 0.2;
+          transform: translateY(0);
+        }
+        40% {
+          opacity: 1;
+          transform: translateY(-2px);
+        }
+      }
+
+      #splash-screen img {
+        width: 144px;
+        height: 144px;
+        border-radius: 32px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        margin-bottom: 1rem;
+      }
+
+      /* =========================
+         RESPONSIVE
+         ========================= */
+      @media (max-width: 800px) {
+        .hero {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .nav-toggle {
+          display: block;
+        }
+
+        .nav-inner {
+          position: relative;
+        }
+
+        .main-nav {
+          position: absolute;
+          right: 1rem;
+          top: calc(100% + 0.4rem);
+          display: none;
+          background: rgba(3, 7, 18, 0.96); /* very dark (almost black) */
+          border-radius: 18px;
+          box-shadow: 0 18px 40px rgba(15, 23, 42, 0.6);
+          padding: 0.4rem 0.5rem 0.6rem;
+          min-width: 210px;
+        }
+
+        .main-nav ul {
+          flex-direction: column;
+          gap: 0.15rem;
+          padding: 0;
+          margin: 0;
+        }
+  .main-nav a {
+          display: block;
+          padding: 0.6rem 0.75rem;
+          color: #ffffff;
+          border-radius: 999px;
+        }
+
+        .main-nav a:hover {
+          background: rgba(255, 255, 255, 0.12);
+          transform: none;
+        }
+
+        .main-nav.open {
+          display: block;
+        }
+
+        .nav-cta {
+          margin-top: 0.25rem;
+        }
+      }
+    </style>
+
+    <!-- PWA + Icons -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#ff8a3d" />
+    <link rel="icon" type="image/png" href="icons/favicon.png" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  </head>
+  <body>
+    <!-- In-app splash screen -->
+    <div id="splash-screen">
+      <img class="splash-logo" src="icons/logo.png" alt="Curious Kids logo" />
+      <h1>Curious Kids</h1>
+      <p class="splash-caption">
+        A safe place where kids can ask Big & Curious questions
+        <span class="splash-dots">
+          <span></span><span></span><span></span>
+        </span>
+      </p>
+    </div>
+
+    <!-- App root -->
+    <div id="app-root">
+      <header class="ck-header">
+        <div class="nav-inner">
+          <div class="brand">
+            <div class="brand-logo">CK</div>
+            <div class="brand-text">
+              <span>Curious Kids Q&A</span>
+              <span>Ask big questions. Get gentle answers.</span>
+            </div>
+          </div>
+
+          <!-- MOBILE MENU BUTTON (dash) -->
+          <button class="nav-toggle" aria-label="Toggle Menu">━</button>
+        </div>
+
+        <nav class="main-nav">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="ask.html">Ask a Question</a></li>
+            <li><a href="questions.html">Question Wall</a></li>
+            <li><a href="store.html">Store</a></li>
+            <li><a href="parents.html">For Parents</a></li>
+            <li><a href="forum.html">Adult Forum</a></li>
+            <li><a href="legal.html">Legal</a></li>
+            <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div>
+            <h1>
+              A safe place where <span>curious kids</span> can ask any question.
+            </h1>
+            <p>
+              Funny, serious, confusing or big — no question is too small for
+              God. Children and parents can ask freely, and answers are given
+              with truth, kindness, and care.
+            </p>
+            <div class="hero-actions">
+              <a href="ask.html" class="btn btn-primary">✨ Ask a Question</a>
+              <a href="questions.html" class="btn btn-ghost">
+                👀 View Question Wall
+              </a>
+            </div>
+            <p class="hero-note">
+              No surnames, no phone numbers, no contact details — just honest
+              questions and gentle answers.
+            </p>
+          </div>
+          <div>
+            <!-- Chalkboard graphic -->
+            <div
+              style="
+                 background: #020617;
+                border-radius: 20px;
+                padding: 1rem;
+                color: #e5e7eb;
+                box-shadow: 0 15px 30px rgba(15, 23, 42, 0.4);
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  font-size: 0.85rem;
+                  margin-bottom: 0.4rem;
+                "
+              >
+                <span>Today’s Big Question</span>
+                <span style="font-size: 0.7rem; opacity: 0.8"
+                  >Curious Kids Class</span
+                >
+              </div>
+              <p style="font-size: 0.9rem; margin-bottom: 0.6rem">
+                🤔 “Miss, where is God? Is He in heaven or inside our toilet? My
+                dad always knocks and says, ‘God, are you still inside?’”
+              </p>
+              <p style="font-size: 0.8rem; opacity: 0.8">
+                God is everywhere — and He loves honest questions. 💛
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card-row">
+          <article class="card">
+            <h2>Ask a Question</h2>
+            <p>
+              Kids, parents and teachers can send in questions about God, life,
+              feelings and more.
+            </p>
+            <a href="ask.html" class="btn btn-primary">✍️ Go to Ask Page</a>
+          </article>
+          <article class="card">
+            <h2>Curious Kids Store</h2>
+            <p>
+              Colouring books, Bible story printables, shirts and more. USD
+              first, with other currencies as options.
+            </p>
+            <a href="store.html" class="btn btn-ghost">🛒 Visit Store</a>
+          </article>
+          <article class="card">
+            <h2>For Parents & Legal</h2>
+            <p>
+              Read our simple Terms, child-safety notes and privacy summaries
+              written in clear language.
+            </p>
+            <a href="parents.html" class="btn btn-ghost">👨‍👩‍👧 For Parents</a>
+          </article>
+        </section>
+      </main>
+
+      <footer>
+        <p>
+          © <span id="year"></span> Curious Kids Q&amp;A. A kid-friendly
+          question &amp; answer platform.
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      // Footer year
+      const y = document.getElementById("year");
+      if (y) y.textContent = new Date().getFullYear();
+
+      // Admin logo secret click
+      (function () {
+        const ADMIN_CODE = "CKADMIN2025";
+        const logo = document.querySelector(".brand-logo");
+        if (!logo) return;
+
+        let clicks = 0;
+        let timer = null;
+
+        logo.addEventListener("click", () => {
+          clicks++;
+          if (timer) clearTimeout(timer);
+
+          timer = setTimeout(() => {
+            clicks = 0;
+          }, 2500);
+
+          if (clicks >= 5) {
+            clicks = 0;
+            const code = prompt("Admin access code:");
+            if (code === ADMIN_CODE) {
+                 window.location.href = "admin.html";
+            } else if (code) {
+              alert("Incorrect code.");
+            }
+          }
+        });
+      })();
+
+      // Splash + Service Worker
+      window.addEventListener("load", function () {
+        const splash = document.getElementById("splash-screen");
+        if (splash) {
+          setTimeout(function () {
+            splash.style.display = "none";
+          }, 3500);
+        }
+
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker
+            .register("sw.js")
+            .catch(function (err) {
+              console.log("SW registration failed:", err);
+            });
+        }
+      });
+
+      // Mobile nav toggle
+      const toggleBtn = document.querySelector(".nav-toggle");
+      const mainNav = document.querySelector(".main-nav");
+
+      if (toggleBtn && mainNav) {
+        toggleBtn.addEventListener("click", () => {
+          mainNav.classList.toggle("open");
+        });
+      }
+    </script>
+  </body>
 </html>
