@@ -394,6 +394,117 @@ nav a {
     display: block;
   }
 }
+/* === Lyrics Orders Admin – styles === */
+.lyrics-card {
+  background:#ffffff;
+  border-radius:18px;
+  padding:1rem 0.9rem;
+  box-shadow:0 10px 25px rgba(15,23,42,0.08);
+  border:1px solid rgba(148,163,184,0.18);
+  margin-bottom:1.2rem;
+  font-size:0.9rem;
+}
+
+.lyrics-header-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:0.75rem;
+  margin-bottom:0.55rem;
+}
+
+.lyrics-header-row h2{
+  font-size:1.05rem;
+  margin:0;
+}
+
+.lyrics-admin-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.4rem;
+}
+
+.lyrics-btn{
+  border-radius:999px;
+  padding:0.35rem 0.9rem;
+  font-size:0.78rem;
+  border:1px solid rgba(148,163,184,0.7);
+  background:#f9fafb;
+  cursor:pointer;
+}
+
+.lyrics-btn:hover{
+  background:#e5f0ff;
+}
+
+#lyricsOrdersList{
+  display:flex;
+  flex-direction:column;
+  gap:0.55rem;
+}
+
+.lyrics-row{
+  border-radius:12px;
+  border:1px solid rgba(148,163,184,0.5);
+  padding:0.55rem 0.6rem;
+  background:#f9fafb;
+}
+
+.lyrics-row-main{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:0.4rem 0.7rem;
+  margin-bottom:0.3rem;
+}
+
+.lyrics-ref{
+  font-weight:700;
+  font-size:0.86rem;
+  color:#111827;
+}
+
+.lyrics-status{
+  font-size:0.7rem;
+  padding:0.15rem 0.5rem;
+  border-radius:999px;
+}
+
+.lyrics-status.new{
+  background:#eff6ff;
+  color:#1d4ed8;
+}
+
+.lyrics-status.completed{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.lyrics-meta{
+  font-size:0.78rem;
+  color:#6b7280;
+  margin-bottom:0.25rem;
+}
+
+.lyrics-lyrics-preview{
+  font-size:0.8rem;
+  color:#111827;
+  background:#ffffff;
+  border-radius:10px;
+  padding:0.4rem 0.45rem;
+  border:1px dashed rgba(148,163,184,0.8);
+  max-height:120px;
+  overflow:auto;
+  white-space:pre-wrap;
+}
+
+.lyrics-row-buttons{
+  margin-top:0.35rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.4rem;
+  font-size:0.78rem;
+}
   </style>
 </head>
 <body>
@@ -493,6 +604,30 @@ nav a {
 
       <div class="list" id="productList"></div>
     </section>
+<section class="lyrics-card">
+  <div class="lyrics-header-row">
+    <h2>Lyrics to Song – Orders (Demo)</h2>
+    <div class="lyrics-admin-actions">
+      <button type="button" class="lyrics-btn" onclick="renderLyricsOrders()">
+        🔄 Refresh from device
+      </button>
+      <button type="button" class="lyrics-btn" onclick="clearLyricsOrders()">
+        🧹 Clear ALL lyrics orders (this device)
+      </button>
+    </div>
+  </div>
+
+  <p style="font-size:0.8rem;color:#6b7280;margin-bottom:0.45rem;">
+    These orders come from <strong>lyrics-pay.html</strong> on this same device.
+    Everything is stored locally using <code>localStorage</code> in your browser.
+    Use this panel to read the child’s lyrics and the parent’s contact, then copy
+    the details for your composer or freelancer.
+  </p>
+
+  <div id="lyricsOrdersList">
+    <!-- Filled by JavaScript -->
+  </div>
+</section>
 
     <!-- PRIVATE CONSULTATIONS -->
     <section class="card">
@@ -754,6 +889,166 @@ nav a {
       renderConsults();
     });
 
+    // === Lyrics Orders admin ===
+const LYRICS_ORDERS_KEY = "curiousKidsLyricsOrders";
+
+function loadLyricsOrders() {
+  try {
+    const raw = localStorage.getItem(LYRICS_ORDERS_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveLyricsOrders(list) {
+  try {
+    localStorage.setItem(LYRICS_ORDERS_KEY, JSON.stringify(list));
+  } catch (e) {}
+}
+
+function escapeHtml(str) {
+  if (!str) return "";
+  return String(str).replace(/[&<>"']/g, ch =>
+    ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch] || ch)
+  );
+}
+function renderLyricsOrders() {
+  const container = document.getElementById("lyricsOrdersList");
+  if (!container) return;
+
+  const orders = loadLyricsOrders();
+
+  if (!orders.length) {
+    container.innerHTML =
+      '<p style="font-size:0.85rem;color:#6b7280;">No lyrics orders stored on this device yet. When a parent completes the Lyrics-to-Song payment demo, their order will appear here.</p>';
+    return;
+  }
+
+  container.innerHTML = orders
+    .map((o, index) => {
+      const status = o.status || "New";
+      const statusClass = status === "Completed" ? "completed" : "new";
+
+      const lyrics = o.pendingLyrics || {};
+      const kidName = lyrics.kidName || "Child nickname not set";
+      const kidAge = lyrics.kidAge || "Age not said";
+      const mood = lyrics.songMood || "Mood not chosen";
+      const parentName = lyrics.parentName || "Parent / guardian";
+      const parentEmail = lyrics.parentEmail || "";
+      const createdAt = o.createdAt
+        ? new Date(o.createdAt).toLocaleString()
+        : "";
+      const priceText = o.priceText || "";
+      const ref = o.ref || "No-ref";
+
+      const parentLine = parentEmail
+        ? `${escapeHtml(parentName)} · ${escapeHtml(parentEmail)}`
+        : escapeHtml(parentName);
+
+      const lyricsText = lyrics.lyricsText || "(No lyrics text saved)";
+
+      return `
+        <article class="lyrics-row">
+          <div class="lyrics-row-main">
+            <span class="lyrics-ref">Ref: ${escapeHtml(ref)}</span>
+            <span class="lyrics-status ${statusClass}">
+              ${status === "Completed" ? "Completed" : "New / Waiting"}
+            </span>
+            <span style="font-size:0.8rem;color:#4b5563;">
+              ${escapeHtml(priceText)} · ${escapeHtml(o.currency || "")}
+            </span>
+          </div>
+          <div class="lyrics-meta">
+            Child: <strong>${escapeHtml(kidName)}</strong> (Age: ${escapeHtml(
+              kidAge
+            )}) · Style: ${escapeHtml(mood)}<br/>
+            Parent: <strong>${parentLine}</strong><br/>
+            Created: ${escapeHtml(createdAt)}
+          </div>
+          <div class="lyrics-lyrics-preview">
+            ${escapeHtml(lyricsText)}
+          </div>
+          <div class="lyrics-row-buttons">
+            <button type="button"
+              class="lyrics-btn"
+              onclick="toggleLyricsStatus(${index})">
+              ✅ Mark as ${
+                status === "Completed" ? "New / Pending" : "Completed"
+              }
+            </button>
+            <button type="button"
+              class="lyrics-btn"
+              onclick="copyLyricsOrder(${index})">
+              📋 Copy summary to clipboard
+            </button>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+}
+function toggleLyricsStatus(index) {
+  const orders = loadLyricsOrders();
+  if (index < 0 || index >= orders.length) return;
+
+  const current = orders[index].status || "New";
+  orders[index].status = current === "Completed" ? "New" : "Completed";
+  saveLyricsOrders(orders);
+  renderLyricsOrders();
+}
+
+function clearLyricsOrders() {
+  if (!confirm("Clear ALL lyrics orders saved on this device? This cannot be undone.")) {
+    return;
+  }
+  saveLyricsOrders([]);
+  renderLyricsOrders();
+}
+
+function copyLyricsOrder(index) {
+  const orders = loadLyricsOrders();
+  if (index < 0 || index >= orders.length) return;
+  const o = orders[index];
+  const lyrics = o.pendingLyrics || {};
+
+  const text = [
+    `Curious Kids – Lyrics to Song Order`,
+    `Reference: ${o.ref || "No-ref"}`,
+    `Created: ${o.createdAt || ""}`,
+    ``,
+    `Child: ${lyrics.kidName || ""} (Age: ${lyrics.kidAge || ""})`,
+    `Song style/mood: ${lyrics.songMood || ""}`,
+    ``,
+    `Parent / guardian: ${lyrics.parentName || ""}`,
+    `Parent email: ${lyrics.parentEmail || ""}`,
+    ``,
+    `Currency / price: ${o.currency || ""} ${o.priceText || ""}`,
+    `Delivery option: ${o.deliveryOption || ""}`,
+    ``,
+    `Lyrics:`,
+    lyrics.lyricsText || ""
+  ].join("\n");
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        alert("Order summary copied. You can paste it into an email or brief for your composer.");
+      })
+      .catch(() => {
+        alert("Could not access clipboard. You can still select and copy manually from the page.");
+      });
+  } else {
+    // Fallback
+    alert("Clipboard not available in this browser. You can select and copy manually from the page.");
+  }
+}
+document.addEventListener("DOMContentLoaded", function () {
+  // ...your existing admin initialisation...
+  renderLyricsOrders();
+});
     // ========= INIT =========
     document.getElementById("year").textContent =
       new Date().getFullYear().toString();
