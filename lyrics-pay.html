@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Curious Kids – Lyrics Payment (Demo)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --primary:#ff8a3d;
+      --primary-dark:#e46f22;
+      --bg:#f7fbff;
+      --card-bg:#ffffff;
+      --text:#1f2933;
+      --muted:#6b7280;
+      --shadow-soft:0 10px 25px rgba(15,23,42,0.08);
+      --radius-lg:18px;
+      --radius-sm:10px;
+      --font-main:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+
+    body{
+      font-family:var(--font-main);
+      background:radial-gradient(circle at top,#e0f2ff 0,#f7fbff 45%,#ffffff 100%);
+      color:var(--text);
+      min-height:100vh;
+    }
+    a{text-decoration:none;color:inherit;}
+
+    /* HEADER (same as lyrics / ask / forum) */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #16a34a;
+      color: #f9fafb;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.15);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 180deg,
+        #ff8a3d,
+        #ffd74d,
+        #4d8fff,
+        #16a34a,
+        #ff8a3d
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.35);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-text span:first-child {
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: 0.03em;
+    }
+
+    .brand-text span:last-child {
+      font-size: 0.75rem;
+      color: rgba(226, 232, 240, 0.9);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      align-items: center;
+    }
+
+    nav a {
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      color: #e5e7eb;
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s, transform 0.1s;
+    }
+
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.16);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .nav-cta {
+      background: #ffffff;
+      color: #0f172a;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.35);
+    }
+
+    .nav-toggle {
+      display: none;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 0.25rem;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #ffffff;
+      margin: 4px 0;
+      border-radius: 999px;
+    }
+
+    @media (max-width: 800px) {
+      .nav-toggle {
+        display: inline-flex;
+      }
+
+      nav {
+        position: relative;
+      }
+
+      nav ul {
+        position: absolute;
+        top: 44px;
+        right: 0.6rem;
+        flex-direction: column;
+        align-items: flex-end;
+        background: rgba(15, 23, 42, 0.98);
+        padding: 0.6rem 0.9rem;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.4);
+        display: none;
+      }
+
+      nav ul.open {
+        display: flex;
+      }
+
+      nav a {
+        display: block;
+        width: 100%;
+        text-align: right;
+      }
+    }
+
+    /* MAIN */
+    main{
+      max-width:1100px;
+      margin:0 auto;
+      padding:1.5rem 1rem 2.5rem;
+    }
+
+    .section-header{
+      margin-bottom:1rem;
+    }
+    .section-header h1{
+      font-size:1.5rem;
+      margin-bottom:0.25rem;
+    }
+    .section-header p{
+      font-size:0.9rem;
+      color:var(--muted);
+      max-width:46rem;
+    }
+
+    .card{
+      background:var(--card-bg);
+      border-radius:var(--radius-lg);
+      padding:1.1rem 1rem;
+      box-shadow:var(--shadow-soft);
+      border:1px solid rgba(148,163,184,0.18);
+      margin-bottom:1rem;
+    }
+
+    .pay-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(0,1.1fr);
+      gap:1.4rem;
+      align-items:flex-start;
+    }
+
+    .summary-title,
+    .payment-title{
+      font-size:1rem;
+      font-weight:700;
+      margin-bottom:0.4rem;
+    }
+
+    .summary-line{
+      font-size:0.88rem;
+      margin-bottom:0.25rem;
+      color:#111827;
+    }
+
+    .summary-label{
+      font-weight:600;
+      color:#4b5563;
+    }
+
+    .lyrics-preview{
+      margin-top:0.4rem;
+      padding:0.5rem 0.6rem;
+      border-radius:12px;
+      background:#f9fafb;
+      border:1px dashed rgba(148,163,184,0.7);
+      font-size:0.85rem;
+      color:#374151;
+      max-height:170px;
+      overflow:auto;
+      white-space:pre-wrap;
+    }
+
+    .hint{
+      font-size:0.8rem;
+      color:var(--muted);
+      margin-top:0.4rem;
+    }
+
+    .price-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:0.6rem;
+      align-items:center;
+      margin-bottom:0.6rem;
+    }
+
+    .price-main{
+      font-size:1.15rem;
+      font-weight:700;
+      color:#111827;
+    }
+
+    .badge-soft{
+      font-size:0.7rem;
+      padding:0.2rem 0.55rem;
+      border-radius:999px;
+      background:#ecfdf3;
+      color:#166534;
+      border:1px solid rgba(22,101,52,0.35);
+    }
+
+    label{
+      display:block;
+      font-size:0.8rem;
+      font-weight:600;
+      color:#4b5563;
+      margin-bottom:0.22rem;
+    }
+
+    input,select{
+      width:100%;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(148,163,184,0.8);
+      padding:0.5rem 0.6rem;
+      font-size:0.85rem;
+      font-family:inherit;
+      background:#f9fafb;
+      outline:none;
+      margin-bottom:0.6rem;
+    }
+
+    .two-cols{
+      display:flex;
+      flex-wrap:wrap;
+      gap:0.7rem;
+    }
+    .two-cols > div{
+      flex:1 1 140px;
+    }
+
+    .consent-row{
+      display:flex;
+      align-items:flex-start;
+      gap:0.5rem;
+      font-size:0.78rem;
+      color:#4b5563;
+      margin:0.4rem 0 0.6rem;
+    }
+    .consent-row input{
+      width:auto;
+      margin-top:0.15rem;
+    }
+
+    .btn{
+      border-radius:999px;
+      padding:0.65rem 1.4rem;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      font-size:0.9rem;
+      display:inline-flex;
+      align-items:center;
+      gap:0.4rem;
+    }
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 5px 16px rgba(248,113,22,0.5);
+    }
+    .btn-primary:hover{
+      background:var(--primary-dark);
+      transform:translateY(-1px);
+    }
+    .btn-ghost{
+      background:#f9fafb;
+      color:#1f2937;
+      border:1px solid rgba(148,163,184,0.7);
+    }
+
+    #payMessage{
+      margin-top:0.5rem;
+      font-size:0.8rem;
+      min-height:1em;
+    }
+    .message-success{color:#16a34a;}
+    .message-error{color:#e11d48;}
+
+    .empty-state{
+      font-size:0.9rem;
+      color:var(--muted);
+    }
+
+    footer{
+      margin-top:2.4rem;
+      padding:1.2rem 1rem 1.8rem;
+      font-size:0.75rem;
+      color:var(--muted);
+      border-top:1px solid rgba(148,163,184,0.25);
+      text-align:center;
+    }
+    footer a{text-decoration:none;color:#1d4ed8;}
+
+    @media(max-width:900px){
+      .pay-grid{
+        grid-template-columns:minmax(0,1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-logo">CK</div>
+      <div class="brand-text">
+        <span>Curious Kids Q&amp;A</span>
+        <span>Ask big questions. Get gentle answers.</span>
+      </div>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button
+      class="nav-toggle"
+      id="navToggle"
+      aria-label="Toggle navigation menu"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav>
+      <ul id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ask.html">Ask a Question</a></li>
+        <li><a href="questions.html">Question Wall</a></li>
+        <li><a href="store.html">Store</a></li>
+        <li><a href="parents.html">For Parents</a></li>
+        <li><a href="forum.html">Adult Forum</a></li>
+        <li><a href="legal.html">Legal</a></li>
+        <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="section-header">
+    <h1>Lyrics to Song – Payment (Demo)</h1>
+    <p>
+      This page shows a <strong>demo payment step</strong> for turning your
+      child’s lyrics into a simple song. No real money is taken in this demo.
+      All information stays only on this device.
+    </p>
+  </section>
+
+  <!-- If there is pending data, this grid is shown. Otherwise a message appears. -->
+  <section id="paySection" class="card pay-grid" style="display:none;">
+    <!-- LEFT: Summary -->
+    <div>
+      <h2 class="summary-title">1. Check Your Lyrics Request</h2>
+      <p class="summary-line">
+        <span class="summary-label">Child:</span>
+        <span id="summaryKid">–</span>
+      </p>
+      <p class="summary-line">
+        <span class="summary-label">Age:</span>
+        <span id="summaryAge">–</span>
+      </p>
+      <p class="summary-line">
+        <span class="summary-label">Song style:</span>
+        <span id="summaryMood">–</span>
+      </p>
+      <p class="summary-line">
+        <span class="summary-label">Parent contact:</span>
+        <span id="summaryParent">–</span>
+      </p>
+
+      <div class="lyrics-preview" id="lyricsPreview"></div>
+
+      <p class="hint">
+        This preview is here so you can double-check that the lyrics look right
+        before confirming payment. If you need to edit, you can go back to the
+        lyrics page and resend.
+      </p>
+    </div>
+
+    <!-- RIGHT: Payment demo -->
+    <div>
+      <h2 class="payment-title">2. Choose Currency &amp; Confirm Payment</h2>
+
+      <div class="price-row">
+        <div>
+          <div class="price-main" id="priceDisplay">$15.00</div>
+          <div style="font-size:0.75rem;color:var(--muted);">
+            Intro price for one simple song version (MP3 download).
+          </div>
+        </div>
+        <span class="badge-soft">Parent-guided · Child-safe lyrics</span>
+      </div>
+
+      <div class="two-cols">
+        <div>
+          <label for="currencySelect">Currency</label>
+          <select id="currencySelect">
+            <option value="USD">USD – $</option>
+            <option value="EUR">EUR – €</option>
+            <option value="GBP">GBP – £</option>
+            <option value="NGN">NGN – ₦</option>
+          </select>
+        </div>
+        <div>
+          <label for="deliveryOption">Delivery time</label>
+          <select id="deliveryOption">
+            <option value="standard">Standard (7–10 days)</option>
+            <option value="priority">Priority (3–5 days)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="two-cols">
+        <div>
+          <label for="cardName">Name on card (demo)</label>
+          <input id="cardName" placeholder="e.g. Mrs Okafor" />
+        </div>
+        <div>
+          <label for="cardNumber">Card number (demo)</label>
+          <input id="cardNumber" placeholder="1111 2222 3333 4444" />
+        </div>
+      </div>
+
+      <div class="two-cols">
+        <div>
+          <label for="cardExpiry">Expiry (MM/YY)</label>
+          <input id="cardExpiry" placeholder="09/27" />
+        </div>
+        <div>
+          <label for="cardCvc">CVC</label>
+          <input id="cardCvc" placeholder="123" />
+        </div>
+      </div>
+
+      <div class="consent-row">
+        <input type="checkbox" id="payConsent" />
+        <label for="payConsent">
+          I understand this is a <strong>demo</strong>. No real card is being
+          charged. In a live version, a secure payment provider would process
+          this payment, and I would receive email confirmation and my child’s
+          song.
+        </label>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center;">
+        <button id="payButton" class="btn btn-primary" type="button">
+          ✅ Complete Payment (Demo)
+        </button>
+        <a href="lyrics.html" class="btn btn-ghost">← Back to Lyrics Page</a>
+      </div>
+
+      <div id="payMessage"></div>
+
+      <p class="hint">
+        After confirming, this demo will save your order details on this device
+        and return you to the home page. In a future live version, an email
+        with your order reference and delivery details would be sent.
+      </p>
+    </div>
+  </section>
+
+  <section id="emptySection" class="card" style="display:none;">
+    <p class="empty-state">
+      There is no lyrics request waiting for payment on this device.
+      Please start again from the
+      <a href="lyrics.html" style="color:#1d4ed8;">Lyrics to Song page</a>.
+    </p>
+  </section>
+</main>
+
+<footer>
+  <p>
+    © <span id="year"></span> Curious Kids Q&amp;A. A kid-friendly question &amp;
+    answer platform.
+  </p>
+  <p style="margin-top:0.25rem;">
+    <a href="legal.html#terms">Terms of Service</a> ·
+    <a href="legal.html#privacy">Privacy Policy</a> ·
+    <a href="legal.html#cookies">Cookies</a>
+  </p>
+</footer>
+
+<script>
+  const LYRICS_KEY = "curiousKidsLyricsPending";
+  const ORDERS_KEY = "curiousKidsLyricsOrders";
+  const BASE_PRICE_USD = 15;
+
+  const currencyData = {
+    USD:{symbol:"$",rate:1},
+    EUR:{symbol:"€",rate:0.9},
+    GBP:{symbol:"£",rate:0.8},
+    NGN:{symbol:"₦",rate:1500}
+  };
+
+  function formatPrice(usd, currencyCode){
+    const c = currencyData[currencyCode] || currencyData.USD;
+    const value = usd * c.rate;
+    if (currencyCode === "NGN") {
+      return c.symbol + Math.round(value).toLocaleString();
+    }
+    return c.symbol + value.toFixed(2);
+  }
+
+  function showPrice(){
+    const select = document.getElementById("currencySelect");
+    const display = document.getElementById("priceDisplay");
+    if (!select || !display) return;
+    display.textContent = formatPrice(BASE_PRICE_USD, select.value);
+  }
+
+  function showPayMessage(text, type){
+    const el = document.getElementById("payMessage");
+    if (!el) return;
+    el.textContent = text || "";
+    el.className = "";
+    if (text){
+      el.classList.add(type === "error" ? "message-error" : "message-success");
+    }
+  }
+
+  function loadPendingLyrics(){
+    try{
+      const raw = localStorage.getItem(LYRICS_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === "object" ? parsed : null;
+    }catch(e){
+      return null;
+    }
+  }
+
+  function saveOrder(order){
+    let list = [];
+    try{
+      const raw = localStorage.getItem(ORDERS_KEY);
+      if (raw){
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) list = parsed;
+      }
+    }catch(e){}
+    list.push(order);
+    try{
+      localStorage.setItem(ORDERS_KEY, JSON.stringify(list));
+    }catch(e){}
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const y = document.getElementById("year");
+    if (y) y.textContent = new Date().getFullYear();
+
+    const pending = loadPendingLyrics();
+    const paySection = document.getElementById("paySection");
+    const emptySection = document.getElementById("emptySection");
+
+    if (!pending){
+      if (emptySection) emptySection.style.display = "block";
+      return;
+    }
+
+    // Show payment grid
+    if (paySection) paySection.style.display = "grid";
+
+    // Fill summary
+    const kidLabel = pending.kidName ? pending.kidName : "Nickname not given";
+    const ageLabel = pending.kidAge || "Not said";
+    const moodLabel = pending.songMood || "Composer to choose";
+    const parentLabel = (pending.parentName || "Parent") +
+      (pending.parentEmail ? " · " + pending.parentEmail : "");
+
+    const lyricsPreview = pending.lyricsText || "";
+
+    document.getElementById("summaryKid").textContent = kidLabel;
+    document.getElementById("summaryAge").textContent = ageLabel;
+    document.getElementById("summaryMood").textContent = moodLabel;
+    document.getElementById("summaryParent").textContent = parentLabel;
+    document.getElementById("lyricsPreview").textContent = lyricsPreview;
+
+    // Prefill card name with parent name
+    if (pending.parentName){
+      const cardNameInput = document.getElementById("cardName");
+      if (cardNameInput) cardNameInput.value = pending.parentName;
+    }
+
+    // Init price
+    showPrice();
+    const currencySelect = document.getElementById("currencySelect");
+    if (currencySelect){
+      currencySelect.addEventListener("change", showPrice);
+    }
+
+    // Handle demo payment
+    const payBtn = document.getElementById("payButton");
+    if (payBtn){
+      payBtn.addEventListener("click", () => {
+        showPayMessage("", "");
+
+        const cardName = document.getElementById("cardName").value.trim();
+        const cardNumber = document.getElementById("cardNumber").value.trim();
+        const cardExpiry = document.getElementById("cardExpiry").value.trim();
+        const cardCvc = document.getElementById("cardCvc").value.trim();
+        const currency = document.getElementById("currencySelect").value;
+        const deliveryOption = document.getElementById("deliveryOption").value;
+        const consent = document.getElementById("payConsent").checked;
+
+        if (!cardName || !cardNumber){
+          showPayMessage("Please fill in the name and card number fields (demo only).","error");
+          return;
+        }
+        if (!consent){
+          showPayMessage("Please tick the box confirming you understand this is a demo payment.","error");
+          return;
+        }
+
+        const priceText = formatPrice(BASE_PRICE_USD, currency);
+        const ref = "CK-LYR-" + Math.floor(100000 + Math.random()*900000);
+
+        const order = {
+          ref,
+          currency,
+          priceText,
+          deliveryOption,
+          createdAt: new Date().toISOString(),
+          pendingLyrics: pending
+        };
+
+        saveOrder(order);
+
+        // Clear pending so the user doesn't pay twice
+        try{ localStorage.removeItem(LYRICS_KEY); }catch(e){}
+
+        showPayMessage(
+          "Payment simulated successfully! Your reference code is " + ref +
+          ". This demo will now take you back to the home page.",
+          "success"
+        );
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1800);
+      });
+    }
+  });
+
+  // Admin logo secret click
+  (function () {
+    const ADMIN_CODE = "CKADMIN2025";
+    const logo = document.querySelector(".brand-logo");
+    if (!logo) return;
+
+    let clicks = 0;
+    let timer = null;
+
+    logo.addEventListener("click", () => {
+      clicks++;
+      if (timer) clearTimeout(timer);
+
+      timer = setTimeout(() => { clicks = 0; }, 2500);
+
+      if (clicks >= 5) {
+        clicks = 0;
+        const code = prompt("Admin access code:");
+        if (code === ADMIN_CODE) {
+          window.location.href = "admin.html";
+        } else if (code) {
+          alert("Incorrect code.");
+        }
+      }
+    });
+  })();
+
+  // Mobile nav toggle
+  (function () {
+    const toggle = document.getElementById("navToggle");
+    const links = document.getElementById("navLinks");
+    if (!toggle || !links) return;
+
+    toggle.addEventListener("click", () => {
+      links.classList.toggle("open");
+    });
+
+    links.addEventListener("click", (event) => {
+      if (event.target.tagName.toLowerCase() === "a") {
+        links.classList.remove("open");
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Curious Kids – Lyrics to Song</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --primary:#ff8a3d;
+      --primary-dark:#e46f22;
+      --bg:#f7fbff;
+      --card-bg:#ffffff;
+      --text:#1f2933;
+      --muted:#6b7280;
+      --shadow-soft:0 10px 25px rgba(15,23,42,0.08);
+      --radius-lg:18px;
+      --radius-sm:10px;
+      --font-main:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+
+    body{
+      font-family:var(--font-main);
+      background:radial-gradient(circle at top,#e0f2ff 0,#f7fbff 45%,#ffffff 100%);
+      color:var(--text);
+      min-height:100vh;
+    }
+    a{text-decoration:none;color:inherit;}
+
+    /* HEADER (same green style as ask/forum/legal) */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #16a34a;
+      color: #f9fafb;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.15);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 180deg,
+        #ff8a3d,
+        #ffd74d,
+        #4d8fff,
+        #16a34a,
+        #ff8a3d
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.35);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-text span:first-child {
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: 0.03em;
+    }
+
+    .brand-text span:last-child {
+      font-size: 0.75rem;
+      color: rgba(226, 232, 240, 0.9);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      align-items: center;
+    }
+
+    nav a {
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      color: #e5e7eb;
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s, transform 0.1s;
+    }
+
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.16);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .nav-cta {
+      background: #ffffff;
+      color: #0f172a;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.35);
+    }
+
+    .nav-toggle {
+      display: none;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 0.25rem;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #ffffff;
+      margin: 4px 0;
+      border-radius: 999px;
+    }
+
+    @media (max-width: 800px) {
+      .nav-toggle {
+        display: inline-flex;
+      }
+
+      nav {
+        position: relative;
+      }
+
+      nav ul {
+        position: absolute;
+        top: 44px;
+        right: 0.6rem;
+        flex-direction: column;
+        align-items: flex-end;
+        background: rgba(15, 23, 42, 0.98);
+        padding: 0.6rem 0.9rem;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.4);
+        display: none;
+      }
+
+      nav ul.open {
+        display: flex;
+      }
+
+      nav a {
+        display: block;
+        width: 100%;
+        text-align: right;
+      }
+    }
+
+    /* MAIN LAYOUT */
+    main{
+      max-width:1100px;
+      margin:0 auto;
+      padding:1.5rem 1rem 2.5rem;
+    }
+
+    .section-header{
+      margin-bottom:1rem;
+    }
+
+    .section-header h1{
+      font-size:1.5rem;
+      margin-bottom:0.25rem;
+    }
+
+    .section-header p{
+      font-size:0.9rem;
+      color:var(--muted);
+      max-width:46rem;
+    }
+
+    .card{
+      background:var(--card-bg);
+      border-radius:var(--radius-lg);
+      padding:1.1rem 1rem;
+      box-shadow:var(--shadow-soft);
+      border:1px solid rgba(148,163,184,0.18);
+      margin-bottom:1.1rem;
+    }
+
+    .lyrics-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1.5fr) minmax(0,1.1fr);
+      gap:1.4rem;
+      align-items:flex-start;
+    }
+
+    .section-title{
+      font-size:1rem;
+      font-weight:700;
+      margin-bottom:0.4rem;
+    }
+
+    .hint{
+      font-size:0.8rem;
+      color:var(--muted);
+      margin-bottom:0.5rem;
+    }
+
+    .form-row{
+      margin-bottom:0.7rem;
+    }
+
+    label{
+      display:block;
+      font-size:0.8rem;
+      font-weight:600;
+      color:#4b5563;
+      margin-bottom:0.22rem;
+    }
+
+    input,select,textarea{
+      width:100%;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(148,163,184,0.8);
+      padding:0.5rem 0.6rem;
+      font-size:0.85rem;
+      font-family:inherit;
+      background:#f9fafb;
+      outline:none;
+    }
+
+    textarea{
+      min-height:130px;
+      resize:vertical;
+    }
+
+    .two-cols{
+      display:flex;
+      flex-wrap:wrap;
+      gap:0.7rem;
+    }
+
+    .two-cols > div{
+      flex:1 1 140px;
+    }
+
+    .consent-row{
+      display:flex;
+      align-items:flex-start;
+      gap:0.5rem;
+      font-size:0.78rem;
+      color:#4b5563;
+      margin-top:0.4rem;
+    }
+
+    .consent-row input{
+      margin-top:0.12rem;
+      width:auto;
+    }
+
+    .btn{
+      border-radius:999px;
+      padding:0.65rem 1.4rem;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      font-size:0.9rem;
+      display:inline-flex;
+      align-items:center;
+      gap:0.4rem;
+    }
+
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 5px 16px rgba(248,113,22,0.5);
+    }
+
+    .btn-primary:hover{
+      background:var(--primary-dark);
+      transform:translateY(-1px);
+    }
+
+    #formMessage{
+      margin-top:0.5rem;
+      font-size:0.8rem;
+      min-height:1em;
+    }
+    .message-success{color:#16a34a;}
+    .message-error{color:#e11d48;}
+
+    footer{
+      margin-top:2.4rem;
+      padding:1.2rem 1rem 1.8rem;
+      font-size:0.75rem;
+      color:var(--muted);
+      border-top:1px solid rgba(148,163,184,0.25);
+      text-align:center;
+    }
+
+    footer a{text-decoration:none;color:#1d4ed8;}
+
+    @media(max-width:900px){
+      .lyrics-grid{
+        grid-template-columns:minmax(0,1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-logo">CK</div>
+      <div class="brand-text">
+        <span>Curious Kids Q&amp;A</span>
+        <span>Ask big questions. Get gentle answers.</span>
+      </div>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button
+      class="nav-toggle"
+      id="navToggle"
+      aria-label="Toggle navigation menu"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav>
+      <ul id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ask.html">Ask a Question</a></li>
+        <li><a href="questions.html">Question Wall</a></li>
+        <li><a href="store.html">Store</a></li>
+        <li><a href="parents.html">For Parents</a></li>
+        <li><a href="forum.html">Adult Forum</a></li>
+        <li><a href="legal.html">Legal</a></li>
+        <li><a href="ask.html" class="nav-cta">Ask Now</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="section-header">
+    <h1>Lyrics to Song – Kids &amp; Parents</h1>
+    <p>
+      This page is for children who have written lyrics or a poem and would love
+      to hear it turned into a real song. Kids can fill the first part with an
+      adult nearby. The second part is for parents/guardians only.
+    </p>
+  </section>
+
+  <section class="card lyrics-grid">
+    <!-- LEFT: Kids' section -->
+    <form id="lyricsForm" novalidate>
+      <div>
+        <h2 class="section-title">1. Kid’s Lyrics Section</h2>
+        <p class="hint">
+          Kids: you can type your words here. Please do not include your phone
+          number, email, home address or social media.
+        </p>
+
+        <div class="two-cols">
+          <div class="form-row">
+            <label for="kidName">Nickname (first name only)</label>
+            <input id="kidName" maxlength="20" placeholder="e.g. David" />
+          </div>
+          <div class="form-row">
+            <label for="kidAge">Age</label>
+            <select id="kidAge">
+              <option value="">Prefer not to say</option>
+              <option value="4-6">4–6 years</option>
+              <option value="7-9">7–9 years</option>
+              <option value="10-12">10–12 years</option>
+              <option value="13-15">13–15 years</option>
+              <option value="16+">16+ / Teen</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="lyricsText">Your lyrics or poem</label>
+          <textarea id="lyricsText"
+            placeholder="Type your song words or poem here. It can be short or long."></textarea>
+          <p class="hint">
+            You can write verses and chorus on separate lines. No phone numbers,
+            email addresses or links, please.
+          </p>
+        </div>
+
+        <div class="form-row">
+          <label for="songMood">Song style / mood (optional)</label>
+          <select id="songMood">
+            <option value="">Let the composer choose</option>
+            <option value="Joyful worship">Joyful worship</option>
+            <option value="Gentle worship / slow">Gentle worship / slow</option>
+            <option value="Happy pop">Happy pop</option>
+            <option value="Rap / spoken">Rap / spoken style</option>
+            <option value="Lullaby / bedtime">Lullaby / bedtime</option>
+            <option value="Other">Something different</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- RIGHT: Parent section -->
+      <div>
+        <h2 class="section-title">2. Parent / Guardian Section</h2>
+        <p class="hint">
+          This service will later involve a small payment (token) and delivery
+          of a simple song version (e.g. MP3) composed from your child’s lyrics.
+          For now this is a <strong>local demo</strong> and nothing is actually
+          sent to a server.
+        </p>
+
+        <div class="form-row">
+          <label for="parentName">Your name</label>
+          <input id="parentName" placeholder="e.g. Mrs Okafor (Mum)" />
+        </div>
+
+        <div class="form-row">
+          <label for="parentEmail">Contact email (for song delivery)</label>
+          <input id="parentEmail" type="email" placeholder="parent@example.com" />
+        </div>
+
+        <div class="consent-row">
+          <input type="checkbox" id="parentConsent" />
+          <label for="parentConsent">
+            I confirm I am the parent/guardian, I give permission to use these
+            lyrics for a custom song, and I understand this is a demo page for
+            now. In a real version, payment and delivery details will be shown
+            clearly.
+          </label>
+        </div>
+
+        <div style="margin-top:0.9rem;">
+          <button type="submit" class="btn btn-primary">
+            🎵 Send Lyrics &amp; Continue to Payment (Demo)
+          </button>
+        </div>
+
+        <div id="formMessage"></div>
+
+        <p class="hint" style="margin-top:0.55rem;">
+          In a live version of this site, clicking this button would take you to
+          a secure payment page. After payment, a human composer (not AI only)
+          would be hired to create a simple song from the lyrics and send it to
+          your email.
+        </p>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <p>
+    © <span id="year"></span> Curious Kids Q&amp;A. A kid-friendly question &amp;
+    answer platform.
+  </p>
+  <p style="margin-top:0.25rem;">
+    <a href="legal.html#terms">Terms of Service</a> ·
+    <a href="legal.html#privacy">Privacy Policy</a> ·
+    <a href="legal.html#cookies">Cookies</a>
+  </p>
+</footer>
+
+<script>
+  const LYRICS_KEY = "curiousKidsLyricsPending";
+
+  function showFormMessage(text, type){
+    const el = document.getElementById("formMessage");
+    if (!el) return;
+    el.textContent = text || "";
+    el.className = "";
+    if (text){
+      el.classList.add(type === "error" ? "message-error" : "message-success");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const y = document.getElementById("year");
+    if (y) y.textContent = new Date().getFullYear();
+
+    const form = document.getElementById("lyricsForm");
+    if (!form) return;
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      showFormMessage("", "");
+
+      const kidName = document.getElementById("kidName").value.trim();
+      const kidAge = document.getElementById("kidAge").value;
+      const lyricsText = document.getElementById("lyricsText").value.trim();
+      const songMood = document.getElementById("songMood").value;
+
+      const parentName = document.getElementById("parentName").value.trim();
+      const parentEmail = document.getElementById("parentEmail").value.trim();
+      const parentConsent = document.getElementById("parentConsent").checked;
+
+      if (lyricsText.length < 10){
+        showFormMessage("Please add more lyrics so the composer has enough to work with.","error");
+        return;
+      }
+
+      const lower = lyricsText.toLowerCase();
+      if (lower.includes("@") || lower.includes("http")){
+        showFormMessage("Please remove email addresses, links or contact details from the lyrics.","error");
+        return;
+      }
+
+      if (!parentName || !parentEmail){
+        showFormMessage("Parent/guardian name and email are required.","error");
+        return;
+      }
+
+      if (!parentConsent){
+        showFormMessage("Please tick the parent/guardian consent box before continuing.","error");
+        return;
+      }
+
+      const payload = {
+        kidName,
+        kidAge,
+        lyricsText,
+        songMood,
+        parentName,
+        parentEmail,
+        createdAt: new Date().toISOString()
+      };
+
+      try{
+        localStorage.setItem(LYRICS_KEY, JSON.stringify(payload));
+      }catch(e){}
+
+      showFormMessage("Thank you! Your lyrics request has been saved on this device (demo). Redirecting to payment page…","success");
+
+      // In real app, this would be the real payment page
+      setTimeout(() => {
+        window.location.href = "lyrics-pay.html";
+      }, 1200);
+    });
+  });
+
+  // Admin logo secret click (same as other pages)
+  (function () {
+    const ADMIN_CODE = "CKADMIN2025";
+    const logo = document.querySelector(".brand-logo");
+    if (!logo) return;
+
+    let clicks = 0;
+    let timer = null;
+
+    logo.addEventListener("click", () => {
+      clicks++;
+      if (timer) clearTimeout(timer);
+
+      timer = setTimeout(() => { clicks = 0; }, 2500);
+
+      if (clicks >= 5) {
+        clicks = 0;
+        const code = prompt("Admin access code:");
+        if (code === ADMIN_CODE) {
+          window.location.href = "admin.html";
+        } else if (code) {
+          alert("Incorrect code.");
+        }
+      }
+    });
+  })();
+
+  // Mobile nav toggle
+  (function () {
+    const toggle = document.getElementById("navToggle");
+    const links = document.getElementById("navLinks");
+    if (!toggle || !links) return;
+
+    toggle.addEventListener("click", () => {
+      links.classList.toggle("open");
+    });
+
+    links.addEventListener("click", (event) => {
+      if (event.target.tagName.toLowerCase() === "a") {
+        links.classList.remove("open");
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
