@@ -484,6 +484,138 @@
           margin-top: 0.25rem;
         }
       }
+      /* =========================
+   LYRICS → SONG BANNER
+   ========================= */
+.ads-banner {
+  max-width: 1100px;
+  margin: 2.2rem auto 1.5rem;
+  padding: 0 1rem;
+}
+
+.ads-banner-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.ads-banner-box {
+  flex: 1;
+  background: linear-gradient(135deg, #f97316, #fb7185, #4ade80);
+  border-radius: 20px;
+  padding: 0.95rem 1.1rem;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle confetti dots */
+.ads-banner-box::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255,255,255,0.2) 0, transparent 55%),
+    radial-gradient(circle at 80% 10%, rgba(255,255,255,0.2) 0, transparent 55%),
+    radial-gradient(circle at 90% 70%, rgba(255,255,255,0.18) 0, transparent 55%);
+  opacity: 0.6;
+}
+
+.ads-banner-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+}
+
+/* icon bubble */
+.ads-banner-icon {
+  flex-shrink: 0;
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+}
+
+/* text block */
+.ads-banner-text h2 {
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: #fefce8; /* soft yellow */
+  margin-bottom: 0.25rem;
+}
+
+.ads-banner-text p {
+  font-size: 0.86rem;
+  color: #fef9c3;
+  margin: 0;
+}
+
+.ads-banner-text small {
+  display: block;
+  font-size: 0.72rem;
+  color: #fefce8;
+  opacity: 0.9;
+  margin-top: 0.2rem;
+}
+
+/* call-to-action pill */
+.ads-banner-cta {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: #fefce8;
+  color: #0f172a;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.55rem 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.35);
+}
+
+.ads-banner-cta span {
+  font-size: 1rem;
+}
+
+/* hover */
+.ads-banner-link:hover .ads-banner-box {
+  transform: translateY(-2px);
+  transition: transform 0.12s ease-out;
+}
+
+.ads-banner-link:hover .ads-banner-cta {
+  transform: translateY(-1px);
+}
+
+/* mobile */
+@media (max-width: 768px) {
+  .ads-banner-link {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ads-banner-box {
+    padding: 0.9rem 0.85rem;
+  }
+
+  .ads-banner-text h2 {
+    font-size: 0.98rem;
+  }
+}
     </style>
 
     <!-- PWA + Icons -->
@@ -620,18 +752,35 @@
         </section>
 
         <!-- Small ads placeholder just above the footer -->
-        <section class="ads-banner">
-          <div>
-            <div class="ads-banner-title">Ad space – family-friendly only</div>
-            <p>
-              Placeholder for a small sponsor banner. In the future, you can
-              show simple, child-safe adverts here with no tracking.
-            </p>
+       
+
+<!-- Lyrics → Song kids' service banner -->
+      <section class="ads-banner">
+        <a href="lyrics.html" class="ads-banner-link">
+          <div class="ads-banner-box">
+            <div class="ads-banner-content">
+              <div class="ads-banner-icon">
+                🎤
+              </div>
+              <div class="ads-banner-text">
+                <h2>Turn Your Child’s Lyrics into a Real Song</h2>
+                <p>
+                  Has your child written a poem or song lines? With a parent’s help,
+                  you can send the lyrics and we’ll have a composer turn them into
+                  a real song they can listen to and share.
+                </p>
+                <small>
+                  Parent-guided · Child-safe content review · No phone numbers or direct contact details.
+                </small>
+              </div>
+            </div>
+            <div class="ads-banner-cta">
+              Start Lyrics Upload
+              <span>➜</span>
+            </div>
           </div>
-          <div class="ads-size-tag">
-            300 × 100 px
-          </div>
-        </section>
+        </a>
+      </section>
       </main>
 
       <footer>
