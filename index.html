@@ -625,6 +625,55 @@
   color: inherit;
   text-decoration: none;
 }
+/* Mobile optimization for Lyrics → Song banner */
+@media (max-width: 768px) {
+
+  .ads-banner {
+    margin-top: 1.6rem;
+    padding: 0 0.6rem;
+  }
+
+  .ads-banner-box {
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.8rem 0.85rem;
+    border-radius: 18px;
+  }
+
+  .ads-banner-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+  }
+
+  .ads-banner-icon {
+    width: 46px;
+    height: 46px;
+    font-size: 1.4rem;
+  }
+
+  .ads-banner-text h2 {
+    font-size: 0.92rem;
+    line-height: 1.25;
+  }
+
+  .ads-banner-text p {
+    font-size: 0.8rem;
+    line-height: 1.35;
+  }
+
+  .ads-banner-text small {
+    font-size: 0.7rem;
+  }
+
+  /* CTA becomes full-width on mobile */
+  .ads-banner-cta {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.85rem;
+    padding: 0.65rem 0.8rem;
+  }
+}
     </style>
 
     <!-- PWA + Icons -->
