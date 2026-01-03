@@ -509,10 +509,10 @@
 
 .uncle-pat-full {
   position: fixed;
-  bottom: 90px;
-  right: 16px;
-  width: 180px;
-  max-width: 40vw;
+  bottom: 100px;
+  right: 200px;   /* keeps bear beside the panel */
+  width: 120px;   /* smaller default size */
+  max-width: 25vw;
   opacity: 0;
   transform: scale(0.1);
   pointer-events: none;
@@ -530,13 +530,14 @@
   transform: scale(1);
 }
 
+/* Mobile positioning */
 @media (max-width: 480px) {
   .uncle-pat-full {
-    width: 140px;
-    bottom: 80px;
+    right: 140px;
+    bottom: 90px;
+    width: 95px;
   }
 }
-
 /* ---------- Uncle Pat Panel ---------- */
 
 .uncle-pat-panel {
