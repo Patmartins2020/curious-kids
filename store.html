@@ -446,6 +446,8 @@
       }
       /* ---------- Uncle Pat Widget ---------- */
 
+/* ---------- Uncle Pat Widget ---------- */
+
 .uncle-pat-widget {
   position: fixed;
   bottom: 16px;
@@ -461,19 +463,20 @@
   cursor: pointer;
 }
 
-/* Round green avatar (later you can replace with an image) */
 .uncle-pat-avatar {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: #10b981; /* Curious Kids green */
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.9rem;
+  overflow: hidden;
+  padding: 0;
+  background: none;
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.uncle-pat-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Flag bubble */
@@ -483,7 +486,7 @@
   padding: 8px 12px;
   border-radius: 999px;
   font-size: 0.75rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
   border: 1px solid #d1fae5;
   white-space: nowrap;
   position: relative;
@@ -502,33 +505,35 @@
   transform: translateY(-50%);
 }
 
-/* Entrance animation (walk-in) */
-.uncle-pat-widget.uncle-pat-enter {
-  animation: unclePatEnter 4s ease-out forwards;
+/* ---------- Full Bear ---------- */
+
+.uncle-pat-full {
+  position: fixed;
+  bottom: 90px;
+  right: 16px;
+  width: 180px;
+  max-width: 40vw;
+  opacity: 0;
+  transform: scale(0.1);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  z-index: 9998;
 }
 
-@keyframes unclePatEnter {
-  0% {
-    transform: translateX(120%);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  70% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
+.uncle-pat-full img {
+  width: 100%;
+  height: auto;
 }
 
-/* Hide on very tiny screens if you want */
-@media (max-width: 380px) {
-  .uncle-pat-flag {
-    display: none;
+.uncle-pat-full.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (max-width: 480px) {
+  .uncle-pat-full {
+    width: 140px;
+    bottom: 80px;
   }
 }
 
@@ -540,10 +545,10 @@
   bottom: 88px;
   width: 320px;
   max-width: calc(100% - 32px);
-  background: rgba(15, 23, 42, 0.7); /* slate with transparency */
+  background: rgba(15, 23, 42, 0.6);
   border-radius: 16px;
   padding: 4px;
-  z-index: 9998;
+  z-index: 9997;
   display: none;
 }
 
@@ -629,68 +634,6 @@
   max-height: 180px;
   overflow-y: auto;
 }
-.uncle-pat-avatar {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  overflow: hidden;
-  padding: 0;
-  background: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-}
-
-.uncle-pat-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.uncle-pat-avatar {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  overflow: hidden;
-  padding: 0;
-  background: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-}
-
-.uncle-pat-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.uncle-pat-full {
-  position: fixed;
-  bottom: 90px;
-  right: 16px;
-  width: 180px;          /* desktop size */
-  max-width: 40vw;       /* responsive on small screens */
-  opacity: 0;
-  transform: scale(0.1);
-  pointer-events: none;
-  transition: opacity 0.35s ease, transform 0.35s ease;
-  z-index: 9998;
-}
-
-.uncle-pat-full img {
-  width: 100%;
-  height: auto;
-}
-
-/* When visible */
-.uncle-pat-full.show {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* Optional: slightly smaller on very small phones */
-@media (max-width: 480px) {
-  .uncle-pat-full {
-    width: 140px;
-    bottom: 80px;
-  }
-}
-
     </style>
   </head>
 
@@ -1356,65 +1299,47 @@
           .join("");
       }
 
-      // ---------------------------
-      // BOOTSTRAP
-      // ---------------------------
-      document.addEventListener("DOMContentLoaded", () => {
-        renderStore();
-        renderCart();
-        renderPrivateQuestions();
-      });
-        // Basic Uncle Pat functionality
-  (function () {
-    const widget = document.getElementById('unclePatWidget');
+    // ---------------------------
+    // BOOTSTRAP
+    // ---------------------------
+    document.addEventListener("DOMContentLoaded", () => {
+      renderStore();
+      renderCart();
+      renderPrivateQuestions();
+
+      (function () {
+        const widget = document.getElementById('unclePatWidget');
     const panel = document.getElementById('unclePatPanel');
     const closeBtn = document.getElementById('unclePatClose');
     const askBtn = document.getElementById('unclePatAskBtn');
     const subjectSelect = document.getElementById('unclePatSubject');
     const questionInput = document.getElementById('unclePatQuestion');
     const answerBox = document.getElementById('unclePatAnswer');
-const bigBear = document.getElementById('unclePatFull');
+    const bigBear = document.getElementById('unclePatFull');
 
-    if (!widget || !panel) return;
+    if (!widget || !panel || !bigBear) return;
 
-    // 1) Entrance animation once per session
-    const hasSeenUnclePat = sessionStorage.getItem('unclePatSeen');
-    if (!hasSeenUnclePat) {
-      widget.classList.add('uncle-pat-enter');
-      sessionStorage.setItem('unclePatSeen', 'true');
-    }
+    // Show full bear + open panel
+    widget.addEventListener('click', () => {
+      widget.style.opacity = '0';
+      bigBear.classList.add('show');
 
-    // 2) Open panel when Uncle Pat is clicked
-   widget.addEventListener('click', () => {
-  // Hide the small icon
-  widget.style.opacity = "0";
+      setTimeout(() => {
+        panel.classList.add('open');
+      }, 350);
+    });
 
-  // Show the full bear with scale animation
-  if (bigBear) {
-    bigBear.classList.add("show");
-  }
+    // Close panel + hide full bear + restore icon
+    closeBtn.addEventListener('click', () => {
+      panel.classList.remove('open');
+      bigBear.classList.remove('show');
 
-  // Open homework panel after animation
-  setTimeout(() => {
-    panel.classList.add('open');
-  }, 350);
-});
+      setTimeout(() => {
+        widget.style.opacity = '1';
+      }, 200);
+    });
 
-    // 3) Close panel
-   closeBtn.addEventListener('click', () => {
-  panel.classList.remove('open');
-
-  // Hide big bear
-  if (bigBear) {
-    bigBear.classList.remove("show");
-  }
-
-  // Fade small icon back in
-  setTimeout(() => {
-    widget.style.opacity = "1";
-  }, 150);
-});
-    // 4) Handle "Ask Uncle Pat"
+    // Handle Ask Uncle Pat
     askBtn.addEventListener('click', () => {
       const subject = subjectSelect.value;
       const question = questionInput.value.trim();
@@ -1428,7 +1353,7 @@ const bigBear = document.getElementById('unclePatFull');
       answerBox.innerHTML = reply;
     });
 
-    // 5) Simple template-based answer generator
+    // Template-based answers
     function buildUnclePatAnswer(subject, question) {
       const safeQuestion = question.length > 160 ? question.slice(0, 157) + "..." : question;
 
@@ -1438,84 +1363,74 @@ const bigBear = document.getElementById('unclePatFull');
             <strong>Hi there, math star! 🌟</strong><br><br>
             You asked about: <em>${safeQuestion}</em>.<br><br>
             Here’s a simple way to think about it:<br>
-            1) First, understand what the numbers or symbols are asking you to do.<br>
-            2) Then, break it into smaller steps instead of solving everything at once.<br>
-            3) Check your answer by going back in the opposite direction (like undoing it).<br><br>
-            Try to write the problem in your notebook and solve it slowly, step by step.<br><br>
-            You’re doing great – smart kids ask questions like this. 💚
+            1) Understand what the numbers are asking you to do.<br>
+            2) Break the problem into smaller steps.<br>
+            3) Check your answer by going in the opposite direction.<br><br>
+            Try it slowly on paper – step by step. You’re doing great. 💚
           `;
         case 'english':
           return `
             <strong>Hello reading hero! 📖</strong><br><br>
             You asked about: <em>${safeQuestion}</em>.<br><br>
-            In English, it helps to:<br>
-            1) Read the sentence slowly out loud.<br>
-            2) Look for the main word doing the action (the verb) and who is doing it (the noun).<br>
-            3) Underline any tricky words and ask what they mean in simple language.<br><br>
-            Try rewriting the sentence in your own words. That shows you really understand it.<br><br>
-            You’re growing stronger every time you read. 🌱
+            Read
+             the sentence slowly, find who is doing the action (the noun) and what they are doing (the verb).<br>
+            Underline any tricky words and try to say them in your own simple words.<br><br>
+            Every time you read, your brain grows stronger. 🌱
           `;
         case 'science':
           return `
             <strong>Hi little scientist! 🔬</strong><br><br>
             Your question: <em>${safeQuestion}</em> is a great science question.<br><br>
-            Science often follows this pattern:<br>
-            1) We notice something (an observation).<br>
-            2) We ask “why?” or “how?” (your question!).<br>
-            3) We test ideas with simple experiments or examples.<br><br>
-            Think about what you can see, touch, or measure around this question. That will help you understand it better.<br><br>
-            Keep asking “why” – that’s how real scientists start. 🌟
+            Science starts when we notice something, ask “why?”, and look for clues in the world around us.<br>
+            Think about what you can see, touch, or measure about this topic – that will help you understand it better.<br><br>
+            Keep asking “why” – that’s how real scientists begin. 🌟
           `;
         case 'bible':
           return `
             <strong>Hello, brave Bible thinker. ✝️</strong><br><br>
             You asked: <em>${safeQuestion}</em>.<br><br>
-            Some Bible questions can feel big or even a little confusing. That’s okay – even adults wonder about them.<br><br>
-            A good way to learn is:<br>
-            1) Read the Bible story or verse slowly.<br>
-            2) Ask: “What does this show me about God’s love, kindness, or wisdom?”<br>
-            3) Talk about it with a safe grown-up who loves God too.<br><br>
-            Remember: God loves curious kids, and He is not angry at your questions. 💚
+            Some Bible questions feel big, and that’s okay. A good way to learn is to read the verse or story slowly, ask what it shows about God’s love, and talk about it with a safe grown-up who loves God too.<br><br>
+            God loves curious kids and is not angry at your questions. 💚
           `;
         case 'feelings':
           return `
             <strong>Hi, big-hearted friend. 💛</strong><br><br>
             You wrote about: <em>${safeQuestion}</em>.<br><br>
-            Your feelings are important. It’s okay to feel sad, worried, or even angry sometimes.<br><br>
-            Here are some gentle steps you can try:<br>
-            1) Tell a safe adult you trust (like a parent, guardian, or teacher).<br>
-            2) Put your feeling into words: “I feel _ because _.”<br>
-            3) Take a few slow breaths and remember you are not alone.<br><br>
-            You did a brave thing by writing this. You don’t have to carry it by yourself. 💚
+            Your feelings matter. It’s okay to feel sad, worried, or angry sometimes.<br>
+            Try telling a safe adult you trust, putting your feeling into words (“I feel _ because _”), and taking a few slow breaths.<br><br>
+            You are not alone. Sharing your feelings is a very brave thing to do. 💚
           `;
         default:
           return `
             <strong>Hello, curious friend! 🧠</strong><br><br>
             You asked: <em>${safeQuestion}</em>.<br><br>
-            Here’s a simple way to handle many homework questions:<br>
-            1) Read the question slowly two times.<br>
+            For many homework questions, a good pattern is:<br>
+            1) Read the question twice slowly.<br>
             2) Underline the most important words.<br>
-            3) Ask yourself: “What is this really asking me to find or explain?”<br><br>
-            Then, try your best first. If you still feel stuck, you can show this question to a safe adult and ask for help.<br><br>
-            I’m proud of you for not giving up. Keep going, you’re learning more every day. 🌈
+            3) Ask: “What is this really asking me to find or explain?”<br><br>
+            Try your best first, then ask a safe adult if you still feel stuck.<br><br>
+            I’m proud of you for not giving up. 🌈
           `;
       }
-    }
-  })();
-    </script>
-    <!-- Uncle Pat Mascot Widget -->
+      }
+    })();
+  });
+</script>
+ <!-- Uncle Pat corner widget (small icon) -->
 <div class="uncle-pat-widget" id="unclePatWidget">
   <div class="uncle-pat-bear">
-   <div class="uncle-pat-avatar">
-  <img src="icons/uncle-pat-head.png" alt="Uncle Pat" />
+    <div class="uncle-pat-avatar">
+      <img src="icons/uncle-pat-head.png" alt="Uncle Pat" />
+    </div>
+    <div class="uncle-pat-flag">
+      Uncle Pat helps you<br>with your homework
+    </div>
+  </div>
 </div>
 
 <!-- Full-size Uncle Pat bear (hidden until clicked) -->
 <div class="uncle-pat-full" id="unclePatFull">
   <img src="icons/uncle-pat-full.png" alt="Uncle Pat full bear" />
-</div>
-    
-  </div>
 </div>
 
 <!-- Uncle Pat Homework Helper Panel -->
@@ -1525,6 +1440,7 @@ const bigBear = document.getElementById('unclePatFull');
       <span>Ask Uncle Pat</span>
       <button class="uncle-pat-panel-close" id="unclePatClose" aria-label="Close">✕</button>
     </div>
+
     <p class="uncle-pat-panel-sub">
       Stuck on something? Type your homework question below and Uncle Pat will give you a gentle explanation.
     </p>
@@ -1550,10 +1466,9 @@ const bigBear = document.getElementById('unclePatFull');
       Ask Uncle Pat
     </button>
 
-    <div class="uncle-pat-answer" id="unclePatAnswer">
-      <!-- Uncle Pat's answer will appear here -->
-    </div>
+    <div class="uncle-pat-answer" id="unclePatAnswer"></div>
   </div>
 </div>
+
   </body>
 </html>
