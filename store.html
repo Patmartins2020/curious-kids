@@ -644,6 +644,53 @@
   height: 100%;
   object-fit: cover;
 }
+.uncle-pat-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 0;
+  background: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.uncle-pat-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.uncle-pat-full {
+  position: fixed;
+  bottom: 90px;
+  right: 16px;
+  width: 180px;          /* desktop size */
+  max-width: 40vw;       /* responsive on small screens */
+  opacity: 0;
+  transform: scale(0.1);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  z-index: 9998;
+}
+
+.uncle-pat-full img {
+  width: 100%;
+  height: auto;
+}
+
+/* When visible */
+.uncle-pat-full.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Optional: slightly smaller on very small phones */
+@media (max-width: 480px) {
+  .uncle-pat-full {
+    width: 140px;
+    bottom: 80px;
+  }
+}
+
     </style>
   </head>
 
@@ -1326,6 +1373,7 @@
     const subjectSelect = document.getElementById('unclePatSubject');
     const questionInput = document.getElementById('unclePatQuestion');
     const answerBox = document.getElementById('unclePatAnswer');
+const bigBear = document.getElementById('unclePatFull');
 
     if (!widget || !panel) return;
 
@@ -1337,15 +1385,35 @@
     }
 
     // 2) Open panel when Uncle Pat is clicked
-    widget.addEventListener('click', () => {
-      panel.classList.add('open');
-    });
+   widget.addEventListener('click', () => {
+  // Hide the small icon
+  widget.style.opacity = "0";
+
+  // Show the full bear with scale animation
+  if (bigBear) {
+    bigBear.classList.add("show");
+  }
+
+  // Open homework panel after animation
+  setTimeout(() => {
+    panel.classList.add('open');
+  }, 350);
+});
 
     // 3) Close panel
-    closeBtn.addEventListener('click', () => {
-      panel.classList.remove('open');
-    });
+   closeBtn.addEventListener('click', () => {
+  panel.classList.remove('open');
 
+  // Hide big bear
+  if (bigBear) {
+    bigBear.classList.remove("show");
+  }
+
+  // Fade small icon back in
+  setTimeout(() => {
+    widget.style.opacity = "1";
+  }, 150);
+});
     // 4) Handle "Ask Uncle Pat"
     askBtn.addEventListener('click', () => {
       const subject = subjectSelect.value;
@@ -1439,11 +1507,14 @@
 <div class="uncle-pat-widget" id="unclePatWidget">
   <div class="uncle-pat-bear">
    <div class="uncle-pat-avatar">
-  <img src="icons/uncle-pat.png" alt="Uncle Pat" />
+  <img src="icons/uncle-pat-head.png" alt="Uncle Pat" />
 </div>
-    <div class="uncle-pat-flag">
-      Uncle Pat helps you<br>with your homework
-    </div>
+
+<!-- Full-size Uncle Pat bear (hidden until clicked) -->
+<div class="uncle-pat-full" id="unclePatFull">
+  <img src="icons/uncle-pat-full.png" alt="Uncle Pat full bear" />
+</div>
+    
   </div>
 </div>
 
