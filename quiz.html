@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Curious Kids – Quiz Arena</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#16a34a" />
+
+    <!-- PWA / Icons (reuse your existing files) -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" href="icons/favicon.png" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+    <style>
+      :root {
+        --primary: #ff8a3d;
+        --primary-dark: #e46f22;
+        --secondary: #4d8fff;
+        --card-bg: #ffffff;
+        --bg: #f7fbff;
+        --text: #0f172a;
+        --muted: #6b7280;
+        --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+        --radius-lg: 18px;
+        --radius-sm: 10px;
+        --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--font-main);
+        background: radial-gradient(
+          circle at top,
+          #e0f2ff 0,
+          #f7fbff 45%,
+          #ffffff 100%
+        );
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      /* HEADER + NAVBAR (same style family as other pages) */
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: #16a34a;
+        color: #f9fafb;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.15);
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+      }
+
+      .nav-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0.6rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .brand-logo {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: conic-gradient(
+          from 180deg,
+          #ff8a3d,
+          #ffd74d,
+          #4d8fff,
+          #16a34a,
+          #ff8a3d
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-weight: 800;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.35);
+      }
+
+      .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+      }
+
+      .brand-text span:first-child {
+        font-weight: 800;
+        font-size: 1rem;
+        letter-spacing: 0.03em;
+      }
+
+      .brand-text span:last-child {
+        font-size: 0.75rem;
+        color: rgba(226, 232, 240, 0.9);
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.9rem;
+        align-items: center;
+      }
+
+      nav a {
+        padding: 0.35rem 0.8rem;
+        border-radius: 999px;
+        color: #e5e7eb;
+        font-weight: 500;
+        transition: background 0.15s, color 0.15s, transform 0.1s;
+      }
+
+      nav a:hover {
+        background: rgba(255, 255, 255, 0.16);
+        color: #ffffff;
+        transform: translateY(-1px);
+      }
+
+      .nav-cta {
+        background: #ffffff;
+        color: #0f172a;
+        box-shadow: 0 3px 10px rgba(15, 23, 42, 0.35);
+      }
+
+      /* MAIN LAYOUT */
+
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1.6rem 1rem 2.6rem;
+      }
+
+      .hero {
+        margin-bottom: 1.6rem;
+        text-align: center;
+      }
+
+      .hero-kicker {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #059669;
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+      }
+
+      .hero-title {
+        font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+        font-weight: 800;
+        margin-bottom: 0.4rem;
+        color: #0f172a;
+      }
+
+      .hero-sub {
+        font-size: 0.9rem;
+        color: var(--muted);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .quiz-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 2.3fr) minmax(0, 1.7fr);
+        gap: 1.3rem;
+        align-items: flex-start;
+      }
+
+      @media (max-width: 860px) {
+        .quiz-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        padding: 1.1rem 1rem;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+      }
+
+      .card-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+      }
+
+      .card-sub {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-bottom: 0.7rem;
+      }
+
+      .field-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.2rem;
+      }
+
+      select,
+      input[type="text"],
+      input[type="number"] {
+        font-size: 0.82rem;
+        padding: 0.4rem 0.5rem;
+        border-radius: 10px;
+        border: 1px solid rgba(148, 163, 184, 0.9);
+        outline: none;
+        width: 100%;
+        margin-bottom: 0.5rem;
+      }
+
+      select:focus,
+      input[type="text"]:focus,
+      input[type="number"]:focus {
+        border-color: #16a34a;
+        box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.2);
+      }
+
+      .mode-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin-bottom: 0.7rem;
+      }
+
+      .mode-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.35rem 0.7rem;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.8);
+        font-size: 0.78rem;
+        cursor: pointer;
+        background: #f9fafb;
+      }
+
+      .mode-pill.selected {
+        border-color: #16a34a;
+        background: #ecfdf5;
+        color: #065f46;
+      }
+
+      .mode-pill input {
+        margin: 0;
+      }
+
+      .players-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      @media (max-width: 520px) {
+        .players-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .helper-text {
+        font-size: 0.75rem;
+        color: #6b7280;
+        margin-bottom: 0.5rem;
+      }
+
+      .btn-primary {
+        border-radius: 999px;
+        border: none;
+        padding: 0.55rem 1.1rem;
+        font-size: 0.85rem;
+        font-weight: 700;
+        background: var(--primary);
+        color: #ffffff;
+        cursor: pointer;
+        box-shadow: 0 5px 16px rgba(248, 113, 22, 0.55);
+        transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      }
+
+      .btn-primary:hover {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+      }
+
+      .btn-ghost {
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.8);
+        padding: 0.45rem 0.9rem;
+        font-size: 0.78rem;
+        font-weight: 600;
+        background: #f9fafb;
+        cursor: pointer;
+      }
+
+      .btn-ghost:hover {
+        background: #e5e7eb;
+      }
+
+      .btn-row {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 0.4rem;
+      }
+
+      .quiz-status {
+        margin-top: 0.8rem;
+        font-size: 0.78rem;
+        color: #4b5563;
+      }
+
+      /* QUIZ PLAY AREA */
+
+      .question-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.4rem;
+        font-size: 0.8rem;
+      }
+
+      .question-pill {
+        padding: 0.2rem 0.65rem;
+        border-radius: 999px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #1d4ed8;
+        font-weight: 600;
+        font-size: 0.78rem;
+      }
+
+      .player-pill {
+        padding: 0.2rem 0.65rem;
+        border-radius: 999px;
+        background: #ecfdf5;
+        border: 1px solid #6ee7b7;
+        color: #065f46;
+        font-weight: 600;
+        font-size: 0.78rem;
+      }
+
+      .question-text {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.6rem;
+      }
+
+      .options-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        margin-bottom: 0.4rem;
+      }
+
+      .option-btn {
+        border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.8);
+        padding: 0.55rem 0.7rem;
+        font-size: 0.9rem;
+        background: #f9fafb;
+        cursor: pointer;
+        text-align: left;
+        transition: background 0.15s, border 0.15s, transform 0.1s;
+      }
+
+      .option-btn:hover {
+        background: #e5f3ff;
+        transform: translateY(-1px);
+      }
+
+      .option-btn.correct {
+        background: #dcfce7;
+        border-color: #16a34a;
+      }
+
+      .option-btn.incorrect {
+        background: #fee2e2;
+        border-color: #f87171;
+      }
+
+      .feedback-text {
+        font-size: 0.8rem;
+        margin-top: 0.3rem;
+      }
+
+      .feedback-text.correct {
+        color: #16a34a;
+      }
+
+      .feedback-text.incorrect {
+        color: #b91c1c;
+      }
+
+      .scoreboard {
+        margin-top: 0.8rem;
+        border-top: 1px dashed rgba(148, 163, 184, 0.7);
+        padding-top: 0.6rem;
+      }
+
+      .scoreboard-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+      }
+
+      .score-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        margin-bottom: 0.2rem;
+      }
+
+      .score-row span:first-child {
+        font-weight: 600;
+      }
+
+      .results-panel {
+        margin-top: 0.8rem;
+        border-radius: 12px;
+        padding: 0.7rem 0.75rem;
+        background: #f0f9ff;
+        border: 1px solid #bae6fd;
+        font-size: 0.82rem;
+      }
+
+      .results-list {
+        margin-top: 0.35rem;
+        padding-left: 1rem;
+        font-size: 0.8rem;
+      }
+
+      .results-list li {
+        margin-bottom: 0.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="nav-inner">
+        <div class="brand">
+          <div class="brand-logo">CK</div>
+          <div class="brand-text">
+            <span>Curious Kids</span>
+            <span>Quiz Arena</span>
+          </div>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="ask.html">Ask a Question</a></li>
+            <li><a href="store.html">Store</a></li>
+            <li><a href="parents.html">For Parents</a></li>
+            <li><a href="plans.html">Uncle Pat Plans</a></li>
+            <li><a class="nav-cta" href="quiz.html">Quiz Arena</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-kicker">Play & Learn</div>
+        <h1 class="hero-title">Curious Kids Quiz Arena</h1>
+        <p class="hero-sub">
+          Bible stories, feelings, and general curiosity – turned into gentle,
+          fun quizzes for kids and families. Play solo or take turns in a
+          pass-and-play game.
+        </p>
+      </section>
+
+      <section class="quiz-layout">
+        <!-- LEFT: Setup -->
+        <div class="card">
+          <h2 class="card-title">1. Choose quiz & mode</h2>
+          <p class="card-sub">
+            Pick a quiz set, then decide if you want to play alone or with
+            friends on the same device.
+          </p>
+
+          <div>
+            <p class="field-label">Quiz set</p>
+            <select id="quizSelect">
+              <!-- Populated by JS -->
+            </select>
+          </div>
+
+          <div style="margin-top:0.4rem;">
+            <p class="field-label">Mode</p>
+            <div class="mode-row">
+              <label class="mode-pill selected" data-mode="solo" id="modeSoloPill">
+                <input
+                  type="radio"
+                  name="mode"
+                  value="solo"
+                  checked
+                />
+                Solo (1 player)
+              </label>
+              <label class="mode-pill" data-mode="multi" id="modeMultiPill">
+                <input
+                  type="radio"
+                  name="mode"
+                  value="multi"
+                />
+                Pass-and-play (2–4 players)
+              </label>
+            </div>
+          </div>
+
+          <div id="playersConfig" style="margin-top:0.4rem; display:none;">
+            <p class="field-label">Players</p>
+            <p class="helper-text">
+              Add 2–4 player names. Each player takes turns answering.
+            </p>
+            <div class="players-grid">
+              <input
+                type="text"
+                id="playerName1"
+                placeholder="Player 1"
+              />
+              <input
+                type="text"
+                id="playerName2"
+                placeholder="Player 2"
+              />
+              <input
+                type="text"
+                id="playerName3"
+                placeholder="Player 3 (optional)"
+              />
+              <input
+                type="text"
+                id="playerName4"
+                placeholder="Player 4 (optional)"
+              />
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" id="startQuizBtn">
+              Start quiz
+            </button>
+            <button class="btn-ghost" id="resetQuizBtn" type="button">
+              Reset
+            </button>
+          </div>
+
+          <div class="quiz-status" id="quizStatus">
+            No quiz running yet. Choose a set and press “Start quiz”.
+          </div>
+        </div>
+
+        <!-- RIGHT: Quiz play + scoreboard -->
+        <div class="card">
+          <h2 class="card-title">2. Play</h2>
+          <p class="card-sub">
+            Questions will appear here. Tap an answer to see if you got it
+            right. Take turns when playing with more than one player.
+          </p>
+
+          <div id="quizPlayArea">
+            <div id="questionHeader" class="question-header" style="display:none;">
+              <span class="question-pill" id="questionProgress"></span>
+              <span class="player-pill" id="currentPlayerLabel"></span>
+            </div>
+
+            <div id="questionText" class="question-text">
+              No question yet. Start a quiz to begin.
+            </div>
+
+            <div id="optionsContainer" class="options-grid"></div>
+
+            <div id="feedback" class="feedback-text"></div>
+
+            <div class="scoreboard" id="scoreboard" style="display:none;">
+              <div class="scoreboard-title">Scoreboard</div>
+              <div id="scoreRows"></div>
+            </div>
+
+            <div id="resultsPanel" class="results-panel" style="display:none;">
+              <div><strong>Game over!</strong> Here are the final results:</div>
+              <ul class="results-list" id="resultsList"></ul>
+              <div style="margin-top:.4rem;">
+                <button class="btn-ghost" id="playAgainBtn" type="button">
+                  Play again with same settings
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      // -------------------
+      // Quiz data (sample sets)
+      // -------------------
+      const QUIZ_SETS = [
+        {
+          id: 'bible-basics-1',
+          title: 'Bible Basics – Set 1',
+          category: 'Bible',
+          difficulty: 'easy',
+          questions: [
+            {
+              id: 'q1',
+              text: 'Who built the ark?',
+              options: ['Moses', 'Noah', 'David', 'Paul'],
+              correctIndex: 1
+            },
+            {
+              id: 'q2',
+              text: 'What did Jesus do at the wedding in Cana?',
+              options: [
+                'Walked on water',
+                'Fed 5,000 people',
+                'Turned water into wine',
+                'Calmed the storm'
+              ],
+              correctIndex: 2
+            },
+            {
+              id: 'q3',
+              text: 'Where was Jesus born?',
+              options: ['Bethlehem', 'Jerusalem', 'Nazareth', 'Egypt'],
+              correctIndex: 0
+            },
+            {
+              id: 'q4',
+              text: 'What did David use to defeat Goliath?',
+              options: [
+                'A sword',
+                'A slingshot and stone',
+                'A spear',
+                'His bare hands'
+              ],
+              correctIndex: 1
+            }
+          ]
+        },
+        {
+          id: 'feelings-kindness-1',
+          title: 'Feelings & Kindness',
+          category: 'Feelings',
+          difficulty: 'easy',
+          questions: [
+            {
+              id: 'f1',
+              text: 'If your friend is sad, what is a kind thing to do?',
+              options: [
+                'Laugh at them',
+                'Ignore them',
+                'Ask what is wrong and listen',
+                'Tell them to go away'
+              ],
+              correctIndex: 2
+            },
+            {
+              id: 'f2',
+              text: 'When you feel angry, what is a helpful first step?',
+              options: [
+                'Shout at someone',
+                'Hit something',
+                'Take a deep breath and pause',
+                'Hide your feelings forever'
+              ],
+              correctIndex: 2
+            },
+            {
+              id: 'f3',
+              text: 'If you break something that is not yours, what should you do?',
+              options: [
+                'Blame someone else',
+                'Run away',
+                'Tell the truth and say sorry',
+                'Pretend nothing happened'
+              ],
+              correctIndex: 2
+            },
+            {
+              id: 'f4',
+              text: 'What does it mean to forgive?',
+              options: [
+                'Never talk to the person again',
+                'Let go of anger and choose not to pay them back',
+                'Tell everyone what they did',
+                'Keep remembering it forever'
+              ],
+              correctIndex: 1
+            }
+          ]
+        }
+      ];
+
+      // -------------------
+      // State
+      // -------------------
+      let currentQuiz = null;
+      let currentQuestionIndex = 0;
+      let mode = 'solo'; // 'solo' or 'multi'
+      let players = []; // { name, score }
+      let currentPlayerIndex = 0;
+      let quizRunning = false;
+
+      // -------------------
+      // Elements
+      // -------------------
+      const quizSelect = document.getElementById('quizSelect');
+      const modeSoloPill = document.getElementById('modeSoloPill');
+      const modeMultiPill = document.getElementById('modeMultiPill');
+      const playersConfig = document.getElementById('playersConfig');
+      const startQuizBtn = document.getElementById('startQuizBtn');
+      const resetQuizBtn = document.getElementById('resetQuizBtn');
+      const quizStatus = document.getElementById('quizStatus');
+
+      const questionHeader = document.getElementById('questionHeader');
+      const questionProgress = document.getElementById('questionProgress');
+      const currentPlayerLabel = document.getElementById('currentPlayerLabel');
+      const questionText = document.getElementById('questionText');
+      const optionsContainer = document.getElementById('optionsContainer');
+      const feedback = document.getElementById('feedback');
+
+      const scoreboard = document.getElementById('scoreboard');
+      const scoreRows = document.getElementById('scoreRows');
+
+      const resultsPanel = document.getElementById('resultsPanel');
+      const resultsList = document.getElementById('resultsList');
+      const playAgainBtn = document.getElementById('playAgainBtn');
+
+      // -------------------
+      // Init quiz dropdown
+      // -------------------
+      function populateQuizSelect() {
+        quizSelect.innerHTML = '';
+        QUIZ_SETS.forEach((q) => {
+          const opt = document.createElement('option');
+          opt.value = q.id;
+          opt.textContent = `${q.title} (${q.category})`;
+          quizSelect.appendChild(opt);
+        });
+        if (QUIZ_SETS.length) {
+          currentQuiz = QUIZ_SETS[0];
+        }
+      }
+
+      // -------------------
+      // Mode selection
+      // -------------------
+      function setMode(nextMode) {
+        mode = nextMode;
+        if (mode === 'multi') {
+          playersConfig.style.display = 'block';
+          modeMultiPill.classList.add('selected');
+          modeSoloPill.classList.remove('selected');
+        } else {
+          playersConfig.style.display = 'none';
+          modeSoloPill.classList.add('selected');
+          modeMultiPill.classList.remove('selected');
+        }
+      }
+
+      modeSoloPill.addEventListener('click', () => setMode('solo'));
+      modeMultiPill.addEventListener('click', () => setMode('multi'));
+
+      quizSelect.addEventListener('change', () => {
+        const id = quizSelect.value;
+        currentQuiz = QUIZ_SETS.find((q) => q.id === id) || null;
+      });
+
+      // -------------------
+      // Quiz core
+      // -------------------
+      function startQuiz() {
+        if (!currentQuiz) {
+          alert('Please choose a quiz set.');
+          return;
+        }
+
+        // Build players
+        if (mode === 'solo') {
+          players = [{ name: 'Player 1', score: 0 }];
+        } else {
+          const names = [
+            document.getElementById('playerName1').value.trim(),
+            document.getElementById('playerName2').value.trim(),
+            document.getElementById('playerName3').value.trim(),
+            document.getElementById('playerName4').value.trim()
+          ].filter((n) => n !== '');
+
+          if (names.length < 2) {
+            alert('Please enter at least 2 player names for pass-and-play.');
+            return;
+          }
+          players = names.map((n) => ({ name: n, score: 0 }));
+        }
+
+        currentQuestionIndex = 0;
+        currentPlayerIndex = 0;
+        quizRunning = true;
+        resultsPanel.style.display = 'none';
+        feedback.textContent = '';
+        feedback.className = 'feedback-text';
+
+        quizStatus.textContent =
+          'Quiz running. Tap an answer to see if it is correct.';
+
+        renderScoreboard();
+        showQuestion();
+      }
+
+      function resetQuiz() {
+        quizRunning = false;
+        currentQuiz = QUIZ_SETS.find((q) => q.id === quizSelect.value) || null;
+        currentQuestionIndex = 0;
+        currentPlayerIndex = 0;
+        players = [];
+        questionHeader.style.display = 'none';
+        questionText.textContent =
+          'No question yet. Start a quiz to begin.';
+        optionsContainer.innerHTML = '';
+        feedback.textContent = '';
+        feedback.className = 'feedback-text';
+        scoreboard.style.display = 'none';
+        scoreRows.innerHTML = '';
+        resultsPanel.style.display = 'none';
+        resultsList.innerHTML = '';
+        quizStatus.textContent =
+          'No quiz running yet. Choose a set and press “Start quiz”.';
+      }
+
+      function showQuestion() {
+        if (!quizRunning || !currentQuiz) return;
+
+        const questions = currentQuiz.questions;
+        if (currentQuestionIndex >= questions.length) {
+          endQuiz();
+          return;
+        }
+
+        const q = questions[currentQuestionIndex];
+
+        questionHeader.style.display = 'flex';
+        questionProgress.textContent =
+          'Question ' + (currentQuestionIndex + 1) + ' of ' + questions.length;
+
+        if (players.length > 1) {
+          currentPlayerLabel.textContent =
+            'Current player: ' + players[currentPlayerIndex].name;
+        } else {
+          currentPlayerLabel.textContent = 'Solo mode';
+        }
+
+        questionText.textContent = q.text;
+        optionsContainer.innerHTML = '';
+        feedback.textContent = '';
+        feedback.className = 'feedback-text';
+
+        q.options.forEach((optText, index) => {
+          const btn = document.createElement('button');
+          btn.className = 'option-btn';
+          btn.textContent = optText;
+          btn.dataset.index = index;
+          btn.addEventListener('click', () => {
+            handleAnswerClick(index);
+          });
+          optionsContainer.appendChild(btn);
+        });
+      }
+
+      function handleAnswerClick(selectedIndex) {
+        if (!quizRunning || !currentQuiz) return;
+        const q = currentQuiz.questions[currentQuestionIndex];
+        const correctIndex = q.correctIndex;
+
+        // Disable further clicks on options
+        const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+        optionButtons.forEach((btn) => {
+          btn.disabled = true;
+        });
+
+        // Highlight
+        optionButtons.forEach((btn) => {
+          const idx = Number(btn.dataset.index);
+          if (idx === correctIndex) {
+            btn.classList.add('correct');
+          }
+          if (idx === selectedIndex && idx !== correctIndex) {
+            btn.classList.add('incorrect');
+          }
+        });
+
+        // Update score
+        if (selectedIndex === correctIndex && players.length > 0) {
+          players[currentPlayerIndex].score += 1;
+          feedback.textContent = 'Correct! Well done.';
+          feedback.classList.add('correct');
+        } else {
+          feedback.textContent =
+            'Not quite. That is okay – keep learning and try the next one.';
+          feedback.classList.add('incorrect');
+        }
+
+        renderScoreboard();
+
+        // Move to next question after short delay
+        setTimeout(() => {
+          currentQuestionIndex += 1;
+          if (players.length > 1) {
+            currentPlayerIndex =
+              (currentPlayerIndex + 1) % players.length;
+          }
+          showQuestion();
+        }, 900);
+      }
+
+      function renderScoreboard() {
+        if (!players.length) {
+          scoreboard.style.display = 'none';
+          scoreRows.innerHTML = '';
+          return;
+        }
+        scoreboard.style.display = 'block';
+        const sorted = [...players].sort((a, b) => b.score - a.score);
+        scoreRows.innerHTML = sorted
+          .map((p) => {
+            return `
+              <div class="score-row">
+                <span>${p.name}</span>
+                <span>${p.score} point${p.score === 1 ? '' : 's'}</span>
+              </div>
+            `;
+          })
+          .join('');
+      }
+
+      function endQuiz() {
+        quizRunning = false;
+
+        // Build results
+        const ranked = [...players].sort((a, b) => b.score - a.score);
+        resultsList.innerHTML = ranked
+          .map((p, idx) => {
+            const place =
+              idx === 0
+                ? '1st'
+                : idx === 1
+                ? '2nd'
+                : idx === 2
+                ? '3rd'
+                : (idx + 1) + 'th';
+            return `
+              <li>
+                <strong>${place}:</strong> ${p.name} – ${p.score} point${p.score === 1 ? '' : 's'}
+              </li>
+            `;
+          })
+          .join('');
+        resultsPanel.style.display = 'block';
+        quizStatus.textContent =
+          'Quiz finished. You can play again or choose another set.';
+      }
+
+      // -------------------
+      // Event wiring
+      // -------------------
+      startQuizBtn.addEventListener('click', startQuiz);
+      resetQuizBtn.addEventListener('click', resetQuiz);
+      playAgainBtn.addEventListener('click', () => {
+        // Replay with same quiz + mode + players as last game
+        if (!currentQuiz) {
+          currentQuiz = QUIZ_SETS.find(
+            (q) => q.id === quizSelect.value
+          ) || null;
+        }
+        if (!currentQuiz) {
+          alert('Please choose a quiz set first.');
+          return;
+        }
+        // If no players (e.g. page reload), use current mode to rebuild
+        if (!players.length) {
+          startQuiz();
+          return;
+        }
+        players = players.map((p) => ({ name: p.name, score: 0 }));
+        currentQuestionIndex = 0;
+        currentPlayerIndex = 0;
+        quizRunning = true;
+        resultsPanel.style.display = 'none';
+        feedback.textContent = '';
+        feedback.className = 'feedback-text';
+        quizStatus.textContent =
+          'Quiz running. Tap an answer to see if it is correct.';
+        renderScoreboard();
+        showQuestion();
+      });
+
+      // -------------------
+      // Init
+      // -------------------
+      populateQuizSelect();
+      resetQuiz(); // ensures clean UI on first load
+    </script>
+  </body>
+</html>
