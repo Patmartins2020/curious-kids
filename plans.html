@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Curious Kids – Uncle Pat Plans</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#16a34a" />
+
+    <!-- Reuse your PWA setup if you want -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" href="icons/favicon.png" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+    <style>
+      :root {
+        --primary: #ff8a3d;
+        --primary-dark: #e46f22;
+        --secondary: #4d8fff;
+        --card-bg: #ffffff;
+        --bg: #f7fbff;
+        --text: #0f172a;
+        --muted: #6b7280;
+        --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+        --radius-lg: 18px;
+        --radius-sm: 10px;
+        --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--font-main);
+        background: radial-gradient(
+          circle at top,
+          #e0f2ff 0,
+          #f7fbff 45%,
+          #ffffff 100%
+        );
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      /* HEADER + NAVBAR (similar to store.html) */
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: #16a34a;
+        color: #f9fafb;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.15);
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+      }
+
+      .nav-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0.6rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .brand-logo {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: conic-gradient(
+          from 180deg,
+          #ff8a3d,
+          #ffd74d,
+          #4d8fff,
+          #16a34a,
+          #ff8a3d
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-weight: 800;
+        font-size: 1.1rem;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.35);
+      }
+
+      .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+      }
+
+      .brand-text span:first-child {
+        font-weight: 800;
+        font-size: 1rem;
+        letter-spacing: 0.03em;
+      }
+
+      .brand-text span:last-child {
+        font-size: 0.75rem;
+        color: rgba(226, 232, 240, 0.9);
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.9rem;
+        align-items: center;
+      }
+
+      nav a {
+        padding: 0.35rem 0.8rem;
+        border-radius: 999px;
+        color: #e5e7eb;
+        font-weight: 500;
+        transition: background 0.15s, color 0.15s, transform 0.1s;
+      }
+
+      nav a:hover {
+        background: rgba(255, 255, 255, 0.16);
+        color: #ffffff;
+        transform: translateY(-1px);
+      }
+
+      .nav-cta {
+        background: #ffffff;
+        color: #0f172a;
+        box-shadow: 0 3px 10px rgba(15, 23, 42, 0.35);
+      }
+
+      /* MAIN LAYOUT */
+
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1.8rem 1rem 2.8rem;
+      }
+
+      .hero {
+        text-align: center;
+        margin-bottom: 1.8rem;
+      }
+
+      .hero-kicker {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #059669;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+      }
+
+      .hero-title {
+        font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        color: #0f172a;
+      }
+
+      .hero-sub {
+        font-size: 0.9rem;
+        color: var(--muted);
+        max-width: 580px;
+        margin: 0 auto;
+      }
+
+      .plans-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+        margin-top: 1.6rem;
+      }
+
+      @media (max-width: 840px) {
+        .plans-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .plan-card {
+        background: #ffffff;
+        border-radius: var(--radius-lg);
+        padding: 1.1rem 1rem 1.2rem;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .plan-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.7rem;
+        padding: 0.15rem 0.6rem;
+        border-radius: 999px;
+        background: #ecfdf5;
+        color: #047857;
+        font-weight: 600;
+      }
+
+      .plan-name {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+      }
+
+      .plan-desc {
+        font-size: 0.8rem;
+        color: #6b7280;
+      }
+
+      .plan-price {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #111827;
+      }
+
+      .plan-price span {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #6b7280;
+      }
+
+      .plan-list {
+        list-style: none;
+        font-size: 0.78rem;
+        color: #111827;
+        margin-top: 0.4rem;
+        margin-bottom: 0.6rem;
+      }
+
+      .plan-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.3rem;
+        margin-bottom: 0.3rem;
+      }
+
+      .plan-list li::before {
+        content: "•";
+        color: #16a34a;
+        margin-top: 1px;
+      }
+
+      .plan-cta {
+        margin-top: auto;
+      }
+
+      .plan-cta button {
+        width: 100%;
+        border-radius: 999px;
+        border: none;
+        padding: 0.55rem 0.8rem;
+        font-size: 0.82rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      }
+
+      .plan-cta-primary {
+        background: var(--primary);
+        color: #ffffff;
+        box-shadow: 0 5px 16px rgba(248, 113, 22, 0.5);
+      }
+
+      .plan-cta-primary:hover {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+      }
+
+      .plan-cta-ghost {
+        background: #f9fafb;
+        color: #111827;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+      }
+
+      .plan-cta-ghost:hover {
+        background: #e5e7eb;
+        transform: translateY(-1px);
+      }
+
+      .plan-highlight {
+        border-color: #16a34a;
+        box-shadow: 0 16px 38px rgba(22, 163, 74, 0.18);
+        position: relative;
+      }
+
+      .plan-highlight::before {
+        content: "Most Popular";
+        position: absolute;
+        top: -10px;
+        right: 12px;
+        background: #16a34a;
+        color: #f9fafb;
+        font-size: 0.65rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 999px;
+        box-shadow: 0 4px 12px rgba(22, 163, 74, 0.5);
+      }
+
+      .foot-note {
+        margin-top: 1.4rem;
+        font-size: 0.78rem;
+        color: #6b7280;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="nav-inner">
+        <div class="brand">
+          <div class="brand-logo">CK</div>
+          <div class="brand-text">
+            <span>Curious Kids</span>
+            <span>Big questions, safe answers</span>
+          </div>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="ask.html">Ask a Question</a></li>
+            <li><a href="store.html">Store</a></li>
+            <li><a href="parents.html">For Parents</a></li>
+            <li><a class="nav-cta" href="plans.html">Uncle Pat Plans</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-kicker">Uncle Pat Homework Helper</div>
+        <h1 class="hero-title">Choose the right plan for your curious child</h1>
+        <p class="hero-sub">
+          Uncle Pat offers gentle, guided support so children think, understand,
+          and grow. Not a replacement for effort — a safe companion on the learning journey.
+        </p>
+      </section>
+
+      <section class="plans-grid">
+        <!-- Free / Demo -->
+        <article class="plan-card">
+          <div class="plan-name">Free Demo</div>
+          <p class="plan-desc">
+            Let your child meet Uncle Pat and try a limited demo answer.
+          </p>
+          <p class="plan-price">
+            ₦0 <span>/ forever</span>
+          </p>
+          <ul class="plan-list">
+            <li>1 free demo answer per week</li>
+            <li>Short, template-style explanation</li>
+            <li>Access to Curious Kids Question Wall</li>
+            <li>No AI assistance, no deep homework help</li>
+          </ul>
+          <div class="plan-cta">
+            <button class="plan-cta-ghost" type="button">
+              Included automatically
+            </button>
+          </div>
+        </article>
+
+        <!-- Basic -->
+        <article class="plan-card">
+          <div class="plan-badge">For light homework support</div>
+          <div class="plan-name">Basic Plan</div>
+          <p class="plan-desc">
+            For families who want occasional homework guidance without full tutoring.
+          </p>
+          <p class="plan-price">
+            From $4.99 <span>/ month</span>
+          </p>
+          <ul class="plan-list">
+            <li>Up to 5 guided answers per month</li>
+            <li>Clear, child-friendly explanations</li>
+            <li>Covers maths, English, science, Bible & feelings</li>
+            <li>Simple usage tracking so parents stay in control</li>
+          </ul>
+          <div class="plan-cta">
+            <button
+              class="plan-cta-primary"
+              type="button"
+              onclick="alert('In live version, this will go to payment or signup for Basic Plan.')"
+            >
+              Get Basic Plan
+            </button>
+          </div>
+        </article>
+
+        <!-- Premium -->
+        <article class="plan-card plan-highlight">
+          <div class="plan-badge">Best value for families</div>
+          <div class="plan-name">Premium Plan</div>
+          <p class="plan-desc">
+            For busy parents and active learners who ask big questions every week.
+          </p>
+          <p class="plan-price">
+            From $9.99 <span>/ month</span>
+          </p>
+          <ul class="plan-list">
+            <li>Up to 20 guided answers per month</li>
+            <li>Richer, clearer explanations for tricky topics</li>
+            <li>Parent-supervised limits to avoid overuse</li>
+            <li>Access to adult forum & extra guidance resources</li>
+            <li>Future-ready for AI-assisted answers (with safeguards)</li>
+          </ul>
+          <div class="plan-cta">
+            <button
+              class="plan-cta-primary"
+              type="button"
+              onclick="alert('In live version, this will go to payment or signup for Premium Plan.')"
+            >
+              Get Premium Plan
+            </button>
+          </div>
+        </article>
+      </section>
+
+      <p class="foot-note">
+        Uncle Pat is designed to support children, not to do their work for them.
+        Every answer encourages thinking, effort, and conversations with a safe adult.
+      </p>
+    </main>
+  </body>
+</html>
