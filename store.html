@@ -646,6 +646,94 @@
   max-height: 180px;
   overflow-y: auto;
 }
+/* ---------- Uncle Pat Upgrade Overlay ---------- */
+
+.uncle-pat-upgrade-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.uncle-pat-upgrade-overlay.open {
+  display: flex;
+}
+
+.uncle-pat-upgrade-card {
+  background: #f9fafb;
+  border-radius: 18px;
+  padding: 16px 18px;
+  max-width: 360px;
+  width: calc(100% - 40px);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.45);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.uncle-pat-upgrade-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.uncle-pat-upgrade-sub {
+  font-size: 0.8rem;
+  color: #4b5563;
+  margin-bottom: 10px;
+}
+
+.uncle-pat-upgrade-list {
+  font-size: 0.78rem;
+  color: #111827;
+  margin: 0 0 10px 0;
+  padding-left: 16px;
+}
+
+.uncle-pat-upgrade-list li {
+  margin-bottom: 4px;
+}
+
+.uncle-pat-upgrade-price {
+  font-size: 0.8rem;
+  color: #065f46;
+  margin-bottom: 10px;
+}
+
+.uncle-pat-upgrade-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.uncle-pat-upgrade-primary,
+.uncle-pat-upgrade-secondary {
+  flex: 1;
+  border-radius: 999px;
+  border: none;
+  padding: 8px 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.uncle-pat-upgrade-primary {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.uncle-pat-upgrade-secondary {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.uncle-pat-upgrade-footer {
+  margin-top: 8px;
+  font-size: 0.7rem;
+  color: #6b7280;
+}
     </style>
   </head>
 
@@ -943,7 +1031,42 @@
     </button>
 
     <div class="uncle-pat-answer" id="unclePatAnswer"></div>
-  </div><!-- end .uncle-pat-panel-inner -->
+
+  </div>
+  <!-- Uncle Pat Upgrade Overlay -->
+<div class="uncle-pat-upgrade-overlay" id="unclePatUpgrade">
+  <div class="uncle-pat-upgrade-card">
+    <div class="uncle-pat-upgrade-title">Unlock Full Access to Uncle Pat</div>
+    <div class="uncle-pat-upgrade-sub">
+      Your child has used the free demo. To keep getting gentle homework help, please upgrade to a parent plan.
+    </div>
+
+    <ul class="uncle-pat-upgrade-list">
+      <li>Up to 20 guided answers per month</li>
+      <li>Kinder, clearer explanations for homework</li>
+      <li>Parent-supervised usage limits</li>
+      <li>Safer, faith-friendly support</li>
+    </ul>
+
+    <div class="uncle-pat-upgrade-price">
+      <strong>Suggested launch price:</strong> Basic from $4.99/mo · Premium from $9.99/mo
+    </div>
+
+    <div class="uncle-pat-upgrade-actions">
+      <button class="uncle-pat-upgrade-primary" id="unclePatGoPremium">
+        Start Premium (Demo)
+      </button>
+      <button class="uncle-pat-upgrade-secondary" id="unclePatUpgradeClose">
+        Not Now
+      </button>
+    </div>
+
+    <div class="uncle-pat-upgrade-footer">
+      Uncle Pat is a helper, not a replacement for learning. Children are encouraged to think, try, and grow.
+    </div>
+  </div>
+</div>
+  <!-- end .uncle-pat-panel-inner -->
 </div><!-- end .uncle-pat-panel -->
     </main>
 
@@ -1369,13 +1492,14 @@
     // BOOTSTRAP
     // ---------------------------
     // If your store functions exist, this keeps them working
+ // If your store functions exist, this keeps them working (already in your file)
   document.addEventListener("DOMContentLoaded", () => {
     if (typeof renderStore === "function") renderStore();
     if (typeof renderCart === "function") renderCart();
     if (typeof renderPrivateQuestions === "function") renderPrivateQuestions();
   });
 
-  // Basic Uncle Pat functionality (icon + panel only)
+  // Basic Uncle Pat functionality with free limit + upgrade popup
   (function () {
     const widget = document.getElementById('unclePatWidget');
     const panel = document.getElementById('unclePatPanel');
@@ -1385,7 +1509,43 @@
     const questionInput = document.getElementById('unclePatQuestion');
     const answerBox = document.getElementById('unclePatAnswer');
 
+    const upgradeOverlay = document.getElementById('unclePatUpgrade');
+    const upgradeClose = document.getElementById('unclePatUpgradeClose');
+    const upgradeGoPremium = document.getElementById('unclePatGoPremium');
+
     if (!widget || !panel) return;
+
+    // Config
+    const FREE_LIMIT = 1; // one free answer per browser (demo)
+    const FREE_KEY = 'unclePatFreeUsed';
+    const PREMIUM_KEY = 'unclePatPremiumActive';
+
+    function isPremium() {
+      return localStorage.getItem(PREMIUM_KEY) === 'true';
+    }
+
+    function getFreeUsed() {
+      const raw = localStorage.getItem(FREE_KEY);
+      const num = parseInt(raw, 10);
+      return Number.isNaN(num) ? 0 : num;
+    }
+
+    function incrementFreeUsed() {
+      const next = getFreeUsed() + 1;
+      localStorage.setItem(FREE_KEY, String(next));
+    }
+
+    function openUpgrade() {
+      if (upgradeOverlay) {
+        upgradeOverlay.classList.add('open');
+      }
+    }
+
+    function closeUpgrade() {
+      if (upgradeOverlay) {
+        upgradeOverlay.classList.remove('open');
+      }
+    }
 
     // Open panel when Uncle Pat icon is clicked
     widget.addEventListener('click', () => {
@@ -1397,6 +1557,22 @@
       panel.classList.remove('open');
     });
 
+    // Upgrade overlay buttons
+    if (upgradeClose) {
+      upgradeClose.addEventListener('click', () => {
+        closeUpgrade();
+      });
+    }
+
+    if (upgradeGoPremium) {
+      upgradeGoPremium.addEventListener('click', () => {
+        // DEMO: mark as premium locally (later this will be tied to real payment)
+        localStorage.setItem(PREMIUM_KEY, 'true');
+        closeUpgrade();
+        answerBox.innerHTML = "Premium demo activated. From now on, Uncle Pat can help more often. (Real billing will be added later.)";
+      });
+    }
+
     // Handle Ask Uncle Pat
     askBtn.addEventListener('click', () => {
       const subject = subjectSelect.value;
@@ -1407,11 +1583,24 @@
         return;
       }
 
+      // Enforce free limit if not premium
+      if (!isPremium()) {
+        const used = getFreeUsed();
+        if (used >= FREE_LIMIT) {
+          // Show upgrade popup instead of answering
+          openUpgrade();
+          answerBox.innerHTML = "You have used your free demo answer. Ask your parent or guardian to help you unlock Uncle Pat Premium.";
+          return;
+        }
+        // Still within free limit → consume one
+        incrementFreeUsed();
+      }
+
       const reply = buildUnclePatAnswer(subject, question);
       answerBox.innerHTML = reply;
     });
 
-    // Template-based answers
+    // Template-based answers (same as before)
     function buildUnclePatAnswer(subject, question) {
       const safeQuestion =
         question.length > 160 ? question.slice(0, 157) + "..." : question;
@@ -1455,7 +1644,7 @@
             <strong>Hi, big-hearted friend. 💛</strong><br><br>
             You wrote about: <em>${safeQuestion}</em>.<br><br>
             Your feelings matter. It’s okay to feel sad, worried, or angry sometimes.<br>
-            Try telling a safe adult you trust, putting your feeling into words (“I feel ___ because ___”), and taking a few slow breaths.<br><br>
+            Try telling a safe adult you trust, putting your feeling into words (“I feel _ because _”), and taking a few slow breaths.<br><br>
             You are not alone. Sharing your feelings is a very brave thing to do. 💚
           `;
         default:
