@@ -560,7 +560,7 @@ form.addEventListener('submit', function (e) {
     childName,
     country,
     createdAt: new Date().toISOString(),
-    status: 'Active (demo)'
+    status: 'Payment successful (demo)'
   };
 
   // Read existing list from localStorage
@@ -580,16 +580,19 @@ form.addEventListener('submit', function (e) {
   list.push(subscription);
   localStorage.setItem(key, JSON.stringify(list));
 
+  // Show success to the parent (client stays here, no admin redirect)
   alert(
-    'Demo subscription stored locally.\n\n' +
-      'Plan: ' + subscription.plan +
-      '\nParent: ' + subscription.parentName +
-      '\nEmail: ' + subscription.parentEmail +
-      '\n\nIn the live version, this would now go to a secure payment gateway and backend.'
+    'Payment successful (demo).\n\n' +
+      'Thank you, ' + subscription.parentName + '!\n' +
+      'Your plan: ' + subscription.plan + '\n\n' +
+      'In the live version, this page would show a proper success screen ' +
+      'and your bank/ card will confirm the real payment.'
   );
 
-  // Optional: redirect to admin page so you can see it
-  window.location.href = 'admin.html';
+  // Optionally clear the form
+  form.reset();
+  // Keep the current plan selection as is or reset to basic:
+  // selectPlan('basic');
 });
     </script>
   </body>
