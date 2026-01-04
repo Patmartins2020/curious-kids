@@ -665,7 +665,41 @@ nav a {
           Open Parent Forum App
         </button>
       </div>
+
     </section>
+    <section class="card" style="margin-top: 1rem;">
+  <h2 style="font-size: 1rem; margin-bottom:.4rem;">
+    Uncle Pat Homework Helper — Subscription Status
+  </h2>
+
+  <div id="unclePatStats"
+    style="display:flex; gap:1rem; flex-wrap:wrap; font-size:.85rem;">
+    
+    <div style="padding:.6rem 1rem; border-radius:12px;
+      background:#ecfdf5; border:1px solid #6ee7b7;">
+      <strong>Total Subscribers:</strong>
+      <span id="uPatTotal">0</span>
+    </div>
+
+    <div style="padding:.6rem 1rem; border-radius:12px;
+      background:#eff6ff; border:1px solid #93c5fd;">
+      <strong>Premium:</strong>
+      <span id="uPatPremium">0</span>
+    </div>
+
+    <div style="padding:.6rem 1rem; border-radius:12px;
+      background:#fef9c3; border:1px solid #fde047;">
+      <strong>Basic:</strong>
+      <span id="uPatBasic">0</span>
+    </div>
+
+    <div id="uPatIndicator"
+      style="padding:.6rem 1rem; border-radius:12px;
+      background:#f3f4f6; border:1px solid #d1d5db;">
+      Status: <strong>No active subscriptions</strong>
+    </div>
+  </div>
+</section>
   </main>
 
   <footer>
@@ -1062,6 +1096,75 @@ document.addEventListener("DOMContentLoaded", function () {
       navMenu.classList.toggle('open');
     });
   }
+
+  (function () {
+  const key = 'unclePatSubscribers';
+
+  const tbody = document.getElementById('unclePatSubsBody');
+  const totalEl = document.getElementById('uPatTotal');
+  const basicEl = document.getElementById('uPatBasic');
+  const premiumEl = document.getElementById('uPatPremium');
+  const indicatorEl = document.getElementById('uPatIndicator');
+
+  let list = [];
+  try {
+    const raw = localStorage.getItem(key);
+    list = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(list)) list = [];
+  } catch (e) {
+    list = [];
+  }
+
+  // --- Stats Summary ---
+  const total = list.length;
+  const premium = list.filter(s => s.plan === 'Premium').length;
+  const basic = list.filter(s => s.plan === 'Basic').length;
+
+  totalEl.textContent = total;
+  premiumEl.textContent = premium;
+  basicEl.textContent = basic;
+
+  if (total === 0) {
+    indicatorEl.innerHTML =
+      'Status: <strong>No active subscriptions</strong>';
+    indicatorEl.style.background = '#fef2f2';
+    indicatorEl.style.borderColor = '#fecaca';
+  } else {
+    indicatorEl.innerHTML =
+      'Status: <strong>Active subscriptions detected</strong>';
+    indicatorEl.style.background = '#ecfdf5';
+    indicatorEl.style.borderColor = '#6ee7b7';
+  }
+
+  // --- Table Rendering ---
+  if (!tbody) return;
+
+  if (!list.length) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8"
+          style="padding:.6rem; color:#9ca3af; text-align:center;">
+          No subscriptions found yet.
+        </td>
+      </tr>`;
+    return;
+  }
+
+  tbody.innerHTML = list.map(sub => {
+    const date = new Date(sub.createdAt);
+    return `
+      <tr>
+        <td style="padding:.4rem; border-bottom:1px solid #e5e7eb;">${sub.parentName}</td>
+        <td style="padding:.4rem; border-bottom:1px solid #e5e7eb;">${sub.parentEmail}</td>
+        <td style="padding:.4rem; border-bottom:1px solid #e5e7eb;">${sub.childName || ''}</td>
+        <td style="padding:.4rem; border-bottom:1px solid #e5e7eb;">${sub.plan}</td>
+        <td style="padding:.4rem; border-bottom:1px solid #e5e7eb;">$${sub.price.toFixed(2)}</td>
+        <td style="padding:.4rem; border-bottom:1px solid #e5e7eb;">${sub.country || ''}</td>
+        <td style="padding:.4rem; border-bottom:1px solid #e5e7eb;">${date.toLocaleString()}</td>
+        <td style="padding:.4rem; border-bottom:1px solid #e5e7eb;">${sub.status}</td>
+      </tr>`;
+  }).join('');
+})();
   </script>
 </body>
 </html>
