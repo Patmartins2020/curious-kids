@@ -1550,9 +1550,19 @@
     }
 
     // Open panel when Uncle Pat icon is clicked
-    widget.addEventListener('click', () => {
-      panel.classList.add('open');
-    });
+   // Toggle panel when Uncle Pat icon is clicked
+widget.addEventListener('click', () => {
+  if (panel.classList.contains('open')) {
+    // If already open, close panel and any upgrade overlay
+    panel.classList.remove('open');
+    if (upgradeOverlay) {
+      upgradeOverlay.classList.remove('open');
+    }
+  } else {
+    // If closed, open panel
+    panel.classList.add('open');
+  }
+});
 
     // Close panel
     closeBtn.addEventListener('click', () => {
