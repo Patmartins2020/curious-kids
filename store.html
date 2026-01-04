@@ -891,6 +891,60 @@
           </div>
         </div>
       </section>
+      <!-- Uncle Pat corner widget (small icon) -->
+      <div class="uncle-pat-widget" id="unclePatWidget">
+        <div class="uncle-pat-bear">
+          <div class="uncle-pat-avatar">
+            <img src="icons/uncle-pat-head.png" alt="Uncle Pat" />
+          </div>
+          <div class="uncle-pat-flag">
+            Uncle Pat helps you<br />with your homework
+          </div>
+        </div>
+      </div>
+
+      <!-- Uncle Pat Homework Helper Panel -->
+     !-- Uncle Pat Homework Helper Panel -->
+<div class="uncle-pat-panel" id="unclePatPanel">
+  <div class="uncle-pat-panel-inner">
+    <div class="uncle-pat-panel-header">
+      <span>Ask Uncle Pat</span>
+      <button class="uncle-pat-panel-close" id="unclePatClose" aria-label="Close">✕</button>
+    </div>
+
+    <p class="uncle-pat-panel-sub">
+      Stuck on something? Type your homework question below and Uncle Pat will give you a gentle explanation.
+    </p>
+
+    <!-- Uncle Pat mascot inside panel -->
+    <div class="uncle-pat-panel-bear">
+      <img src="icons/uncle-pat-full.png" alt="Uncle Pat mascot">
+    </div>
+
+    <label class="uncle-pat-label">
+      Subject:
+      <select id="unclePatSubject">
+        <option value="general">General</option>
+        <option value="math">Math</option>
+        <option value="english">English</option>
+        <option value="science">Science</option>
+        <option value="bible">Bible</option>
+        <option value="feelings">Feelings / Life</option>
+      </select>
+    </label>
+
+    <label class="uncle-pat-label">
+      Your question:
+      <textarea id="unclePatQuestion" rows="3" placeholder="Write your question here..."></textarea>
+    </label>
+
+    <button class="uncle-pat-ask-btn" id="unclePatAskBtn">
+      Ask Uncle Pat
+    </button>
+
+    <div class="uncle-pat-answer" id="unclePatAnswer"></div>
+  </div><!-- end .uncle-pat-panel-inner -->
+</div><!-- end .uncle-pat-panel -->
     </main>
 
     <footer>
@@ -1314,41 +1368,33 @@
     // ---------------------------
     // BOOTSTRAP
     // ---------------------------
-    document.addEventListener("DOMContentLoaded", () => {
-      renderStore();
-      renderCart();
-      renderPrivateQuestions();
+    // If your store functions exist, this keeps them working
+  document.addEventListener("DOMContentLoaded", () => {
+    if (typeof renderStore === "function") renderStore();
+    if (typeof renderCart === "function") renderCart();
+    if (typeof renderPrivateQuestions === "function") renderPrivateQuestions();
+  });
 
-      (function () {
-        const widget = document.getElementById('unclePatWidget');
+  // Basic Uncle Pat functionality (icon + panel only)
+  (function () {
+    const widget = document.getElementById('unclePatWidget');
     const panel = document.getElementById('unclePatPanel');
     const closeBtn = document.getElementById('unclePatClose');
     const askBtn = document.getElementById('unclePatAskBtn');
     const subjectSelect = document.getElementById('unclePatSubject');
     const questionInput = document.getElementById('unclePatQuestion');
     const answerBox = document.getElementById('unclePatAnswer');
-    const bigBear = document.getElementById('unclePatFull');
 
-    if (!widget || !panel || !bigBear) return;
+    if (!widget || !panel) return;
 
-    // Show full bear + open panel
+    // Open panel when Uncle Pat icon is clicked
     widget.addEventListener('click', () => {
-      widget.style.opacity = '0';
-      bigBear.classList.add('show');
-
-      setTimeout(() => {
-        panel.classList.add('open');
-      }, 350);
+      panel.classList.add('open');
     });
 
-    // Close panel + hide full bear + restore icon
+    // Close panel
     closeBtn.addEventListener('click', () => {
       panel.classList.remove('open');
-      bigBear.classList.remove('show');
-
-      setTimeout(() => {
-        widget.style.opacity = '1';
-      }, 200);
     });
 
     // Handle Ask Uncle Pat
@@ -1367,7 +1413,8 @@
 
     // Template-based answers
     function buildUnclePatAnswer(subject, question) {
-      const safeQuestion = question.length > 160 ? question.slice(0, 157) + "..." : question;
+      const safeQuestion =
+        question.length > 160 ? question.slice(0, 157) + "..." : question;
 
       switch (subject) {
         case 'math':
@@ -1384,8 +1431,7 @@
           return `
             <strong>Hello reading hero! 📖</strong><br><br>
             You asked about: <em>${safeQuestion}</em>.<br><br>
-            Read
-             the sentence slowly, find who is doing the action (the noun) and what they are doing (the verb).<br>
+            Read the sentence slowly, find who is doing the action (the noun) and what they are doing (the verb).<br>
             Underline any tricky words and try to say them in your own simple words.<br><br>
             Every time you read, your brain grows stronger. 🌱
           `;
@@ -1409,7 +1455,7 @@
             <strong>Hi, big-hearted friend. 💛</strong><br><br>
             You wrote about: <em>${safeQuestion}</em>.<br><br>
             Your feelings matter. It’s okay to feel sad, worried, or angry sometimes.<br>
-            Try telling a safe adult you trust, putting your feeling into words (“I feel _ because _”), and taking a few slow breaths.<br><br>
+            Try telling a safe adult you trust, putting your feeling into words (“I feel ___ because ___”), and taking a few slow breaths.<br><br>
             You are not alone. Sharing your feelings is a very brave thing to do. 💚
           `;
         default:
@@ -1424,65 +1470,10 @@
             I’m proud of you for not giving up. 🌈
           `;
       }
-      }
-    })();
-  });
+    }
+  })();
 </script>
- <!-- Uncle Pat corner widget (small icon) -->
-<div class="uncle-pat-widget" id="unclePatWidget">
-  <div class="uncle-pat-bear">
-    <div class="uncle-pat-avatar">
-      <img src="icons/uncle-pat-head.png" alt="Uncle Pat" />
-    </div>
-    <div class="uncle-pat-flag">
-      Uncle Pat helps you<br>with your homework
-    </div>
-  </div>
-</div>
-
-<!-- Full-size Uncle Pat bear (hidden until clicked) -->
-
-
-<!-- Uncle Pat Homework Helper Panel -->
-<div class="uncle-pat-panel" id="unclePatPanel">
-  <div class="uncle-pat-panel-inner">
-    <div class="uncle-pat-panel-header">
-      <span>Ask Uncle Pat</span>
-      <button class="uncle-pat-panel-close" id="unclePatClose" aria-label="Close">✕</button>
-    </div>
-
-    <p class="uncle-pat-panel-sub">
-      Stuck on something? Type your homework question below and Uncle Pat will give you a gentle explanation.
-    </p>
-<!-- Uncle Pat mascot inside panel -->
-<div class="uncle-pat-panel-bear">
-  <img src="icons/uncle-pat-full.png" alt="Uncle Pat mascot">
-</div>
-   
-<label class="uncle-pat-label">
-      Subject:
-      <select id="unclePatSubject">
-        <option value="general">General</option>
-        <option value="math">Math</option>
-        <option value="english">English</option>
-        <option value="science">Science</option>
-        <option value="bible">Bible</option>
-        <option value="feelings">Feelings / Life</option>
-      </select>
-    </label>
-
-    <label class="uncle-pat-label">
-      Your question:
-      <textarea id="unclePatQuestion" rows="3" placeholder="Write your question here..."></textarea>
-    </label>
-
-    <button class="uncle-pat-ask-btn" id="unclePatAskBtn">
-      Ask Uncle Pat
-    </button>
-
-    <div class="uncle-pat-answer" id="unclePatAnswer"></div>
-  </div>
-</div>
-
   </body>
 </html>
+
+    
