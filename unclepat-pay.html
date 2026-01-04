@@ -531,19 +531,66 @@
       }
 
       // Demo submit handler
-      const form = document.getElementById('unclePatCheckoutForm');
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        const selectedPlan = document.querySelector(
-          'input[name="plan"]:checked'
-        )?.value;
+     // Demo submit handler + save to localStorage for admin view
+const form = document.getElementById('unclePatCheckoutForm');
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
 
-        alert(
-          'This is a demo only.\n\nSelected plan: ' +
-            (selectedPlan === 'premium' ? 'Premium ($9.99/month)' : 'Basic ($4.99/month)') +
-            '\n\nIn the live version, this would redirect to a secure payment page.'
-        );
-      });
+  const selectedPlan = document.querySelector(
+    'input[name="plan"]:checked'
+  )?.value;
+
+  const parentName = document.getElementById('parentName').value.trim();
+  const parentEmail = document.getElementById('parentEmail').value.trim();
+  const childName = document.getElementById('childName').value.trim();
+  const country = document.getElementById('country').value;
+
+  if (!parentName || !parentEmail) {
+    alert('Please enter parent name and email.');
+    return;
+  }
+
+  // Build subscription record
+  const subscription = {
+    id: 'sub_' + Date.now(),
+    plan: selectedPlan === 'premium' ? 'Premium' : 'Basic',
+    price: selectedPlan === 'premium' ? 9.99 : 4.99,
+    parentName,
+    parentEmail,
+    childName,
+    country,
+    createdAt: new Date().toISOString(),
+    status: 'Active (demo)'
+  };
+
+  // Read existing list from localStorage
+  const key = 'unclePatSubscribers';
+  const existingRaw = localStorage.getItem(key);
+  let list = [];
+  if (existingRaw) {
+    try {
+      list = JSON.parse(existingRaw);
+      if (!Array.isArray(list)) list = [];
+    } catch (err) {
+      list = [];
+    }
+  }
+
+  // Add new subscription and save
+  list.push(subscription);
+  localStorage.setItem(key, JSON.stringify(list));
+
+  alert(
+    'Demo subscription stored locally.\n\n' +
+      'Plan: ' + subscription.plan +
+      '\nParent: ' + subscription.parentName +
+      '\nEmail: ' + subscription.parentEmail +
+      '\n\nIn the live version, this would now go to a secure payment gateway and backend.'
+  );
+
+  // Optional: redirect to admin page so you can see it
+  window.location.href = 'admin.html';
+});
     </script>
   </body>
 </html>
