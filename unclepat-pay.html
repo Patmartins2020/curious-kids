@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Curious Kids – Uncle Pat Payment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#16a34a" />
+
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" href="icons/favicon.png" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+    <style>
+      :root {
+        --primary: #ff8a3d;
+        --primary-dark: #e46f22;
+        --secondary: #4d8fff;
+        --card-bg: #ffffff;
+        --bg: #f7fbff;
+        --text: #0f172a;
+        --muted: #6b7280;
+        --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+        --radius-lg: 18px;
+        --radius-sm: 10px;
+        --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--font-main);
+        background: radial-gradient(
+          circle at top,
+          #e0f2ff 0,
+          #f7fbff 45%,
+          #ffffff 100%
+        );
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      /* HEADER */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: #16a34a;
+        color: #f9fafb;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.15);
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+      }
+
+      .nav-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0.6rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .brand-logo {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: conic-gradient(
+          from 180deg,
+          #ff8a3d,
+          #ffd74d,
+          #4d8fff,
+          #16a34a,
+          #ff8a3d
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-weight: 800;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.35);
+      }
+
+      .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+      }
+
+      .brand-text span:first-child {
+        font-weight: 800;
+        font-size: 1rem;
+        letter-spacing: 0.03em;
+      }
+
+      .brand-text span:last-child {
+        font-size: 0.75rem;
+        color: rgba(226, 232, 240, 0.9);
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.9rem;
+        align-items: center;
+      }
+
+      nav a {
+        padding: 0.35rem 0.8rem;
+        border-radius: 999px;
+        color: #e5e7eb;
+        font-weight: 500;
+        transition: background 0.15s, color 0.15s, transform 0.1s;
+      }
+
+      nav a:hover {
+        background: rgba(255, 255, 255, 0.16);
+        color: #ffffff;
+        transform: translateY(-1px);
+      }
+
+      .nav-cta {
+        background: #ffffff;
+        color: #0f172a;
+        box-shadow: 0 3px 10px rgba(15, 23, 42, 0.35);
+      }
+
+      /* MAIN LAYOUT */
+
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1.6rem 1rem 2.6rem;
+      }
+
+      .checkout-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+        gap: 1.4rem;
+        align-items: flex-start;
+      }
+
+      @media (max-width: 840px) {
+        .checkout-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        background: #ffffff;
+        border-radius: var(--radius-lg);
+        padding: 1.1rem 1rem;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+      }
+
+      .checkout-title {
+        font-size: 1.4rem;
+        font-weight: 800;
+        margin-bottom: 0.25rem;
+      }
+
+      .checkout-sub {
+        font-size: 0.88rem;
+        color: var(--muted);
+        margin-bottom: 1rem;
+      }
+
+      .plan-select-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .plan-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        margin-bottom: 1rem;
+      }
+
+      .plan-option {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6rem;
+        padding: 0.55rem 0.65rem;
+        border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        cursor: pointer;
+        transition: border 0.15s, box-shadow 0.15s, background 0.15s;
+      }
+
+      .plan-option.selected {
+        border-color: #16a34a;
+        box-shadow: 0 10px 20px rgba(22, 163, 74, 0.18);
+        background: #ecfdf5;
+      }
+
+      .plan-radio {
+        margin-top: 0.15rem;
+      }
+
+      .plan-main {
+        flex: 1;
+      }
+
+      .plan-main-title {
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+
+      .plan-main-sub {
+        font-size: 0.8rem;
+        color: #6b7280;
+      }
+
+      .plan-main-price {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .plan-main-price span {
+        font-size: 0.78rem;
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      /* FORM */
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.7rem;
+        margin-bottom: 0.8rem;
+      }
+
+      @media (max-width: 640px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+      }
+
+      label {
+        font-size: 0.78rem;
+        color: #4b5563;
+        font-weight: 500;
+      }
+
+      input,
+      select {
+        font-size: 0.82rem;
+        padding: 0.42rem 0.5rem;
+        border-radius: 10px;
+        border: 1px solid rgba(148, 163, 184, 0.9);
+        outline: none;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: #16a34a;
+        box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.2);
+      }
+
+      .payment-note {
+        font-size: 0.78rem;
+        color: #6b7280;
+        margin-bottom: 0.7rem;
+      }
+
+      .pay-button {
+        width: 100%;
+        border-radius: 999px;
+        border: none;
+        padding: 0.7rem 1rem;
+        font-size: 0.88rem;
+        font-weight: 700;
+        background: var(--primary);
+        color: #ffffff;
+        cursor: pointer;
+        box-shadow: 0 7px 20px rgba(248, 113, 22, 0.55);
+        transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      }
+
+      .pay-button:hover {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+      }
+
+      .summary-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .summary-line {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.82rem;
+        margin-bottom: 0.3rem;
+      }
+
+      .summary-total {
+        margin-top: 0.5rem;
+        border-top: 1px solid rgba(148, 163, 184, 0.4);
+        padding-top: 0.4rem;
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+
+      .summary-footnote {
+        font-size: 0.75rem;
+        color: #6b7280;
+        margin-top: 0.6rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="nav-inner">
+        <div class="brand">
+          <div class="brand-logo">CK</div>
+          <div class="brand-text">
+            <span>Curious Kids</span>
+            <span>Uncle Pat Homework Helper</span>
+          </div>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="ask.html">Ask a Question</a></li>
+            <li><a href="store.html">Store</a></li>
+            <li><a href="plans.html" class="nav-cta">Uncle Pat Plans</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="checkout-layout">
+        <!-- Left side: plan + billing -->
+        <div class="card">
+          <h1 class="checkout-title">Confirm your Uncle Pat plan</h1>
+          <p class="checkout-sub">
+            Choose a subscription and enter your details. In the live version,
+            this page will connect to a secure payment provider (Stripe, PayPal, etc.).
+          </p>
+
+          <!-- Plan selector -->
+          <p class="plan-select-title">1. Choose your plan</p>
+          <div class="plan-options">
+            <label class="plan-option" data-plan="basic" id="planBasic">
+              <input
+                type="radio"
+                name="plan"
+                value="basic"
+                class="plan-radio"
+                checked
+              />
+              <div class="plan-main">
+                <div class="plan-main-title">Basic Plan</div>
+                <div class="plan-main-sub">
+                  Up to 5 guided answers per month.
+                </div>
+                <div class="plan-main-price">
+                  $4.99 <span>/ month</span>
+                </div>
+              </div>
+            </label>
+
+            <label class="plan-option" data-plan="premium" id="planPremium">
+              <input
+                type="radio"
+                name="plan"
+                value="premium"
+                class="plan-radio"
+              />
+              <div class="plan-main">
+                <div class="plan-main-title">Premium Plan</div>
+                <div class="plan-main-sub">
+                  Up to 20 guided answers per month + Parent Forum.
+                </div>
+                <div class="plan-main-price">
+                  $9.99 <span>/ month</span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <!-- Billing form -->
+          <p class="plan-select-title">2. Parent & billing details</p>
+
+          <form id="unclePatCheckoutForm">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="parentName">Parent / Guardian full name</label>
+                <input
+                  type="text"
+                  id="parentName"
+                  required
+                  placeholder="e.g. Sarah Johnson"
+                />
+              </div>
+              <div class="form-group">
+                <label for="parentEmail">Email address</label>
+                <input
+                  type="email"
+                  id="parentEmail"
+                  required
+                  placeholder="name@example.com"
+                />
+              </div>
+              <div class="form-group">
+                <label for="childName">Child's first name (optional)</label>
+                <input type="text" id="childName" placeholder="e.g. Ethan" />
+              </div>
+              <div class="form-group">
+                <label for="country">Country / Region</label>
+                <select id="country">
+                  <option value="US" selected>United States</option>
+                  <option value="CA">Canada</option>
+                  <option value="UK">United Kingdom</option>
+                  <option value="EU">European Union</option>
+                  <option value="OTHER">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <p class="plan-select-title">3. Payment method</p>
+            <p class="payment-note">
+              In the live version, this step will collect card or wallet
+              details via a secure provider (for example Stripe or PayPal).
+              No real payment is processed on this demo page.
+            </p>
+
+            <button type="submit" class="pay-button">
+              Confirm Subscription (Demo)
+            </button>
+          </form>
+        </div>
+
+        <!-- Right side: summary -->
+        <aside class="card">
+          <div class="summary-title">Order summary</div>
+
+          <div class="summary-line">
+            <span>Selected plan</span>
+            <span id="summaryPlanLabel">Basic Plan</span>
+          </div>
+
+          <div class="summary-line">
+            <span>Billing frequency</span>
+            <span>Monthly</span>
+          </div>
+
+          <div class="summary-total">
+            <span>Total due today:</span>
+            <span id="summaryTotal">$4.99</span>
+          </div>
+
+          <p class="summary-footnote">
+            You can cancel your subscription at any time. Uncle Pat is a
+            learning companion and is not intended to replace schoolwork,
+            teachers, or parental guidance.
+          </p>
+        </aside>
+      </section>
+    </main>
+
+    <script>
+      // Small helper: update summary when plan changes
+      const planOptions = document.querySelectorAll('.plan-option');
+      const summaryPlanLabel = document.getElementById('summaryPlanLabel');
+      const summaryTotal = document.getElementById('summaryTotal');
+
+      function selectPlan(plan) {
+        planOptions.forEach((opt) => {
+          const isSelected = opt.dataset.plan === plan;
+          opt.classList.toggle('selected', isSelected);
+          const radio = opt.querySelector('input[type="radio"]');
+          if (radio) {
+            radio.checked = isSelected;
+          }
+        });
+
+        if (plan === 'premium') {
+          summaryPlanLabel.textContent = 'Premium Plan';
+          summaryTotal.textContent = '$9.99';
+        } else {
+          summaryPlanLabel.textContent = 'Basic Plan';
+          summaryTotal.textContent = '$4.99';
+        }
+      }
+
+      planOptions.forEach((opt) => {
+        opt.addEventListener('click', () => {
+          selectPlan(opt.dataset.plan);
+        });
+      });
+
+      // Read ?plan=basic or ?plan=premium from URL
+      const params = new URLSearchParams(window.location.search);
+      const planFromUrl = params.get('plan');
+      if (planFromUrl === 'premium') {
+        selectPlan('premium');
+      } else {
+        selectPlan('basic');
+      }
+
+      // Demo submit handler
+      const form = document.getElementById('unclePatCheckoutForm');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const selectedPlan = document.querySelector(
+          'input[name="plan"]:checked'
+        )?.value;
+
+        alert(
+          'This is a demo only.\n\nSelected plan: ' +
+            (selectedPlan === 'premium' ? 'Premium ($9.99/month)' : 'Basic ($4.99/month)') +
+            '\n\nIn the live version, this would redirect to a secure payment page.'
+        );
+      });
+    </script>
+  </body>
+</html>
