@@ -505,6 +505,69 @@ nav a {
   gap:0.4rem;
   font-size:0.78rem;
 }
+/* Uncle Pat Subscriptions — Mobile Friendly Layout */
+
+.unclepat-card {
+  background:#ffffff;
+  border:1px solid rgba(148,163,184,.25);
+  border-radius:18px;
+  padding:1rem 1rem;
+  margin:0.8rem 0;
+  box-shadow:0 10px 24px rgba(15,23,42,.06);
+}
+
+/* Title Row */
+.unclepat-card-title {
+  font-weight:800;
+  font-size:1rem;
+  margin-bottom:0.35rem;
+}
+
+/* Subtitle */
+.unclepat-card-sub {
+  font-size:.8rem;
+  color:#6b7280;
+  margin-bottom:.7rem;
+}
+
+/* Empty State */
+#unclePatSubsEmpty {
+  text-align:center;
+  padding:1rem;
+  color:#9ca3af;
+  font-size:.85rem;
+}
+
+/* Table wrapper (prevents layout overflow on small screens) */
+.unclepat-table-wrap {
+  overflow-x:auto;
+}
+
+/* Table styling */
+#unclePatSubsTable {
+  width:100%;
+  border-collapse:collapse;
+  font-size:0.8rem;
+}
+
+#unclePatSubsTable th,
+#unclePatSubsTable td {
+  padding:0.55rem 0.4rem;
+  border-bottom:1px solid rgba(148,163,184,.25);
+}
+
+#unclePatSubsTable th {
+  font-weight:700;
+  color:#111827;
+}
+
+/* Mobile – make table readable */
+@media (max-width: 640px) {
+  #unclePatSubsTable th,
+  #unclePatSubsTable td {
+    padding:0.5rem 0.35rem;
+  }
+}
   </style>
 </head>
 <body>
@@ -550,24 +613,18 @@ nav a {
 <section class="card">
   <h2>Uncle Pat – Subscriptions</h2>
 
-  <table id="unclePatSubsTable">
-    <thead>
-      <tr>
-        <th>Parent</th>
-        <th>Email</th>
-        <th>Child</th>
-        <th>Plan</th>
-        <th>Price</th>
-        <th>Country</th>
-        <th>Created</th>
-        <th>Status</th>
-      </tr>
-    </thead>
+ <!-- Uncle Pat – Empty State Message -->
+<div id="unclePatSubsEmpty"
+     style="display:flex;align-items:center;justify-content:center;
+     border:1px solid rgba(148,163,184,.25);
+     background:#ffffff;border-radius:18px;
+     padding:1.2rem;margin-bottom:1rem;
+     box-shadow:0 8px 22px rgba(15,23,42,.08);
+     color:#6b7280;font-size:.9rem;">
+  No Uncle Pat subscriptions found yet.
+</div>
 
-    <tbody id="unclePatSubsBody">
-      <!-- rows get populated dynamically -->
-    </tbody>
-  </table>
+
 </section>
   </nav>
 </header>
@@ -701,7 +758,40 @@ nav a {
           Open Parent Forum App
         </button>
       </div>
+<section class="unclepat-card">
 
+  <div class="unclepat-card-title">Uncle Pat Subscriptions</div>
+  <div class="unclepat-card-sub">
+    Subscription records for the Homework Helper service.
+  </div>
+
+  <!-- Empty State -->
+  <div id="unclePatSubsEmpty">
+    No Uncle Pat subscriptions found yet.
+  </div>
+
+  <!-- Scrollable table wrapper -->
+  <div class="unclepat-table-wrap">
+    <table id="unclePatSubsTable">
+      <thead>
+        <tr>
+          <th>Parent</th>
+          <th>Email</th>
+          <th>Child</th>
+          <th>Plan</th>
+          <th>Price</th>
+          <th>Country</th>
+          <th>Created</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody id="unclePatSubsBody">
+        <!-- rows populate dynamically -->
+      </tbody>
+    </table>
+  </div>
+</section>
     </section>
     <section class="card" style="margin-top: 1rem;">
   <h2 style="font-size: 1rem; margin-bottom:.4rem;">
@@ -1173,19 +1263,46 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // --- Table Rendering ---
-  if (!tbody) return;
+ (function () {
+  const body = document.getElementById("unclePatSubsBody");
+  const emptyNote = document.getElementById("unclePatSubsEmpty");
 
-  if (!list.length) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="8"
-          style="padding:.6rem; color:#9ca3af; text-align:center;">
-          No subscriptions found yet.
-        </td>
-      </tr>`;
-    return;
+  if (!body) return;
+
+  function refreshUnclePatSubsTable(list) {
+    if (!list || !list.length) {
+      body.innerHTML = "";
+      if (emptyNote) emptyNote.style.display = "block";
+      return;
+    }
+
+    if (emptyNote) emptyNote.style.display = "none";
+
+    body.innerHTML = list
+      .map((sub) => {
+        const created = sub.createdAt
+          ? new Date(sub.createdAt).toLocaleDateString("en-US")
+          : "-";
+
+        return `
+          <tr>
+            <td>${sub.parentName || "-"}</td>
+            <td>${sub.email || "-"}</td>
+            <td>${sub.childName || "-"}</td>
+            <td>${sub.plan || "-"}</td>
+            <td>${sub.price || "-"}</td>
+            <td>${sub.country || "-"}</td>
+            <td>${created}</td>
+            <td>${sub.status || "-"}</td>
+          </tr>
+        `;
+      })
+      .join("");
   }
 
+  // expose to other scripts
+  window.refreshUnclePatSubsTable = refreshUnclePatSubsTable;
+})();
   tbody.innerHTML = list.map(sub => {
     const date = new Date(sub.createdAt);
     return `
