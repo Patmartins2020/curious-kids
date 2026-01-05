@@ -50,7 +50,7 @@
         color: inherit;
       }
 
-      /* HEADER + NAVBAR (same style family as other pages) */
+      /* HEADER + NAVBAR */
 
       header {
         position: sticky;
@@ -222,7 +222,8 @@
 
       select,
       input[type="text"],
-      input[type="number"] {
+      input[type="number"],
+      textarea {
         font-size: 0.82rem;
         padding: 0.4rem 0.5rem;
         border-radius: 10px;
@@ -230,11 +231,13 @@
         outline: none;
         width: 100%;
         margin-bottom: 0.5rem;
+        resize: vertical;
       }
 
       select:focus,
       input[type="text"]:focus,
-      input[type="number"]:focus {
+      input[type="number"]:focus,
+      textarea:focus {
         border-color: #16a34a;
         box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.2);
       }
@@ -457,6 +460,47 @@
       .results-list li {
         margin-bottom: 0.2rem;
       }
+
+      /* CUSTOM QUIZ BUILDER */
+
+      .cq-helper {
+        font-size: 0.78rem;
+        color: #6b7280;
+        margin-bottom: 0.6rem;
+      }
+
+      .cq-question-block {
+        border-radius: 12px;
+        border: 1px dashed rgba(148, 163, 184, 0.7);
+        background: #f9fafb;
+        padding: 0.6rem 0.7rem;
+        margin-bottom: 0.7rem;
+      }
+
+      .cq-question-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 0.4rem;
+      }
+
+      .cq-options-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.4rem;
+      }
+
+      @media (max-width: 640px) {
+        .cq-options-row {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .cq-small-label {
+        font-size: 0.75rem;
+        color: #4b5563;
+        margin-bottom: 0.2rem;
+      }
     </style>
   </head>
   <body>
@@ -487,9 +531,9 @@
         <div class="hero-kicker">Play & Learn</div>
         <h1 class="hero-title">Curious Kids Quiz Arena</h1>
         <p class="hero-sub">
-          Bible stories, feelings, and general curiosity – turned into gentle,
-          fun quizzes for kids and families. Play solo or take turns in a
-          pass-and-play game.
+          Bible stories, feelings, and everyday choices turned into gentle, fun
+          quizzes for kids and families. Play alone, take turns, or create your
+          own quiz on this device.
         </p>
       </section>
 
@@ -498,8 +542,8 @@
         <div class="card">
           <h2 class="card-title">1. Choose quiz & mode</h2>
           <p class="card-sub">
-            Pick a quiz set, then decide if you want to play alone or with
-            friends on the same device.
+            Pick a ready-made quiz or one of your saved quizzes, then decide if
+            you want to play alone or with friends on the same device.
           </p>
 
           <div>
@@ -507,6 +551,10 @@
             <select id="quizSelect">
               <!-- Populated by JS -->
             </select>
+            <p class="helper-text" id="myQuizzesHint">
+              Built-in quizzes appear first. Your saved quizzes (from the
+              builder below) will appear under “My Quizzes”.
+            </p>
           </div>
 
           <div style="margin-top:0.4rem;">
@@ -614,11 +662,127 @@
           </div>
         </div>
       </section>
+
+      <!-- CUSTOM QUIZ BUILDER -->
+      <section class="card" style="margin-top:1.5rem;">
+        <h2 class="card-title">3. Create your own quiz (on this device)</h2>
+        <p class="cq-helper">
+          Build a small quiz for your child, class, or friends. Saved quizzes
+          stay on this device only and will appear in the quiz list above under
+          “My Quizzes”.
+        </p>
+
+        <div>
+          <p class="field-label">Quiz title</p>
+          <input
+            type="text"
+            id="customQuizTitle"
+            placeholder="e.g. Sarah’s Bible Quiz or Feelings Check-In"
+          />
+        </div>
+
+        <!-- Question 1 -->
+        <div class="cq-question-block">
+          <div class="cq-question-title">Question 1</div>
+          <p class="cq-small-label">Question text</p>
+          <textarea
+            id="cqQ1Text"
+            rows="2"
+            placeholder="e.g. Who was thrown into the lions’ den?"
+          ></textarea>
+
+          <p class="cq-small-label">Answer options</p>
+          <div class="cq-options-row">
+            <input type="text" id="cqQ1Opt1" placeholder="Option 1" />
+            <input type="text" id="cqQ1Opt2" placeholder="Option 2" />
+            <input type="text" id="cqQ1Opt3" placeholder="Option 3 (optional)" />
+            <input type="text" id="cqQ1Opt4" placeholder="Option 4 (optional)" />
+          </div>
+
+          <p class="cq-small-label">Correct answer</p>
+          <select id="cqQ1Correct">
+            <option value="">Choose…</option>
+            <option value="0">Option 1</option>
+            <option value="1">Option 2</option>
+            <option value="2">Option 3</option>
+            <option value="3">Option 4</option>
+          </select>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="cq-question-block">
+          <div class="cq-question-title">Question 2 (optional)</div>
+          <p class="cq-small-label">Question text</p>
+          <textarea
+            id="cqQ2Text"
+            rows="2"
+            placeholder="Leave empty if you only want one question."
+          ></textarea>
+
+          <p class="cq-small-label">Answer options</p>
+          <div class="cq-options-row">
+            <input type="text" id="cqQ2Opt1" placeholder="Option 1" />
+            <input type="text" id="cqQ2Opt2" placeholder="Option 2" />
+            <input type="text" id="cqQ2Opt3" placeholder="Option 3 (optional)" />
+            <input type="text" id="cqQ2Opt4" placeholder="Option 4 (optional)" />
+          </div>
+
+          <p class="cq-small-label">Correct answer</p>
+          <select id="cqQ2Correct">
+            <option value="">Choose…</option>
+            <option value="0">Option 1</option>
+            <option value="1">Option 2</option>
+            <option value="2">Option 3</option>
+            <option value="3">Option 4</option>
+          </select>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="cq-question-block">
+          <div class="cq-question-title">Question 3 (optional)</div>
+          <p class="cq-small-label">Question text</p>
+          <textarea
+            id="cqQ3Text"
+            rows="2"
+            placeholder="You can add up to 3 questions in this version."
+          ></textarea>
+
+          <p class="cq-small-label">Answer options</p>
+          <div class="cq-options-row">
+            <input type="text" id="cqQ3Opt1" placeholder="Option 1" />
+            <input type="text" id="cqQ3Opt2" placeholder="Option 2" />
+            <input type="text" id="cqQ3Opt3" placeholder="Option 3 (optional)" />
+            <input type="text" id="cqQ3Opt4" placeholder="Option 4 (optional)" />
+          </div>
+
+          <p class="cq-small-label">Correct answer</p>
+          <select id="cqQ3Correct">
+            <option value="">Choose…</option>
+            <option value="0">Option 1</option>
+            <option value="1">Option 2</option>
+            <option value="2">Option 3</option>
+            <option value="3">Option 4</option>
+          </select>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-primary" id="saveCustomQuizBtn" type="button">
+            Save this quiz on this device
+          </button>
+          <button class="btn-ghost" id="clearCustomQuizBtn" type="button">
+            Clear fields
+          </button>
+        </div>
+
+        <p class="cq-helper" id="customQuizStatus" style="margin-top:0.5rem;">
+          No custom quiz saved yet.
+        </p>
+      </section>
     </main>
 
     <script>
       // -------------------
-      // Quiz data (sample sets)
+      // Quiz data (built-in sets)
       // -------------------
       const QUIZ_SETS = [
         {
@@ -717,6 +881,9 @@
         }
       ];
 
+      const CUSTOM_QUIZ_KEY = 'curiousKidsCustomQuizzes';
+      let customQuizzes = [];
+
       // -------------------
       // State
       // -------------------
@@ -752,21 +919,119 @@
       const resultsList = document.getElementById('resultsList');
       const playAgainBtn = document.getElementById('playAgainBtn');
 
+      // Custom quiz builder elements
+      const customQuizTitle = document.getElementById('customQuizTitle');
+      const customQuizStatus = document.getElementById('customQuizStatus');
+      const saveCustomQuizBtn = document.getElementById('saveCustomQuizBtn');
+      const clearCustomQuizBtn = document.getElementById('clearCustomQuizBtn');
+
+      // Question blocks
+      const cqQ1Text = document.getElementById('cqQ1Text');
+      const cqQ1Opt1 = document.getElementById('cqQ1Opt1');
+      const cqQ1Opt2 = document.getElementById('cqQ1Opt2');
+      const cqQ1Opt3 = document.getElementById('cqQ1Opt3');
+      const cqQ1Opt4 = document.getElementById('cqQ1Opt4');
+      const cqQ1Correct = document.getElementById('cqQ1Correct');
+
+      const cqQ2Text = document.getElementById('cqQ2Text');
+      const cqQ2Opt1 = document.getElementById('cqQ2Opt1');
+      const cqQ2Opt2 = document.getElementById('cqQ2Opt2');
+      const cqQ2Opt3 = document.getElementById('cqQ2Opt3');
+      const cqQ2Opt4 = document.getElementById('cqQ2Opt4');
+      const cqQ2Correct = document.getElementById('cqQ2Correct');
+
+      const cqQ3Text = document.getElementById('cqQ3Text');
+      const cqQ3Opt1 = document.getElementById('cqQ3Opt1');
+      const cqQ3Opt2 = document.getElementById('cqQ3Opt2');
+      const cqQ3Opt3 = document.getElementById('cqQ3Opt3');
+      const cqQ3Opt4 = document.getElementById('cqQ3Opt4');
+      const cqQ3Correct = document.getElementById('cqQ3Correct');
+
       // -------------------
-      // Init quiz dropdown
+      // Custom quiz storage
+      // -------------------
+      function loadCustomQuizzes() {
+        try {
+          const raw = localStorage.getItem(CUSTOM_QUIZ_KEY);
+          const parsed = raw ? JSON.parse(raw) : [];
+          if (Array.isArray(parsed)) {
+            customQuizzes = parsed;
+          } else {
+            customQuizzes = [];
+          }
+        } catch (e) {
+          customQuizzes = [];
+        }
+      }
+
+      function saveCustomQuizzes() {
+        try {
+          localStorage.setItem(CUSTOM_QUIZ_KEY, JSON.stringify(customQuizzes));
+        } catch (e) {
+          // ignore storage errors
+        }
+      }
+
+      function getAllQuizzes() {
+        return [...QUIZ_SETS, ...customQuizzes];
+      }
+
+      // -------------------
+      // Populate quiz select (built-in + custom)
       // -------------------
       function populateQuizSelect() {
         quizSelect.innerHTML = '';
+
+        const allCustom = customQuizzes;
+
+        // Built-in group
+        const builtInGroup = document.createElement('optgroup');
+        builtInGroup.label = 'Built-in quizzes';
+
         QUIZ_SETS.forEach((q) => {
           const opt = document.createElement('option');
           opt.value = q.id;
           opt.textContent = `${q.title} (${q.category})`;
-          quizSelect.appendChild(opt);
+          builtInGroup.appendChild(opt);
         });
-        if (QUIZ_SETS.length) {
-          currentQuiz = QUIZ_SETS[0];
+
+        quizSelect.appendChild(builtInGroup);
+
+        // Custom group
+        const customGroup = document.createElement('optgroup');
+        customGroup.label = 'My Quizzes';
+
+        if (allCustom.length === 0) {
+          const opt = document.createElement('option');
+          opt.disabled = true;
+          opt.textContent = 'No custom quizzes yet';
+          customGroup.appendChild(opt);
+        } else {
+          allCustom.forEach((q) => {
+            const opt = document.createElement('option');
+            opt.value = q.id;
+            opt.textContent = `⭐ ${q.title}`;
+            customGroup.appendChild(opt);
+          });
+        }
+
+        quizSelect.appendChild(customGroup);
+
+        // Default selection
+        const allQuizzes = getAllQuizzes();
+        if (allQuizzes.length) {
+          currentQuiz = QUIZ_SETS[0] || allQuizzes[0];
+          quizSelect.value = currentQuiz.id;
+        } else {
+          currentQuiz = null;
         }
       }
+
+      quizSelect.addEventListener('change', () => {
+        const id = quizSelect.value;
+        const all = getAllQuizzes();
+        currentQuiz = all.find((q) => q.id === id) || null;
+      });
 
       // -------------------
       // Mode selection
@@ -786,11 +1051,6 @@
 
       modeSoloPill.addEventListener('click', () => setMode('solo'));
       modeMultiPill.addEventListener('click', () => setMode('multi'));
-
-      quizSelect.addEventListener('change', () => {
-        const id = quizSelect.value;
-        currentQuiz = QUIZ_SETS.find((q) => q.id === id) || null;
-      });
 
       // -------------------
       // Quiz core
@@ -835,7 +1095,10 @@
 
       function resetQuiz() {
         quizRunning = false;
-        currentQuiz = QUIZ_SETS.find((q) => q.id === quizSelect.value) || null;
+        const all = getAllQuizzes();
+        const selectedId = quizSelect.value;
+        currentQuiz = all.find((q) => q.id === selectedId) || all[0] || null;
+
         currentQuestionIndex = 0;
         currentPlayerIndex = 0;
         players = [];
@@ -856,7 +1119,7 @@
       function showQuestion() {
         if (!quizRunning || !currentQuiz) return;
 
-        const questions = currentQuiz.questions;
+        const questions = currentQuiz.questions || [];
         if (currentQuestionIndex >= questions.length) {
           endQuiz();
           return;
@@ -880,7 +1143,7 @@
         feedback.textContent = '';
         feedback.className = 'feedback-text';
 
-        q.options.forEach((optText, index) => {
+        (q.options || []).forEach((optText, index) => {
           const btn = document.createElement('button');
           btn.className = 'option-btn';
           btn.textContent = optText;
@@ -894,7 +1157,8 @@
 
       function handleAnswerClick(selectedIndex) {
         if (!quizRunning || !currentQuiz) return;
-        const q = currentQuiz.questions[currentQuestionIndex];
+        const questions = currentQuiz.questions || [];
+        const q = questions[currentQuestionIndex];
         const correctIndex = q.correctIndex;
 
         // Disable further clicks on options
@@ -961,6 +1225,11 @@
       function endQuiz() {
         quizRunning = false;
 
+        if (!players.length) {
+          resultsPanel.style.display = 'none';
+          return;
+        }
+
         // Build results
         const ranked = [...players].sort((a, b) => b.score - a.score);
         resultsList.innerHTML = ranked
@@ -986,22 +1255,188 @@
       }
 
       // -------------------
+      // Custom Quiz Builder Logic
+      // -------------------
+      function clearCustomQuizFields() {
+        customQuizTitle.value = '';
+
+        cqQ1Text.value = '';
+        cqQ1Opt1.value = '';
+        cqQ1Opt2.value = '';
+        cqQ1Opt3.value = '';
+        cqQ1Opt4.value = '';
+        cqQ1Correct.value = '';
+
+        cqQ2Text.value = '';
+        cqQ2Opt1.value = '';
+        cqQ2Opt2.value = '';
+        cqQ2Opt3.value = '';
+        cqQ2Opt4.value = '';
+        cqQ2Correct.value = '';
+
+        cqQ3Text.value = '';
+        cqQ3Opt1.value = '';
+        cqQ3Opt2.value = '';
+        cqQ3Opt3.value = '';
+        cqQ3Opt4.value = '';
+        cqQ3Correct.value = '';
+      }
+
+      function buildQuestionFromBlock(qTextEl, opt1El, opt2El, opt3El, opt4El, correctEl) {
+        const text = qTextEl.value.trim();
+        if (!text) {
+          return null; // no question
+        }
+
+        const opts = [
+          opt1El.value.trim(),
+          opt2El.value.trim(),
+          opt3El.value.trim(),
+          opt4El.value.trim()
+        ];
+
+        // Filter out completely empty options (but keep their index mapping)
+        const nonEmptyOptions = opts.map((o, idx) => ({ text: o, idx }))
+          .filter((o) => o.text !== '');
+
+        if (nonEmptyOptions.length < 2) {
+          // Need at least 2 options
+          return { error: 'atLeastTwoOptions' };
+        }
+
+        const correctVal = correctEl.value;
+        if (correctVal === '') {
+          return { error: 'noCorrectChosen' };
+        }
+
+        const correctIndex = Number(correctVal);
+        if (!opts[correctIndex] || opts[correctIndex].trim() === '') {
+          return { error: 'correctOptionEmpty' };
+        }
+
+        return {
+          text,
+          options: opts,
+          correctIndex
+        };
+      }
+
+      function saveCustomQuiz() {
+        const title = customQuizTitle.value.trim();
+        if (!title) {
+          alert('Please enter a quiz title.');
+          return;
+        }
+
+        const questions = [];
+
+        // Question 1 (required if text entered)
+        const q1 = buildQuestionFromBlock(
+          cqQ1Text,
+          cqQ1Opt1,
+          cqQ1Opt2,
+          cqQ1Opt3,
+          cqQ1Opt4,
+          cqQ1Correct
+        );
+        if (q1 && q1.error) {
+          handleQuestionError(q1.error, 1);
+          return;
+        } else if (q1) {
+          questions.push(q1);
+        }
+
+        // Question 2
+        const q2 = buildQuestionFromBlock(
+          cqQ2Text,
+          cqQ2Opt1,
+          cqQ2Opt2,
+          cqQ2Opt3,
+          cqQ2Opt4,
+          cqQ2Correct
+        );
+        if (q2 && q2.error) {
+          handleQuestionError(q2.error, 2);
+          return;
+        } else if (q2) {
+          questions.push(q2);
+        }
+
+        // Question 3
+        const q3 = buildQuestionFromBlock(
+          cqQ3Text,
+          cqQ3Opt1,
+          cqQ3Opt2,
+          cqQ3Opt3,
+          cqQ3Opt4,
+          cqQ3Correct
+        );
+        if (q3 && q3.error) {
+          handleQuestionError(q3.error, 3);
+          return;
+        } else if (q3) {
+          questions.push(q3);
+        }
+
+        if (questions.length === 0) {
+          alert('Please add at least one question to your quiz.');
+          return;
+        }
+
+        const newQuiz = {
+          id: 'custom-' + Date.now(),
+          title,
+          category: 'Custom',
+          difficulty: 'custom',
+          questions
+        };
+
+        customQuizzes.push(newQuiz);
+        saveCustomQuizzes();
+        populateQuizSelect();
+
+        customQuizStatus.textContent =
+          'Quiz saved on this device. You can now find it under “My Quizzes” in the quiz list above.';
+        clearCustomQuizFields();
+      }
+
+      function handleQuestionError(errorCode, questionNumber) {
+        let msg = '';
+        if (errorCode === 'atLeastTwoOptions') {
+          msg =
+            'Question ' +
+            questionNumber +
+            ': please provide at least two answer options.';
+        } else if (errorCode === 'noCorrectChosen') {
+          msg =
+            'Question ' +
+            questionNumber +
+            ': please choose which option is correct.';
+        } else if (errorCode === 'correctOptionEmpty') {
+          msg =
+            'Question ' +
+            questionNumber +
+            ': the selected correct answer is empty. Please fill it or choose another option.';
+        }
+        if (msg) {
+          alert(msg);
+        }
+      }
+
+      // -------------------
       // Event wiring
       // -------------------
       startQuizBtn.addEventListener('click', startQuiz);
       resetQuizBtn.addEventListener('click', resetQuiz);
       playAgainBtn.addEventListener('click', () => {
-        // Replay with same quiz + mode + players as last game
         if (!currentQuiz) {
-          currentQuiz = QUIZ_SETS.find(
-            (q) => q.id === quizSelect.value
-          ) || null;
+          const all = getAllQuizzes();
+          currentQuiz = all.find((q) => q.id === quizSelect.value) || all[0] || null;
         }
         if (!currentQuiz) {
           alert('Please choose a quiz set first.');
           return;
         }
-        // If no players (e.g. page reload), use current mode to rebuild
         if (!players.length) {
           startQuiz();
           return;
@@ -1019,9 +1454,16 @@
         showQuestion();
       });
 
+      saveCustomQuizBtn.addEventListener('click', saveCustomQuiz);
+      clearCustomQuizBtn.addEventListener('click', () => {
+        clearCustomQuizFields();
+        customQuizStatus.textContent = 'Fields cleared. No custom quiz saved yet.';
+      });
+
       // -------------------
       // Init
       // -------------------
+      loadCustomQuizzes();
       populateQuizSelect();
       resetQuiz(); // ensures clean UI on first load
     </script>
